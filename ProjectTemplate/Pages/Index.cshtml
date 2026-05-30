@@ -1,10 +1,136 @@
 ﻿@page
-@model IndexModel
+@model ProjectAstra.Pages.IndexModel
 @{
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Group 8</h1>
-    <p>Basta shop <a href="https://learn.microsoft.com/aspnet/core">testing new branch</a>.</p>
+<div class="full-bleed-adjust">
+    <section class="hero-banner">
+        <div class="container-fluid px-5">
+            <div class="row">
+                <div class="col-12 col-md-8 col-lg-6 text-start">
+                    <p class="hero-subtitle mb-2">Pre-Order Now!</p>
+                    <h1 class="hero-title mb-4">
+                        ASTRA<br />
+                        <span style="color: #1EB580;">STYLE</span>
+                    </h1>
+                    <p class="text-white-50 fs-5 mb-5" style="max-width: 460px; font-weight: 400; line-height: 1.5;">
+                        Level up your daily rotation with the ultimate nursing starter pack for an epic semester.
+                    </p>
+                    <a asp-page="/Store" class="btn btn-shop-now d-inline-flex align-items-center justify-content-center">
+                        Shop Now <i class="bi bi-arrow-right ms-2 fs-5"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
+
+<section class="trending-section my-5">
+    <div class="container overflow-hidden position-relative">
+        <h2 class="trending-section-title text-center mb-5">TRENDING NOW</h2>
+
+        @for (int p = 1; p <= Model.TotalPages; p++)
+        {
+            <input type="radio" name="trending-slide-master" id="slide-ctrl-@p" @(p == 1 ? "checked" : "") hidden />
+        }
+
+        <div class="slider-viewframe-window">
+            <div class="slider-horizontal-track">
+
+                @for (int pageIdx = 0; pageIdx < Model.ProductPages.Count; pageIdx++)
+                {
+                    var productList = Model.ProductPages[pageIdx];
+                    <div class="slider-page-block row g-4 justify-content-start">
+                        @foreach (var product in productList)
+                        {
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="product-card-container">
+
+                                    <input type="checkbox" id="flip-@product.Id" class="state-flip-toggle" hidden />
+                                    @for (int i = 0; i < product.Colors.Count; i++)
+                                    {
+                                        <input type="radio" id="color-@product.Colors[i]-@product.Id"
+                                               name="color-group-@product.Id"
+                                               class="state-color-toggle color-@product.Colors[i]"
+                                               @(i == 0 ? "checked" : "") hidden />
+                                    }
+
+                                    <div class="card-image-container">
+                                        <label for="flip-@product.Id" class="orientation-toggle-btn">
+                                            <i class="bi bi-arrow-left-right"></i>
+                                            <span class="label-txt-front">Front</span>
+                                            <span class="label-txt-back">Back</span>
+                                        </label>
+
+                                        <div class="image-render-frame">
+                                            <img src="@product.FrontImage" class="img-view view-front" alt="@product.Name Front" />
+                                            <img src="@product.BackImage" class="img-view view-back" alt="@product.Name Back" />
+
+                                            <div class="color-tint-overlay overlay-black"></div>
+                                            <div class="color-tint-overlay overlay-white"></div>
+                                            <div class="color-tint-overlay overlay-teal"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <span class="product-tag-badge">@product.Tag</span>
+                                        <div class="color-selection-row">
+                                            @foreach (var colorName in product.Colors)
+                                            {
+                                                string hexColor = colorName == "black" ? "#000000" : (colorName == "teal" ? "#0D4F4E" : "#FFFFFF");
+                                                <label for="color-@colorName-@product.Id" class="color-dot-selection dot-@colorName" style="background-color: @hexColor;"></label>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <h4 class="product-title-text mb-1">@product.Name</h4>
+                                    <div class="d-flex align-items-center mb-1">
+                                        @for (int s = 1; s <= 5; s++)
+                                        {
+                                            <i class="bi bi-star-fill @(s <= Math.Floor(product.Rating) ? "rating-star-fill" : "rating-star-empty") me-1"></i>
+                                        }
+                                        <span class="reviews-count-label">@product.ReviewCount Reviews</span>
+                                    </div>
+                                    <div class="product-price-label">₱@product.Price.ToString("F2")</div>
+
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12 d-flex justify-content-center align-items-center slider-pagination-panel">
+                @for (int p = 1; p <= Model.TotalPages; p++)
+                {
+                    <div class="pagination-layer-gate layer-gate-@p">
+                        @if (p > 1)
+                        {
+                            <label for="slide-ctrl-@(p - 1)" class="pagination-arrow-btn"><i class="bi bi-chevron-left"></i></label>
+                        }
+                        else
+                        {
+                            <span class="pagination-arrow-btn disabled-visual"><i class="bi bi-chevron-left"></i></span>
+                        }
+
+                        <span class="pagination-indicator-text">@p/@Model.TotalPages</span>
+
+                        @if (p < Model.TotalPages)
+                        {
+                            <label for="slide-ctrl-@(p + 1)" class="pagination-arrow-btn"><i class="bi bi-chevron-right"></i></label>
+                        }
+                        else
+                        {
+                            <span class="pagination-arrow-btn disabled-visual"><i class="bi bi-chevron-right"></i></span>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+</section>
