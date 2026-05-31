@@ -537,3 +537,118 @@ body {
     margin: 0 15px;
     user-select: none;
 }
+
+/*login to ya*/
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #f7f8fa; 
+}
+
+.login-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 480px;
+    padding: 3.5rem 3rem;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.02);
+}
+
+.brand-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 0.5rem;
+}
+
+.astra-text {
+    color: #0D4F4E;
+    font-weight: 800;
+    font-size: 2rem;
+    letter-spacing: 0.5px;
+}
+
+.closet-box {
+    background-color: #022529;
+    color: #D6A019;
+    border: 2px solid #D6A019;
+    padding: 0px 8px;
+    font-weight: 500;
+    font-size: 2rem;
+    border-radius: 2px;
+    line-height: 1.2;
+}
+
+.sub-brand-text {
+    color: #555555;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.custom-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #121212;
+    letter-spacing: 0.5px;
+}
+
+.custom-input {
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 0.6rem 1rem;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+    .custom-input::placeholder {
+        color: #b5b5b5;
+        font-weight: 400;
+    }
+
+.input-group .custom-input {
+    border-right: none;
+}
+
+.input-group-text.eye-icon-btn {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-left: none;
+    cursor: pointer;
+    color: #121212;
+}
+
+.btn-signin {
+    background: linear-gradient(90deg, #0a3a3a 0%, #137473 100%);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 2px;
+    transition: opacity 0.2s ease;
+}
+
+    .btn-signin:hover {
+        opacity: 0.9;
+        color: #ffffff;
+    }
+
+.forgot-link {
+    color: #555555;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+    .forgot-link:hover {
+        color: #D6A019;
+    }
