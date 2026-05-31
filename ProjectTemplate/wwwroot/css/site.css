@@ -27,25 +27,25 @@ body {
     padding-top:  3rem;
 }
 
-    .astra-footer .brand-name {
+.astra-footer .brand-name {
         font-family: 'Playfair Display', serif;
         font-size: 1.5rem;
         color: #fff;
         letter-spacing: 0.02em;
     }
 
-        .astra-footer .brand-name span {
+.astra-footer .brand-name span {
             color: #c8a84b;
         }
 
-    .astra-footer .brand-tagline {
+.astra-footer .brand-tagline {
         font-size: 0.78rem;
         color: #8fa3a3;
         line-height: 1.4;
         max-width: 160px;
     }
 
-    .astra-footer .footer-heading {
+.astra-footer .footer-heading {
         font-family: 'DM Sans', sans-serif;
         font-weight: 500;
         font-size: 0.75rem;
@@ -55,47 +55,47 @@ body {
         margin-bottom: 1rem;
     }
 
-    .astra-footer ul {
+.astra-footer ul {
         list-style: none;
         padding: 0;
         margin: 0;
     }
 
-        .astra-footer ul li {
-            margin-bottom: 0.5rem;
+.astra-footer ul li {
+         margin-bottom: 0.5rem;
         }
 
-            .astra-footer ul li a {
-                color: #9bb0b0;
-                text-decoration: none;
-                transition: color 0.2s ease;
+.astra-footer ul li a {
+         color: #9bb0b0;
+         text-decoration: none;
+         transition: color 0.2s ease;
             }
 
-                .astra-footer ul li a:hover {
-                    color: #c8a84b;
+.astra-footer ul li a:hover {
+         color: #c8a84b;
                 }
 
 .footer-divider {
-    border-color: rgba(255,255,255,0.08);
-    display: none;
-    margin: 0;
+        
+        display: none;
+        margin: 0;
 }
 
 .footer-bottom {
-    background-color: #0a3d3c;
+    background-color: #0d4f4e;
     font-size: 0.78rem;
     color: #5e7474;
 }
 
-    .footer-bottom a {
+.footer-bottom a {
         color: #5e7474;
         text-decoration: none;
     }
 
-        .footer-bottom a:hover {
-            color: #c8a84b;
+.footer-bottom a:hover {
+        color: #c8a84b;
         }
 
 .footer-main {
-    padding: 3rem 0 2.5rem;
+        padding: 3rem 0 2.5rem;
 }
