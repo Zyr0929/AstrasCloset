@@ -1,0 +1,324 @@
+﻿@page
+@model ProjectAstra.Pages.Item_ViewModel
+@{
+    ViewData["Title"] = "Item View";
+}
+
+<!-- <div>
+    <div class="text-center">
+        <h1 class="dis">Item View</h1>
+        <p>Here you can view the details of the item.</p>
+    </div>
+
+    <div style="text-align: right;">
+    <div class="Heaisder">
+        <h2>TSHIRT 1</h2>
+    </div>
+
+    <div class="Price">
+                <h5>P 380.00</h5>
+    </div>
+
+        <div class="Color">
+            <p><b>Color:</b> White</p>
+        </div>
+
+        <div class="Size">
+            <p><b>Size:</b></p>
+                <div class="SizeGuide">
+                    <button type="button" onclick="document.getElementById('sizeDialog').showModal()">
+                        Size Guide
+                    </button>                    
+                    <dialog id="sizeDialog">
+                        <div style="text-align:left">
+                        <h3><b>Size Guide</b></h3>
+                       
+                        <h2><b>Find My Size</b></h2>
+                        <p>Here is the size guide for our t-shirts:</p>
+                        <p>
+                            Actual garment measurements above refer to the width with garment lying flat. <br>
+                            Double the garment measurement for Chest/Waist/Bottom to find full circumference
+                        </p>
+                        <ul>
+                            <li><b>S:</b> Height: 25, Width: 18</li>
+                            <li><b>M:</b> Height: 26, Width: 19</li>
+                            <li><b>L:</b> Height: 27, Width: 20</li>
+                            <li><b>XL:</b> Height: 28, Width: 21</li>
+                            <li><b>2XL:</b> Height: 29, Width: 22</li>
+                            <li><b>3XL:</b> Height: 30, Width: 23</li>
+                            <li><b>4XL:</b> Height: 32, Width: 25</li>
+                        </ul>
+                        <button type="button" onclick="document.getElementById('sizeDialog').close()" style="align-content: flex-end;">x</button>
+                    
+                    </div>
+                    </dialog>
+
+                </div>
+                <div class="SizeButtons">
+                    <button type="button">S</button>
+                    <button type="button">M</button>
+                    <button type="button">L</button>
+                    <button type="button">XL</button>
+                    <button type="button">2XL</button>
+                    <button type="button">3XL</button>
+                    <button type="button">4XL</button>
+                </div>
+        </div>
+
+            <div class="Quantity">
+                <p><b>Quantity:</b></p>
+                <div class="QuanAmount"> 
+                     <select>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                        <option>10</option>
+                    </select>
+                </div>
+            </div>
+
+        <div class="AddToCart">
+            <button type="button">Add to Cart (Pre-Order)</button>
+        </div>
+
+            <details class="product-collapse">
+                <summary><b>Product Description</b></summary>
+                <div class="content">
+                    <p class="para">
+                        standard school merch can feel a bit rigid. We engineered the Tamaraw Essential Tee to break that mold. Built with a heavy-weight cotton blend and a relaxed
+                        slightly boxy silhouette, this tee gives you that nonchalant, streetwear-ready drape while keeping you completely comfortable through back-to-back lectures or long lab hours.
+                        <br>
+                        Whether you're repping the clean aesthetic in clinical Off-White or keeping it low-key in stealth Pitch Black, it’s an absolute staple for your daily rotation.
+                        <br>
+                        Product Features
+                        Premium Heavyweight Fabric: Thick, breathable cotton blend that holds its boxy shape and handles the daily wash-and-wear grind without shrinking.
+                        Modern Boxy Fit: Slightly dropped shoulders for an effortless, oversized streetwear silhouette without looking baggy or sloppy.
+                        High-Density Minimalist Print: Clean, high-contrast chest graphics inspired by the green and gold legacy, built to resist cracking and fading over time.
+                        Zero-Irritation Tag: Seamless inner neck detailing so you don't have to deal with annoying scratches during long study sessions.
+                        <br>
+                        Colorways & Specs
+                        Available Shades: Deep Matte Black / Minimalist Off-White
+                        Fit Type: Relaxed / Boxy Streetwear Fit (Go true to size for a clean look, or size up for that full oversized vibe)
+                        Fabric Weight: 220 GSM Premium Cotton Blend
+                    </p>
+                </div>
+            </details>
+    </div>
+
+    <div style="text-align: left;">
+
+        <div class="CustomerReview">
+            <p><b>Customer Review (25)</b></p>
+        </div>
+
+        <div class="Review">
+           <h2 class="Percent">4.50</h2>
+           <p>Review Policy</p>
+
+                <div class="Comments">
+                    <div class="review-item">
+                        <strong>John D.</strong>
+                        <p>Great quality and comfortable fit.</p>
+                        <span>★★★★★</span>
+                    </div>
+
+                    <div class="review-item">
+                        <strong>Maria S.</strong>
+                        <p>Worth the price. Fabric feels premium.</p>
+                        <span>★★★★☆</span>
+                    </div>
+                </div>
+        </div>
+
+    </div>
+
+</div> -->
+
+
+    <div class="product-container">
+
+        <div class="gallery-section">
+            <div class="thumbnail-column">
+                <img src="images/shirt1.jpg" class="thumb active">
+                <img src="images/shirt2.jpg" class="thumb">
+                <img src="images/shirt3.jpg" class="thumb">
+            </div>
+            <div class="main-image">
+                <img id="mainImage"
+                     src="images/shirt1.jpg"
+                     alt="TSHIRT 1">
+            </div>
+        </div>
+
+        <div class="product-details">
+            <span class="stock-tag">
+                BACK IN STOCK
+            </span>
+            <h1>TSHIRT 1</h1>
+
+            <div class="rating">
+                ★★★★☆
+                <span>31 Reviews</span>
+            </div>
+
+            <div class="price">
+                ₱380.00
+            </div>
+
+            <hr>
+
+            <div class="color-section">
+                <label>Color: Black</label>
+                <div class="color-options">
+                    <button class="color black active"></button>
+                    <button class="color white"></button>
+                </div>
+            </div>
+
+            <div class="size-header">
+                <label>Sizes</label>
+                <button type="button"
+                        class="size-guide-btn"
+                        onclick="document.getElementById('sizeDialog').showModal()">
+                        Size Guide
+                </button>
+
+            </div>
+
+            <div class="size-options">
+                <button class="size-btn">S</button>
+                <button class="size-btn">M</button>
+                <button class="size-btn">L</button>
+                <button class="size-btn">XL</button>
+                <button class="size-btn">2XL</button>
+                <button class="size-btn">3XL</button>
+                <button class="size-btn">5XL</button>
+            </div>
+
+            <div class="quantity-section">
+                <label>Quantity</label>
+                <div class="quantity-control">
+                    <button id="minus">−</button>
+                    <input type="text"
+                           id="qty"
+                           value="1"
+                           readonly>
+                    <button id="plus">+</button>
+                </div>
+            </div>
+
+            <button class="cart-btn">
+                ADD TO CART (PRE-ORDER)
+            </button>
+
+            <details class="product-collapse">
+                <summary>
+                    Product Description
+                </summary>
+                <div class="content">
+                    <p>
+                        Standard school merch can feel a bit rigid.
+                        We engineered the Tamaraw Essential Tee
+                        to break that mold.
+                    </p>
+                    <h4>Product Features</h4>
+                    <ul>
+                        <li>Premium Heavyweight Fabric</li>
+                        <li>Modern Boxy Fit</li>
+                        <li>High-Density Minimalist Print</li>
+                        <li>Zero-Irritation Tag</li>
+                    </ul>
+                    <h4>Colorways & Specs</h4>
+                    <ul>
+                        <li>Deep Matte Black</li>
+                        <li>Minimalist Off-White</li>
+                        <li>220 GSM Premium Cotton Blend</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <div class="review-summary">
+        <div class="review-header">
+            <h3>Customer Reviews (25)</h3>
+            <a href="#">View All</a>
+        </div>
+        <div class="review-box">
+            <h2>4.50</h2>
+            <div class="stars">
+                ★★★★☆
+            </div>
+            <p>Review Policy</p>
+        </div>
+    </div>
+
+    <dialog id="sizeDialog">
+        <div class="modal-header">
+            <div>
+                <h2>FIND MY SIZE</h2>
+                <p>T-Shirt Size Chart</p>
+            </div>
+            <button class="close-btn"
+                    onclick="document.getElementById('sizeDialog').close()">
+                    ✕
+            </button>
+        </div>
+        <div class="modal-content">
+            <div class="size-image">
+                <img src="images/size-guide.png">
+            </div>
+            <div class="size-info">
+                <p>
+                    Actual garment measurements above refer
+                    to the width with garment lying flat.
+                </p>
+                <p>
+                    Double the garment measurement for
+                    Chest/Waist/Bottom to find full circumference.
+                </p>
+                <table class="size-table">
+                    <thead>
+                        <tr>
+                            <th>Sizes</th>
+                            <th>S</th>
+                            <th>M</th>
+                            <th>L</th>
+                            <th>XL</th>
+                            <th>2XL</th>
+                            <th>3XL</th>
+                            <th>5XL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Height</td>
+                            <td>25</td>
+                            <td>26</td>
+                            <td>27</td>
+                            <td>28</td>
+                            <td>29</td>
+                            <td>30</td>
+                            <td>32</td>
+                        </tr>
+                        <tr>
+                            <td>Width</td>
+                            <td>18</td>
+                            <td>19</td>
+                            <td>20</td>
+                            <td>21</td>
+                            <td>22</td>
+                            <td>23</td>
+                            <td>25</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </dialog>

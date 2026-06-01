@@ -20,3 +20,283 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+
+/*----------------------------------------- THIS IS THE START OF CSS ON ITEM_VIEW PAGE-------------------------------------------------------------------*/
+
+/*h1.dis{
+    color:antiquewhite
+}
+
+p.para{
+    text-align: justify;
+}
+
+
+/* Style the main container and remove default marker if desired 
+.product-collapse {
+    border-bottom: 1px solid #ddd;
+    padding: 15px, 0;
+    max-width: 500px;
+}
+
+/* Style the clickable header 
+.product-collapse summary {
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    list-style: none; /* Removes default arrow in modern browsers 
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+/* Add a custom plus/minus or arrow indicator 
+    content: '+';
+    font-size: 1.3rem;
+}
+
+/* Change indicator when the details tab is open 
+    .product-collapse[open] summary::after {
+    content: '−';
+}
+
+/* Style the inner content padding 
+.product-collapse .content {
+    padding-top: 10px;
+    color: #555;
+    line-height: 1.5;
+}
+*/
+body {
+    font-family: Arial,sans-serif;
+}
+
+.product-container {
+    display: flex;
+    gap: 30px;
+    max-width: 1200px;
+    margin: auto;
+    padding: 30px;
+}
+
+.gallery-section {
+    display: flex;
+    gap: 15px;
+}
+
+.thumbnail-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.thumb {
+    width: 70px;
+    height: 90px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.thumb.active {
+    border: 2px solid #d4a017;
+}
+
+.main-image {
+    width: 500px;
+    border: 1px solid #8db5d8;
+    background: #fafafa;
+    padding: 10px;
+}
+
+.main-image img {
+    width: 100%;
+}
+
+.product-details {
+    width: 420px;
+}
+
+.stock-tag {
+    background: #ddd2b4;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+}
+
+.price {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+.rating {
+    color: #d4a017;
+}
+
+.color-options {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.color {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid #444;
+    cursor: pointer;
+}
+
+.black {
+    background: black;
+}
+
+.white {
+    background: white;
+}
+
+.size-header {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.size-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.size-btn {
+    width: 50px;
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background: white;
+    cursor: pointer;
+}
+
+.size-btn.active {
+    background: #d4a017;
+    color: white;
+}
+
+.quantity-section {
+    margin-top: 20px;
+}
+
+.quantity-control {
+    display: flex;
+    width: 120px;
+}
+
+.quantity-control button {
+    width: 40px;
+}
+
+.quantity-control input {
+    width: 40px;
+    text-align: center;
+}
+
+.cart-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px;
+    background: #c89214;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.product-collapse {
+    margin-top: 25px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+}
+
+.product-collapse summary {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.review-summary {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 30px 30px;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.review-box {
+    border: 1px solid #ddd;
+    padding: 20px;
+}
+
+.review-box h2 {
+    margin: 0;
+}
+
+#sizeDialog {
+    width: 800px;
+    max-width: 90%;
+    border: none;
+    border-radius: 8px;
+    padding: 25px;
+}
+
+#sizeDialog::backdrop {
+    background: rgba(0,0,0,.5);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal-content {
+    display: flex;
+    gap: 25px;
+}
+
+.size-image {
+    width: 180px;
+}
+
+.size-image img {
+    width: 100%;
+}
+
+.size-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.size-table th {
+    background: #013333;
+    color: #d4a017;
+}
+
+.size-table th,
+.size-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.close-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 24px;
+}
+
+/*----------------------------------------------------END OF ITEM VIEW---------------------------------------------------------------------------.*/
