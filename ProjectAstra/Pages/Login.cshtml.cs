@@ -21,7 +21,8 @@ namespace ProjectAstra.Pages
         public string Password { get; set; } = string.Empty;
 
         public string? ErrorMessage { get; set; }
-
+        public string? SuccessMessage { get; set; }
+        public string? UserFirstName { get; set; }
         public void OnGet()
         {
         }
@@ -34,7 +35,9 @@ namespace ProjectAstra.Pages
 
             if (user != null && BCrypt.Net.BCrypt.Verify(Password, user.PasswordHash))
             {
-                return RedirectToPage("/Index");
+                UserFirstName = user.FirstName;
+                SuccessMessage = "Login Successful, Redirecting to Homepage..";
+                return Page(); 
             }
             else
             {

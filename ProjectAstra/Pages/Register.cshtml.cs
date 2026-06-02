@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ProjectAstra.Models;
-using BCrypt.Net; // This brings in our new hashing tool!
+using BCrypt.Net;
 
 namespace ProjectAstra.Pages
 {
@@ -15,8 +15,6 @@ namespace ProjectAstra.Pages
             _context = context;
         }
 
-        // These grab data directly from your HTML form inputs
-        // Inside Register.cshtml.cs and Login.cshtml.cs
         [BindProperty]
         public string FirstName { get; set; } = string.Empty;
 
@@ -29,8 +27,8 @@ namespace ProjectAstra.Pages
         [BindProperty]
         public string Password { get; set; } = string.Empty;
 
-        // Add a question mark to allow this one to be null
         public string? ErrorMessage { get; set; }
+        public string? SuccessMessage { get; set; }
 
         public void OnGet()
         {
@@ -71,7 +69,8 @@ namespace ProjectAstra.Pages
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("/Login");
+            SuccessMessage = "Registration successful! Redirecting to login...";
+            return Page();
         }
     }
 }
