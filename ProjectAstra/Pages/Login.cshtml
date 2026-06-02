@@ -1,5 +1,5 @@
 ﻿@page
-@model ProjectTemplate.Pages.LoginModel
+@model ProjectAstra.Pages.LoginModel
 @{
     ViewData["Title"] = "Sign In - Astra's Closet";
 }
@@ -16,7 +16,7 @@
             <p class="sub-brand-text">FEU NRMF</p>
         </div>
 
-        <form method="post" action="/Account/Login">
+        <form method="post">
 
             <div class="mb-4">
                 <label for="Username" class="form-label custom-label text-uppercase">Username</label>
@@ -39,7 +39,9 @@
             <div class="mt-4 mb-4">
                 <button type="submit" class="btn btn-signin w-100">Sign in</button>
             </div>
-
+            <div class="text-center mt-3">
+                <a href="/Register" class="forgot-link" style="text-decoration: underline;">Create an Account</a>
+            </div>
             <div class="text-center mt-4">
                 <a href="/Account/ForgotPassword" class="forgot-link">Forgot your password?</a>
             </div>
@@ -47,7 +49,36 @@
         </form>
     </div>
 </div>
+<div class="modal fade" id="authFailedModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered custom-modal-width">
+        <div class="modal-content auth-modal-box text-center p-4">
 
+            <h5 class="auth-modal-title mb-4">Authentication Failed</h5>
+
+            <div class="auth-icon-box mb-4">
+                <i class="bi bi-lock auth-lock-icon"></i>
+            </div>
+
+            <p class="auth-modal-text mb-4">
+                Please try again. The username or password you entered is incorrect. For support, contact the NSC - OFFICE.
+            </p>
+
+            <button type="button" class="btn btn-signin w-100" data-bs-dismiss="modal">Try Again</button>
+
+        </div>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // This initializes and shows the Bootstrap modal automatically
+            var authModal = new bootstrap.Modal(document.getElementById('authFailedModal'));
+            authModal.show();
+        });
+    </script>
+}
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const togglePassword = document.querySelector("#togglePassword");

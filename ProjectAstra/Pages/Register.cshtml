@@ -1,0 +1,177 @@
+﻿@page
+@model ProjectAstra.Pages.RegisterModel
+@{
+    ViewData["Title"] = "Create Account - Astra's Closet";
+}
+
+<div class="login-container">
+    <div class="login-card">
+
+        <div class="text-center mb-4">
+            <h2 style="color: #0D4F4E; font-weight: 800; font-size: 1.8rem; letter-spacing: 1px;">Create Account</h2>
+        </div>
+
+        <form method="post" id="registerForm" novalidate>
+
+            <div class="mb-3">
+                <label for="FirstName" class="form-label custom-label text-uppercase">First Name</label>
+                <input type="text" class="form-control custom-input" @(!string.IsNullOrEmpty(Model.ErrorMessage) ? "is-invalid" : "")" id="FirstName" name="FirstName" placeholder="Example: Juan" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="LastName" class="form-label custom-label text-uppercase">Last Name</label>
+                <input type="text" class="form-control custom-input" @(!string.IsNullOrEmpty(Model.ErrorMessage) ? "is-invalid" : "")" id="LastName" name="LastName" placeholder="Example: Dela Cruz" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="Username" class="form-label custom-label text-uppercase">Astra Email</label>
+                <input type="email" class="form-control custom-input @(!string.IsNullOrEmpty(Model.ErrorMessage) ? "is-invalid" : "")"
+                       id="Username" name="Username"
+                       placeholder="Example: JuanDelacruz@astra.feu-nrmf.edu.ph"
+                       pattern=".*@@astra\.feu-nrmf\.edu\.ph$"
+                       title="Must be a valid @@astra.feu-nrmf.edu.ph email address"
+                       required>
+
+                <div class="form-text" style="font-size: 0.75rem;">Must end with @@astra.feu-nrmf.edu.ph</div>
+            </div>
+
+            <div class="mb-4 position-relative">
+                <label for="Password" class="form-label custom-label text-uppercase">Password</label>
+                <div class="input-group">
+                    <input type="password" class="form-control custom-input" @(!string.IsNullOrEmpty(Model.ErrorMessage) ? "is-invalid" : "")" id="RegisterPassword" name="Password" placeholder="••••••••" required>
+                    <span class="input-group-text eye-icon-btn" id="toggleRegPassword">
+                        <i class="bi bi-eye-fill"></i>
+                    </span>
+                </div>
+
+                <div class="password-strength-card" id="strengthCard">
+                    <div class="strength-title">Password Strength</div>
+                    <div class="strength-bar-container">
+                        <div class="strength-bar-fill" id="strengthBar"></div>
+                    </div>
+
+                    <div class="requirement-item" id="req-length">
+                        <i class="bi bi-check-circle req-icon"></i> 8-20 Characters
+                    </div>
+                    <div class="requirement-item" id="req-capital">
+                        <i class="bi bi-exclamation-triangle req-icon"></i> At least one capital letter
+                    </div>
+                    <div class="requirement-item" id="req-number">
+                        <i class="bi bi-check-circle req-icon"></i> At least one number
+                    </div>
+                    <div class="requirement-item" id="req-space">
+                        <i class="bi bi-check-circle req-icon"></i> Must have no spaces
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 mb-3">
+                <button type="submit" class="btn btn-signin w-100" id="btnRegister" disabled>Sign Up</button>
+            </div>
+
+            <div class="text-center">
+                <a href="/Login" class="forgot-link">Returning Customer? <span style="text-decoration: underline;">Sign In</span></a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const passwordInput = document.getElementById("RegisterPassword");
+        const strengthCard = document.getElementById("strengthCard");
+        const strengthBar = document.getElementById("strengthBar");
+        const btnRegister = document.getElementById("btnRegister");
+
+        const reqLength = document.getElementById("req-length");
+        const reqCapital = document.getElementById("req-capital");
+        const reqNumber = document.getElementById("req-number");
+        const reqSpace = document.getElementById("req-space");
+
+        passwordInput.addEventListener("focus", () => strengthCard.classList.add("active"));
+        passwordInput.addEventListener("blur", () => {
+            strengthCard.classList.remove("active");
+        });
+
+        passwordInput.addEventListener("input", function () {
+            const val = passwordInput.value;
+            let score = 0;
+
+            if (val.length >= 8 && val.length <= 20) {
+                updateReq(reqLength, true); score++;
+            } else {
+                updateReq(reqLength, false);
+            }
+
+            if (/[A-Z]/.test(val)) {
+                updateReq(reqCapital, true); score++;
+            } else {
+                updateReq(reqCapital, false, true); 
+            }
+
+            if (/[0-9]/.test(val)) {
+                updateReq(reqNumber, true); score++;
+            } else {
+                updateReq(reqNumber, false);
+            }
+
+            if (!/\s/.test(val) && val.length > 0) {
+                updateReq(reqSpace, true); score++;
+            } else {
+                updateReq(reqSpace, false);
+            }
+
+            strengthBar.style.width = (score * 25) + "%";
+            if (score <= 1) strengthBar.style.backgroundColor = "#d9534f"; 
+            else if (score <= 3) strengthBar.style.backgroundColor = "#D6A019";
+            else strengthBar.style.backgroundColor = "#1EB580"; 
+
+            btnRegister.disabled = (score !== 4);
+        });
+
+        function updateReq(el, isMet, isWarning = false) {
+            const icon = el.querySelector(".req-icon");
+            el.classList.remove("met", "warning");
+
+            if (isMet) {
+                el.classList.add("met");
+                icon.className = "bi bi-check-circle-fill req-icon";
+            } else if (isWarning) {
+                el.classList.add("warning");
+                icon.className = "bi bi-exclamation-triangle req-icon";
+            } else {
+                icon.className = "bi bi-check-circle req-icon";
+            }
+        }
+
+        document.getElementById("toggleRegPassword").addEventListener("click", function () {
+            const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+            passwordInput.setAttribute("type", type);
+        });
+    const fNameInput = document.getElementById("FirstName");
+    const lNameInput = document.getElementById("LastName");
+
+    function forceTitleCase(event) {
+        const input = event.target;
+        const start = input.selectionStart;
+        const end = input.selectionEnd;
+
+        input.value = input.value.replace(/\b([a-z])/g, function (match) {
+            return match.toUpperCase();
+        });
+
+        input.setSelectionRange(start, end);
+    }
+
+    fNameInput.addEventListener("input", forceTitleCase);
+    lNameInput.addEventListener("input", forceTitleCase);
+    });
+    document.getElementById('registerForm').addEventListener('submit', function (event) {
+        if (!this.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        this.classList.add('was-validated');
+    }, false);
+</script>

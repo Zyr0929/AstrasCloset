@@ -21,9 +21,6 @@ html {
     overflow-x: hidden;
 }
 
-body {
-  margin-bottom: 60px;
-}
 
 /*footer*/
 .astra-footer {
@@ -31,7 +28,6 @@ body {
     color: #c9d4d4;
     font-family: 'DM Sans', sans-serif;
     font-size: 0.85rem;
-    margin:5
 }
 
 .astra-footer .brand-name {
@@ -104,7 +100,7 @@ body {
 .footer-main {
     padding: 3rem 0 2.5rem;
     font-family: 'Inter', sans-serif;
-    margin-bottom: 60px;
+    margin-bottom: 0px;
 }
 /* ***** UNIVERSAL | HERO SECTION ***** */
 .custom-nav-link {
@@ -734,3 +730,133 @@ body {
     .forgot-link:hover {
         color: #D6A019;
     }
+/*Validator to sya*/
+.was-validated .custom-input:invalid,
+.custom-input.is-invalid {
+    border-color: #d9534f !important;
+    background-color: #fff9f9 !important;
+    color: #d9534f;
+    background-image: none !important; 
+}
+
+.was-validated .custom-input:invalid + .eye-icon-btn,
+.custom-input.is-invalid + .eye-icon-btn {
+        border-color: #d9534f !important;
+        background-color: #fff9f9 !important;
+}
+
+.was-validated .custom-input:valid:not(.is-invalid),
+.custom-input.is-valid:not(.is-invalid) {
+    border-color: #1EB580 !important;
+    background-image: none !important; 
+}
+
+.was-validated .custom-input:valid:not(.is-invalid) + .eye-icon-btn,
+.custom-input.is-valid:not(.is-invalid) + .eye-icon-btn {
+border-color: #1EB580 !important;
+}
+
+/*Pass Strength*/
+.password-strength-card {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 8px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 15px;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12);
+    width: 250px;
+    z-index: 100;
+    display: none; 
+}
+
+    .password-strength-card.active {
+        display: block;
+    }
+
+.strength-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #121212;
+    margin-bottom: 8px;
+}
+
+.strength-bar-container {
+    height: 4px;
+    background-color: #e0e0e0;
+    border-radius: 2px;
+    margin-bottom: 12px;
+    overflow: hidden;
+}
+
+.strength-bar-fill {
+    height: 100%;
+    width: 0%;
+    background-color: #d9534f;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.requirement-item {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #555555;
+}
+
+    .requirement-item.met {
+        color: #1EB580; 
+    }
+
+    .requirement-item.warning {
+        color: #D6A019;
+    }
+
+/*Modal*/
+.auth-modal-content {
+    border-radius: 2px;
+    border: none;
+    padding: 20px;
+}
+
+.auth-icon-box {
+    background-color: #f0f4f4;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+/*Auth Failed Modal*/
+.auth-modal-box {
+    border-bottom: 3px solid #d9534f !important;
+    border-radius: 2px;
+    border: none;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.auth-modal-title {
+    font-weight: 800;
+    color: #121212;
+    font-size: 1.15rem;
+}
+
+.auth-modal-text {
+    color: #555555;
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+.auth-lock-icon {
+    color: #D6A019;
+    font-size: 1.4rem;
+}
+
+.custom-modal-width {
+    max-width: 360px;
+}
