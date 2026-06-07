@@ -48,7 +48,8 @@
 
                         <a class="text-dark nav-icon-btn d-flex align-items-center @(currentRoute == "/Login" ? "active" : "")" asp-area="" asp-page="/Login"><i class="bi bi-person fs-4"></i></a>
 
-                        <a href="#" class="text-dark nav-icon-btn cart-btn position-relative d-inline-block">
+
+                        <a href="javascript:void(0)" id="openCartBtn" class="text-dark nav-icon-btn cart-btn position-relative d-inline-block">
                             <i class="bi bi-cart3 fs-4"></i>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle d-flex align-items-center justify-content-center"
                                   style="background-color: #D6A019; color: #0D4F4E; font-size: 0.7rem; width: 18px; height: 18px; font-weight: bold; transform: translate(-15%, -25%) !important;">
@@ -136,6 +137,7 @@
 
     </footer>
 
+    <!--- SEARCH SIDEBAR COMPONENTS--->
     <div id="searchOverlay" class="search-overlay"></div>
 
     <div id="searchDrawer" class="search-drawer">
@@ -159,12 +161,45 @@
         </div>
     </div>
 
+    <!--- CART SIDEBAR COMPONENTS --->
+    <div id="cartOverlay" class="search-overlay"></div>
+
+    <div id="cartDrawer" class="search-drawer cart-drawer-bg d-flex flex-column justify-content-between">
+        <div>
+
+            <div class="d-flex align-items-center justify-content-between px-4 py-3 border-bottom-gold">
+                <h5 class="text-white m-0 fw-bold fs-5">Your Cart (0)</h5>
+                <button type="button" id="closeCartBtn" class="text-white bg-transparent border-0 p-0 d-flex align-items-center opacity-75 hover-opacity-100">
+                    <i class="bi bi-x-lg fs-4"></i>
+                </button>
+            </div>
+
+
+            <div class="px-4 py-3 border-bottom-gold pre-order-banner d-flex align-items-center justify-content-center gap-3">
+                <i class="bi bi-clock text-warning fs-3"></i>
+                <div class="text-warning fw-bold tracking-wide text-uppercase small lh-sm text-center">
+                    Pre-Order Window<br><span class="fs-6">Closes In 31 Days</span>
+                </div>
+            </div>
+
+
+            <div class="text-center px-4 py-5 mt-5">
+                <h3 class="fw-black text-warning tracking-wide mb-2" style="font-size: 1.65rem; font-family: sans-serif;">YOUR CART IS EMPTY!</h3>
+                <p class="text-warning opacity-75 fst-italic mb-4" style="font-family: 'Georgia', serif; font-size: 1.1rem;">Shop some of our faves</p>
+                <a href="/Store" class="btn btn-gold-fill w-100 py-2.5 fw-bold tracking-wider text-uppercase rounded-0">Start Shopping</a>
+            </div>
+        </div>
+    </div>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     <script type="text/javascript">
-        $(document).ready(function () {
+                $(document).ready(function () {
+            // ==========================================
+            // SEARCH DRAWER MECHANISMS (to convert to CS hays)
+            // ==========================================
             $('#openSearchBtn').on('click', function (e) {
                 e.preventDefault();
                 $('#searchOverlay').addClass('active');
@@ -185,14 +220,40 @@
             $('#closeSearchBtn').on('click', clearSearchContext);
             $('#searchOverlay').on('click', clearSearchContext);
 
+
+            // ==========================================
+            // SEARCH DRAWER MECHANISMS (to convert to CS, wait wag sakit sa ulo cs middleware)
+            // ==========================================
+            $('#openCartBtn').on('click', function (e) {
+                e.preventDefault();
+                $('#cartOverlay').addClass('active');
+                $('#cartDrawer').addClass('active');
+                $('body').css('overflow', 'hidden');
+            });
+
+            function clearCartContext() {
+                $('#cartOverlay').removeClass('active');
+                $('#cartDrawer').removeClass('active');
+                $('body').css('overflow', '');
+            }
+
+            $('#closeCartBtn').on('click', clearCartContext);
+            $('#cartOverlay').on('click', clearCartContext);
+
+
+            // ==========================================
+            // GLOBAL stuff ewan pagod na ko rito 
+            // ==========================================
             $(document).on('keydown', function (e) {
                 if (e.key === 'Escape') {
                     clearSearchContext();
+                    clearCartContext();
                 }
             });
         });
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

@@ -21,7 +21,7 @@ html {
     overflow-x: hidden;
 }
 
-/* ----- UNIVERSAL | NAV BAR ----- */
+/* ----- UNIVERSAL | NAV BAR | AND ITS SIDEBARS----- */
 .custom-nav-link {
     color: #D6A019 !important;
     font-family: 'Arial Black', Impact, sans-serif;
@@ -155,6 +155,45 @@ html {
         color: rgba(255, 255, 255, 0.65) !important;
         opacity: 1 !important;
         font-style: italic;
+    }
+
+
+.cart-drawer-bg {
+    background-color: #083130 !important;
+}
+
+.border-bottom-gold {
+    border-bottom: 2px solid #D6A019 !important;
+}
+
+.pre-order-banner {
+    background-color: rgba(13, 79, 78, 0.4);
+}
+
+.fw-black {
+    font-weight: 900;
+}
+
+.tracking-wide {
+    letter-spacing: 0.5px;
+}
+
+.hover-opacity-100:hover {
+    opacity: 1 !important;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.btn-gold-fill {
+    background-color: #D6A019 !important;
+    color: #083130 !important;
+    border: none !important;
+    transition: background-color 0.2s ease-in-out;
+}
+
+    .btn-gold-fill:hover,
+    .btn-gold-fill:focus {
+        background-color: #be8e14 !important;
+        color: #083130 !important;
     }
 
 
@@ -810,7 +849,7 @@ border-color: #1EB580 !important;
 .custom-modal-width {
     max-width: 360px;
 }
-/*Success Modal tired tired na ako :< */
+/*Success Modal tired tired na ako :<  kaya yan yah, HAHAHAH lapit nato */
 .success-modal-box {
     border-bottom: 3px solid #1EB580 !important; 
     border-radius: 2px;
