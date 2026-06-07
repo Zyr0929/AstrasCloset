@@ -24,18 +24,28 @@ namespace ProjectAstra.Pages
         }
     }
 
-    public class ApparelProduct : ProductBase
+    public class ColorVariation
     {
-        public List<string> Colors { get; set; }
+        public string ColorName { get; set; } // "black", "white", "teal"
         public string FrontImage { get; set; }
         public string BackImage { get; set; }
 
-        public ApparelProduct(int id, string name, decimal price, double rating, int reviewCount, string tag, string frontImg, string backImg, List<string> colors)
+        public ColorVariation(string colorName, string frontImage, string backImage)
+        {
+            ColorName = colorName;
+            FrontImage = frontImage;
+            BackImage = backImage;
+        }
+    }
+
+    public class ApparelProduct : ProductBase
+    {
+        public List<ColorVariation> Variations { get; set; }
+
+        public ApparelProduct(int id, string name, decimal price, double rating, int reviewCount, string tag, List<ColorVariation> variations)
             : base(id, name, price, rating, reviewCount, tag)
         {
-            FrontImage = frontImg;
-            BackImage = backImg;
-            Colors = colors;
+            Variations = variations;
         }
     }
 
@@ -57,19 +67,40 @@ namespace ProjectAstra.Pages
             TotalPages = ProductPages.Count;
             if (TotalPages == 0) TotalPages = 1;
         }
-
+        
+        //to be updated: static mode, mock data muna, balak with officer dashboard to add their own color, and product itself. 
         private List<ApparelProduct> GetMockData()
         {
             return new List<ApparelProduct>
             {
-                new ApparelProduct(1, "TAMARAW TEE v1", 380.00m, 5.0, 24, "BACK IN STOCK", "https://i.ibb.co/hJ2B1PRS/test-INDEX.webp", "https://i.ibb.co/hJ2B1PRS/test-INDEX.webp", new List<string> { "black", "white" }),
-                new ApparelProduct(2, "FLORENCE TEE", 380.00m, 4.0, 15, "NEW ARRIVAL", "https://i.ibb.co/hJ2B1PRS/test-INDEX.webp", "https://i.ibb.co/hJ2B1PRS/test-INDEX.webp", new List<string> { "teal", "white" }),
-                new ApparelProduct(3, "NURSING STARTER PACK", 380.00m, 5.0, 42, "BACK IN STOCK", "https://i.ibb.co/hJ2B1PRS/test-INDEX.webp", "https://i.ibb.co/hJ2B1PRS/test-INDEX.webp", new List<string> { "black" }),
-                new ApparelProduct(4, "ASTRA BASIC ESSENTIALS", 380.00m, 3.5, 19, "BACK IN STOCK", "https://i.ibb.co/hJ2B1PRS/test-INDEX.webp", "https://i.ibb.co/hJ2B1PRS/test-INDEX.webp", new List<string> { "white" }),
-                new ApparelProduct(5, "TAMARAW TEE v2", 380.00m, 4.5, 31, "NEW ARRIVAL", "https://i.ibb.co/hJ2B1PRS/test-INDEX.webp", "https://i.ibb.co/hJ2B1PRS/test-INDEX.webp", new List<string> { "teal", "black" }),
-                new ApparelProduct(6, "CRITICAL CARE HOODIE", 380.00m, 5.0, 8, "NEW ARRIVAL", "https://i.ibb.co/hJ2B1PRS/test-INDEX.webp", "https://i.ibb.co/hJ2B1PRS/test-INDEX.webp", new List<string> { "black" }),
-                new ApparelProduct(7, "CLINICAL OVERSIZED TEE", 380.00m, 4.0, 11, "BACK IN STOCK", "https://i.ibb.co/hJ2B1PRS/test-INDEX.webp", "https://i.ibb.co/hJ2B1PRS/test-INDEX.webp", new List<string> { "white" }),
-                new ApparelProduct(8, "ROUNDS COMFORT SHIRT", 380.00m, 4.5, 22, "BACK IN STOCK", "https://i.ibb.co/hJ2B1PRS/test-INDEX.webp", "https://i.ibb.co/hJ2B1PRS/test-INDEX.webp", new List<string> { "black", "teal" })
+                new ApparelProduct(1, "TAMARAW TEE v1", 380.00m, 5.0, 24, "BACK IN STOCK", new List<ColorVariation> {
+                    new ColorVariation("black", "https://i.ibb.co/v6TLnRZc/image-2026-06-08-012909879.png", "https://i.ibb.co/S4xVtzLY/image.png"),
+                    new ColorVariation("white", "https://i.ibb.co/example/white-front.webp", "https://i.ibb.co/example/white-back.webp")
+                }),
+                new ApparelProduct(2, "FLORENCE TEE", 380.00m, 4.0, 15, "NEW ARRIVAL", new List<ColorVariation> {
+                    new ColorVariation("teal", "https://i.ibb.co/v6TLnRZc/image-2026-06-08-012909879.png", "https://i.ibb.co/S4xVtzLY/image.png"),
+                    new ColorVariation("white", "https://i.ibb.co/example/white-front.webp", "https://i.ibb.co/example/white-back.webp")
+                }),
+                new ApparelProduct(3, "NURSING STARTER PACK", 380.00m, 5.0, 42, "BACK IN STOCK", new List<ColorVariation> {
+                    new ColorVariation("black", "https://i.ibb.co/v6TLnRZc/image-2026-06-08-012909879.png", "https://i.ibb.co/S4xVtzLY/image.png")
+                }),
+                new ApparelProduct(4, "ASTRA BASIC ESSENTIALS", 380.00m, 3.5, 19, "BACK IN STOCK", new List<ColorVariation> {
+                    new ColorVariation("white", "https://i.ibb.co/v6TLnRZc/image-2026-06-08-012909879.png", "https://i.ibb.co/S4xVtzLY/image.png")
+                }),
+                new ApparelProduct(5, "TAMARAW TEE v2", 380.00m, 4.5, 31, "NEW ARRIVAL", new List<ColorVariation> {
+                    new ColorVariation("teal", "https://i.ibb.co/v6TLnRZc/image-2026-06-08-012909879.png", "https://i.ibb.co/S4xVtzLY/image.png"),
+                    new ColorVariation("black", "https://i.ibb.co/v6TLnRZc/image-2026-06-08-012909879.png", "https://i.ibb.co/example/t2-black-back.webp")
+                }),
+                new ApparelProduct(6, "CRITICAL CARE HOODIE", 380.00m, 5.0, 8, "NEW ARRIVAL", new List<ColorVariation> {
+                    new ColorVariation("black", "https://i.ibb.co/v6TLnRZc/image-2026-06-08-012909879.png", "https://i.ibb.co/S4xVtzLY/image.png")
+                }),
+                new ApparelProduct(7, "CLINICAL OVERSIZED TEE", 380.00m, 4.0, 11, "BACK IN STOCK", new List<ColorVariation> {
+                    new ColorVariation("white", "https://i.ibb.co/v6TLnRZc/image-2026-06-08-012909879.png", "https://i.ibb.co/S4xVtzLY/image.png")
+                }),
+                new ApparelProduct(8, "ROUNDS COMFORT SHIRT", 380.00m, 4.5, 22, "BACK IN STOCK", new List<ColorVariation> {
+                    new ColorVariation("black", "https://i.ibb.co/v6TLnRZc/image-2026-06-08-012909879.png", "https://i.ibb.co/S4xVtzLY/image.png"),
+                    new ColorVariation("teal", "https://i.ibb.co/v6TLnRZc/image-2026-06-08-012909879.png", "https://i.ibb.co/example/rounds-teal-back.webp")
+                })
             };
         }
     }
