@@ -498,39 +498,40 @@ html {
 }
 
 
-/* 1. DEFAULT ACTIVE STATE (Shows front view first) */
-.state-color-toggle.color-black:checked ~ .card-image-container .view-front.color-img-black,
-.state-color-toggle.color-white:checked ~ .card-image-container .view-front.color-img-white,
-.state-color-toggle.color-teal:checked ~ .card-image-container .view-front.color-img-teal {
+/* Ensure all catalog product images are hidden by default layout */
+.product-card-container .image-render-frame .img-view {
+    display: none;
+}
+
+/* 1. DEFAULT ACTIVE STATE (Shows front view first via loop index positions) */
+.state-color-toggle.color-idx-0:checked ~ a .card-image-container .view-front.color-img-idx-0,
+.state-color-toggle.color-idx-1:checked ~ a .card-image-container .view-front.color-img-idx-1,
+.state-color-toggle.color-idx-2:checked ~ a .card-image-container .view-front.color-img-idx-2,
+.state-color-toggle.color-idx-3:checked ~ a .card-image-container .view-front.color-img-idx-3,
+.state-color-toggle.color-idx-4:checked ~ a .card-image-container .view-front.color-img-idx-4 {
     display: block;
 }
 
-/* 2. MOUSE HOVER */
+/* 2. MOUSE HOVER (Hides the front thumbnail image view) */
 .card-image-container:hover .view-front {
     display: none !important;
 }
 
-/* 3. HOVER ACTIVE STATE (Shows back view on hover) */
-.state-color-toggle.color-black:checked ~ .card-image-container:hover .view-back.color-img-black,
-.state-color-toggle.color-white:checked ~ .card-image-container:hover .view-back.color-img-white,
-.state-color-toggle.color-teal:checked ~ .card-image-container:hover .view-back.color-img-teal {
+/* 3. HOVER ACTIVE STATE (Reveals the back view image via loop index positions) */
+.state-color-toggle.color-idx-0:checked ~ a .card-image-container:hover .view-back.color-img-idx-0,
+.state-color-toggle.color-idx-1:checked ~ a .card-image-container:hover .view-back.color-img-idx-1,
+.state-color-toggle.color-idx-2:checked ~ a .card-image-container:hover .view-back.color-img-idx-2,
+.state-color-toggle.color-idx-3:checked ~ a .card-image-container:hover .view-back.color-img-idx-3,
+.state-color-toggle.color-idx-4:checked ~ a .card-image-container:hover .view-back.color-img-idx-4 {
     display: block;
 }
 
-.color-dot-selection {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    display: inline-block;
-    margin-left: 6px;
-    transition: transform 0.15s ease;
-}
-
-.state-color-toggle.color-black:checked ~ * .dot-black,
-.state-color-toggle.color-white:checked ~ * .dot-white,
-.state-color-toggle.color-teal:checked ~ * .dot-teal {
+/* 4. ACTIVE SELECTION COLOR DOT INDICATOR RING */
+.state-color-toggle.color-idx-0:checked ~ * .color-dot-selection:nth-child(1),
+.state-color-toggle.color-idx-1:checked ~ * .color-dot-selection:nth-child(2),
+.state-color-toggle.color-idx-2:checked ~ * .color-dot-selection:nth-child(3),
+.state-color-toggle.color-idx-3:checked ~ * .color-dot-selection:nth-child(4),
+.state-color-toggle.color-idx-4:checked ~ * .color-dot-selection:nth-child(5) {
     box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px #D6A019;
     transform: scale(1.1);
 }
@@ -692,6 +693,380 @@ html {
     color: #444;
     cursor: pointer;
 }
+
+/* ----- Product Detail View Page | And Dynamic product data ----- */
+
+@media (min-width: 768px) {
+    /* Convert the main row wrapper into a 2-column grid layout */
+    .modern-product-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+    
+        grid-template-areas:
+            "media info"
+            "reviews info";
+        column-gap: 3rem; 
+        row-gap: 2rem;
+        align-items: start;
+    }
+
+
+    .media-area {
+        grid-area: media;
+        width: 100% !important;
+    }
+
+    .info-area {
+        grid-area: info;
+        width: 100% !important;
+    }
+
+    .reviews-area {
+        grid-area: reviews;
+        width: 100% !important;
+    }
+
+
+    .sticky-right-panel {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 40px;
+        height: auto;
+        overflow: visible;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .modern-product-grid {
+        display: flex;
+        flex-direction: column;
+    }
+    .info-area {
+        margin-top: 1.5rem;
+        margin-bottom: 2.5rem;
+    }
+}
+
+
+.dynamic-detail-wrapper {
+    background-color: #ffffff !important;
+    color: #121212 !important;
+}
+
+.back-closet-btn {
+    transition: opacity 0.2s ease;
+}
+
+    .back-closet-btn:hover {
+        opacity: 0.6;
+    }
+
+.main-frame-group {
+    display: none;
+}
+
+.product-detail-media-container {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .product-detail-media-container {
+        flex-direction: row;
+    }
+}
+
+.thumbnail-selection-column {
+    flex-shrink: 0;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .thumbnail-selection-column {
+        width: 95px;
+    }
+}
+
+.thumb-strip-group {
+    display: none;
+    flex-direction: row;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .thumb-strip-group {
+        flex-direction: column;
+    }
+}
+
+.main-image-render-box {
+    background-color: rgba(175, 175, 175, 0.21) !important;
+    border: 0.50px solid #121212 !important;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    overflow: hidden;
+}
+
+.main-preview-display {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.thumb-card {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    background-color: rgba(175, 175, 175, 0.21) !important;
+    border: 0.50px solid #121212 !important;
+    padding: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-width 0.1s ease-in-out;
+}
+
+    .thumb-card img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .thumb-card.active {
+        border: 2.50px solid #121212 !important;
+    }
+
+.star-rating-gold {
+    color: #D6A019 !important;
+}
+
+.product-tag-badge {
+    background-color: #121212;
+    color: #ffffff;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.70rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+}
+
+.custom-size-btn {
+    width: 46px;
+    height: 46px;
+    aspect-ratio: 1 / 1 !important;
+    border: 1px solid #121212 !important;
+    background-color: #ffffff !important;
+    color: #121212 !important;
+    border-radius: 6px !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    padding: 0 !important;
+    transition: all 0.15s ease;
+}
+
+    .custom-size-btn:hover {
+        background-color: #f8f9fa !important;
+    }
+
+.spec-size-field .btn-check:checked + .custom-size-btn {
+    background-color: #121212 !important;
+    color: #ffffff !important;
+}
+
+.custom-bw-dropdown {
+    background-color: #ffffff !important;
+    color: #121212 !important;
+    border: 1px solid #121212 !important;
+    border-radius: 0px !important;
+    padding: 0.5rem 1rem !important;
+    box-shadow: none !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23121212' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
+}
+
+.btn-preorder-submit {
+    background-color: #D6A019 !important;
+    color: #121212 !important;
+    border: 1px solid #D6A019 !important;
+    font-size: 1.1rem;
+    transition: opacity 0.2s ease;
+}
+
+    .btn-preorder-submit:hover {
+        opacity: 0.9;
+        color: #121212 !important;
+    }
+
+.product-description-accordion {
+    border-top: 1px solid #121212;
+    border-bottom: 1px solid #121212;
+}
+
+    .product-description-accordion summary {
+        list-style: none;
+        cursor: pointer;
+        color: #121212;
+        outline: none;
+        user-select: none;
+    }
+
+        .product-description-accordion summary::-webkit-details-marker {
+            display: none;
+        }
+
+.accordion-arrow-indicator {
+    transition: transform 0.25s ease;
+}
+
+.product-description-accordion[open] .accordion-arrow-indicator {
+    transform: rotate(180deg);
+}
+
+.state-color-toggle.color-idx-0:checked ~ .row .image-group-idx-0,
+.state-color-toggle.color-idx-1:checked ~ .row .image-group-idx-1,
+.state-color-toggle.color-idx-2:checked ~ .row .image-group-idx-2,
+.state-color-toggle.color-idx-3:checked ~ .row .image-group-idx-3,
+.state-color-toggle.color-idx-4:checked ~ .row .image-group-idx-4 {
+    display: block !important;
+}
+
+.state-color-toggle.color-idx-0:checked ~ .row .color-thumb-grp-0,
+.state-color-toggle.color-idx-1:checked ~ .row .color-thumb-grp-1,
+.state-color-toggle.color-idx-2:checked ~ .row .color-thumb-grp-2,
+.state-color-toggle.color-idx-3:checked ~ .row .color-thumb-grp-3,
+.state-color-toggle.color-idx-4:checked ~ .row .color-thumb-grp-4 {
+    display: flex !important;
+}
+
+.state-color-toggle.color-idx-0:checked ~ .row .spec-dot-field label:nth-child(1),
+.state-color-toggle.color-idx-1:checked ~ .row .spec-dot-field label:nth-child(2),
+.state-color-toggle.color-idx-2:checked ~ .row .spec-dot-field label:nth-child(3),
+.state-color-toggle.color-idx-3:checked ~ .row .spec-dot-field label:nth-child(4),
+.state-color-toggle.color-idx-4:checked ~ .row .spec-dot-field label:nth-child(5) {
+    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #121212 !important;
+}
+
+/* ----- Product Detail View Page | REVIEW SECTION ----- */
+.fw-black {
+    font-weight: 900 !important;
+}
+
+.reviews-feed-stack .row {
+    border-bottom: 1px solid rgba(18, 18, 18, 0.08);
+    padding-bottom: 1.5rem;
+}
+
+    .reviews-feed-stack .row:last-child {
+        border-bottom: none;
+    }
+
+.hover-opacity-100 {
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+}
+
+    .hover-opacity-100:hover {
+        opacity: 1;
+    }
+
+@media (max-width: 576px) {
+    .reviews-feed-stack span {
+        font-size: 0.85rem !important;
+    }
+}
+
+/* ----- Homepag trending Section| Store page| Product Detail View Page | STYLING ----- */
+/* Hide variation asset frames entirely by default to fix multi-image launch leak */
+.main-frame-group {
+    display: none;
+}
+
+.product-detail-media-container {
+    display: flex;
+    flex-direction: column-reverse; 
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .product-detail-media-container {
+        flex-direction: row; 
+    }
+}
+
+.thumbnail-selection-column {
+    flex-shrink: 0;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .thumbnail-selection-column {
+        width: 110px; 
+    }
+}
+
+.thumb-strip-group {
+    display: none;
+    flex-direction: row;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .thumb-strip-group {
+        flex-direction: column; 
+    }
+}
+
+.main-image-render-box {
+    border: 1px solid rgba(214, 160, 25, 0.3);
+    width: 100%;
+    aspect-ratio: 3 / 4; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    overflow: hidden;
+}
+
+.main-preview-display {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    animation: fadeInMediaFrame 0.3s ease-in-out forwards;
+}
+
+
+.thumb-card {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+    .thumb-card img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .thumb-card:hover {
+        border-color: rgba(214, 160, 25, 0.6);
+    }
+
+    .thumb-card.active {
+        border: 2px solid #D6A019 !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
 
 
 /* ----- AUTH | LOGIN ----- */

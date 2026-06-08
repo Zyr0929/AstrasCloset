@@ -1,38 +1,59 @@
 ﻿@model ProjectAstra.Models.ApparelProduct
+@{
+
+    string GetHexColor(string colorName)
+    {
+        return colorName.ToLower() switch
+        {
+            "black" => "#000000",
+            "teal" => "#0D4F4E",
+            "white" => "#FFFFFF",
+            "off-white" => "#F8F9FA",
+            "gold" => "#D6A019",
+            _ => colorName 
+        };
+    }
+}
 
 <div class="product-card-container">
     @for (int i = 0; i < Model.Variations.Count; i++)
     {
         <input type="radio"
-               id="color-@Model.Variations[i].ColorName-@Model.Id"
+               id="color-idx-@i-@Model.Id"
                name="color-group-@Model.Id"
-               class="state-color-toggle color-@Model.Variations[i].ColorName"
+               class="state-color-toggle color-idx-@i"
                @(i == 0 ? "checked" : "")
                hidden />
     }
 
-    <div class="card-image-container">
-        <div class="image-render-frame">
-            @foreach (var variation in Model.Variations)
-            {
-                <img src="@variation.FrontImage" class="img-view view-front color-img-@variation.ColorName" alt="@Model.Name @variation.ColorName Front" />
-                <img src="@variation.BackImage" class="img-view view-back color-img-@variation.ColorName" alt="@Model.Name @variation.ColorName Back" />
-            }
+    <a asp-page="/Store/ProductDetail" asp-route-id="@Model.Id" class="text-decoration-none">
+        <div class="card-image-container">
+            <div class="image-render-frame">
+                @for (int i = 0; i < Model.Variations.Count; i++)
+                {
+                    var variation = Model.Variations[i];
+                    <img src="@variation.FrontImage" class="img-view view-front color-img-idx-@i" alt="@Model.Name @variation.ColorName Front" />
+                    <img src="@variation.BackImage" class="img-view view-back color-img-idx-@i" alt="@Model.Name @variation.ColorName Back" />
+                }
+            </div>
         </div>
-    </div>
+    </a>
 
     <div class="d-flex justify-content-between align-items-center mt-3">
         <span class="product-tag-badge">@Model.Tag</span>
         <div class="color-selection-row">
-            @foreach (var variation in Model.Variations)
+            @for (int i = 0; i < Model.Variations.Count; i++)
             {
-                string hexColor = variation.ColorName == "black" ? "#000000" : (variation.ColorName == "teal" ? "#0D4F4E" : "#FFFFFF");
-                <label for="color-@variation.ColorName-@Model.Id" class="color-dot-selection dot-@variation.ColorName" style="background-color: @hexColor;"></label>
+                string hexColor = GetHexColor(Model.Variations[i].ColorName);
+                <label for="color-idx-@i-@Model.Id" class="color-dot-selection" style="background-color: @hexColor;"></label>
             }
         </div>
     </div>
 
-    <h4 class="product-title-text mb-1">@Model.Name</h4>
+    <a asp-page="/Store/ProductDetail" asp-route-id="@Model.Id" class="text-decoration-none text-reset">
+        <h4 class="product-title-text mb-1 hover-gold">@Model.Name</h4>
+    </a>
+
     <div class="d-flex align-items-center mb-1">
         @for (int s = 1; s <= 5; s++)
         {
@@ -41,6 +62,4 @@
         <span class="reviews-count-label">@Model.ReviewCount Reviews</span>
     </div>
     <div class="product-price-label">₱@Model.Price.ToString("F2")</div>
-
-    <a asp-page="/ProductDetail" asp-route-id="@Model.Id" class="stretched-link"></a>
 </div>
