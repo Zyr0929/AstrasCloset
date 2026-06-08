@@ -3,4 +3,159 @@
 @{
 }
 
-<!--- ayusin ko muna prerequisite, paste ko nalang dito ule --->
+<div class="container-fluid px-4 mt-4 mb-5">
+    <div class="row">
+
+        <div class="col-md-3 col-lg-2 pe-md-3 mb-4">
+            <div class="filter-header mb-3">Filter</div>
+
+            <div class="filter-section">
+                <button class="filter-toggle-btn" type="button" data-bs-toggle="collapse" data-bs-target="#filterProductType" aria-expanded="false">
+                    Product Type
+                </button>
+                <div class="collapse" id="filterProductType">
+                    <div class="checkbox-container">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="typeTshirt" value="tshirt">
+                            <label class="form-check-label" for="typeTshirt">T-Shirts</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="typeHoodie" value="hoodie">
+                            <label class="form-check-label" for="typeHoodie">Hoodies</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="typeTote" value="tote">
+                            <label class="form-check-label" for="typeTote">Tote Bags</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <button class="filter-toggle-btn" type="button" data-bs-toggle="collapse" data-bs-target="#filterColor" aria-expanded="false">
+                    Color
+                </button>
+                <div class="collapse" id="filterColor">
+                    <div class="checkbox-container">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="colorBlack" value="black">
+                            <label class="form-check-label" for="colorBlack">Black</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="colorWhite" value="white">
+                            <label class="form-check-label" for="colorWhite">White</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="colorTeal" value="teal">
+                            <label class="form-check-label" for="colorTeal">Teal</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <button class="filter-toggle-btn" type="button" data-bs-toggle="collapse" data-bs-target="#filterSize" aria-expanded="false">
+                    Size
+                </button>
+                <div class="collapse" id="filterSize">
+                    <div class="checkbox-container">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="sizeS" value="S">
+                            <label class="form-check-label" for="sizeS">Small</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="sizeM" value="M">
+                            <label class="form-check-label" for="sizeM">Medium</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="sizeL" value="L">
+                            <label class="form-check-label" for="sizeL">Large</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="sizeXL" value="XL">
+                            <label class="form-check-label" for="sizeXL">XL (Oversized)</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <button class="filter-toggle-btn" type="button" data-bs-toggle="collapse" data-bs-target="#filterPrice" aria-expanded="false">
+                    Price
+                </button>
+                <div class="collapse" id="filterPrice">
+                    <div class="checkbox-container">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="price1" value="0-350">
+                            <label class="form-check-label" for="price1">₱0 - ₱350</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="price2" value="351-500">
+                            <label class="form-check-label" for="price2">₱351 - ₱500</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <button class="filter-toggle-btn" type="button" data-bs-toggle="collapse" data-bs-target="#filterTheme" aria-expanded="false">
+                    Theme
+                </button>
+                <div class="collapse" id="filterTheme">
+                    <div class="checkbox-container">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="themeTamaraw" value="tamaraw">
+                            <label class="form-check-label" for="themeTamaraw">Tamaraw Series</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="themeFlorence" value="florence">
+                            <label class="form-check-label" for="themeFlorence">Florence Nightingale</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <button class="filter-toggle-btn" type="button" data-bs-toggle="collapse" data-bs-target="#filterMaterial" aria-expanded="false">
+                    Material
+                </button>
+                <div class="collapse" id="filterMaterial">
+                    <div class="checkbox-container">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="matCotton" value="cotton">
+                            <label class="form-check-label" for="matCotton">100% Premium Cotton</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="matCVC" value="cvc">
+                            <label class="form-check-label" for="matCVC">CVC Cotton Blend</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-9 col-lg-10 ps-md-4">
+            <h1 class="store-title">Nursing Merch</h1>
+
+            <div class="row g-4">
+                @if (Model.StoreProducts != null && Model.StoreProducts.Any())
+                {
+                    @foreach (var product in Model.StoreProducts)
+                    {
+                        <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                            <partial name="_ProductCard" model="product" />
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-12 text-center my-5">
+                        <p class="text-muted fs-5">No products currently available inside the store service.</p>
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+</div>

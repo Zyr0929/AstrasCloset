@@ -41,4 +41,6 @@
         <span class="reviews-count-label">@Model.ReviewCount Reviews</span>
     </div>
     <div class="product-price-label">₱@Model.Price.ToString("F2")</div>
+
+    <a asp-page="/ProductDetail" asp-route-id="@Model.Id" class="stretched-link"></a>
 </div>
