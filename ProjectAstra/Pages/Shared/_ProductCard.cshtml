@@ -1,0 +1,44 @@
+﻿@model ProjectAstra.Models.ApparelProduct
+
+<div class="product-card-container">
+    @for (int i = 0; i < Model.Variations.Count; i++)
+    {
+        <input type="radio"
+               id="color-@Model.Variations[i].ColorName-@Model.Id"
+               name="color-group-@Model.Id"
+               class="state-color-toggle color-@Model.Variations[i].ColorName"
+               @(i == 0 ? "checked" : "")
+               hidden />
+    }
+
+    <div class="card-image-container">
+        <div class="image-render-frame">
+            @foreach (var variation in Model.Variations)
+            {
+                <img src="@variation.FrontImage" class="img-view view-front color-img-@variation.ColorName" alt="@Model.Name @variation.ColorName Front" />
+                <img src="@variation.BackImage" class="img-view view-back color-img-@variation.ColorName" alt="@Model.Name @variation.ColorName Back" />
+            }
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-3">
+        <span class="product-tag-badge">@Model.Tag</span>
+        <div class="color-selection-row">
+            @foreach (var variation in Model.Variations)
+            {
+                string hexColor = variation.ColorName == "black" ? "#000000" : (variation.ColorName == "teal" ? "#0D4F4E" : "#FFFFFF");
+                <label for="color-@variation.ColorName-@Model.Id" class="color-dot-selection dot-@variation.ColorName" style="background-color: @hexColor;"></label>
+            }
+        </div>
+    </div>
+
+    <h4 class="product-title-text mb-1">@Model.Name</h4>
+    <div class="d-flex align-items-center mb-1">
+        @for (int s = 1; s <= 5; s++)
+        {
+            <i class="bi bi-star-fill @(s <= Math.Floor(Model.Rating) ? "rating-star-fill" : "rating-star-empty") me-1"></i>
+        }
+        <span class="reviews-count-label">@Model.ReviewCount Reviews</span>
+    </div>
+    <div class="product-price-label">₱@Model.Price.ToString("F2")</div>
+</div>

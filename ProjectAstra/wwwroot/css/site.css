@@ -498,22 +498,22 @@ html {
 }
 
 
-/* 1. DEFAULT ACTIVE STATE */
-.state-color-toggle.color-black:checked ~ .card-image-container .view-back.color-img-black,
-.state-color-toggle.color-white:checked ~ .card-image-container .view-back.color-img-white,
-.state-color-toggle.color-teal:checked ~ .card-image-container .view-back.color-img-teal {
+/* 1. DEFAULT ACTIVE STATE (Shows front view first) */
+.state-color-toggle.color-black:checked ~ .card-image-container .view-front.color-img-black,
+.state-color-toggle.color-white:checked ~ .card-image-container .view-front.color-img-white,
+.state-color-toggle.color-teal:checked ~ .card-image-container .view-front.color-img-teal {
     display: block;
 }
 
 /* 2. MOUSE HOVER */
-.card-image-container:hover .view-back {
+.card-image-container:hover .view-front {
     display: none !important;
 }
 
-/* 3. HOVER ACTIVE STATE */
-.state-color-toggle.color-black:checked ~ .card-image-container:hover .view-front.color-img-black,
-.state-color-toggle.color-white:checked ~ .card-image-container:hover .view-front.color-img-white,
-.state-color-toggle.color-teal:checked ~ .card-image-container:hover .view-front.color-img-teal {
+/* 3. HOVER ACTIVE STATE (Shows back view on hover) */
+.state-color-toggle.color-black:checked ~ .card-image-container:hover .view-back.color-img-black,
+.state-color-toggle.color-white:checked ~ .card-image-container:hover .view-back.color-img-white,
+.state-color-toggle.color-teal:checked ~ .card-image-container:hover .view-back.color-img-teal {
     display: block;
 }
 
