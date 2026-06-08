@@ -1,0 +1,245 @@
+﻿@page "/Store/ProductDetail/{id:int}"
+@model ProjectAstra.Pages.ProductDetailModel
+@{
+    ViewData["Title"] = Model.Product.Name + " - Details";
+
+    string GetHexColor(string colorName)
+    {
+        return colorName.ToLower() switch
+        {
+            "black" => "#000000",
+            "teal" => "#0D4F4E",
+            "white" => "#FFFFFF",
+            "off-white" => "#F8F9FA",
+            "gold" => "#D6A019",
+            _ => colorName
+        };
+    }
+}
+
+<div class="container my-5 text-dark dynamic-detail-wrapper" style="font-family: 'Inter', sans-serif;">
+
+    @for (int i = 0; i < Model.Product.Variations.Count; i++)
+    {
+        <input type="radio"
+               id="detail-color-idx-@i"
+               name="detail-color-group"
+               class="state-color-toggle color-idx-@i"
+               @(i == 0 ? "checked" : "")
+               hidden />
+    }
+
+    <div class="mb-4">
+        <a asp-page="/Store" class="text-dark text-decoration-none fw-bold small tracking-wider back-closet-btn">
+            <i class="bi bi-arrow-left"></i> BACK TO THE CLOSET
+        </a>
+    </div>
+
+    <div class="row modern-product-grid">
+
+        <div class="col-12 col-md-6 media-area">
+            <div class="product-detail-media-container">
+                <div class="thumbnail-selection-column">
+                    @for (int i = 0; i < Model.Product.Variations.Count; i++)
+                    {
+                        var variation = Model.Product.Variations[i];
+                        <div class="thumb-strip-group color-thumb-grp-@i gap-3">
+                            <div class="thumb-card active" onclick="switchDetailPreview(this, 'front-@i')">
+                                <img src="@variation.FrontImage" alt="Front Thumb" />
+                            </div>
+                            <div class="thumb-card" onclick="switchDetailPreview(this, 'back-@i')">
+                                <img src="@variation.BackImage" alt="Back Thumb" />
+                            </div>
+                            <div class="thumb-card" onclick="switchDetailPreview(this, 'extra-@i')">
+                                <img src="@variation.ExtraImage" alt="Extra Thumb" />
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="main-image-render-box flex-grow-1">
+                    @for (int i = 0; i < Model.Product.Variations.Count; i++)
+                    {
+                        var variation = Model.Product.Variations[i];
+                        <div class="main-frame-group image-group-idx-@i text-center w-100">
+                            <img src="@variation.FrontImage" class="img-fluid main-preview-display active-view-front-@i" alt="Front Preview" />
+                            <img src="@variation.BackImage" class="img-fluid main-preview-display d-none active-view-back-@i" alt="Back Preview" />
+                            <img src="@variation.ExtraImage" class="img-fluid main-preview-display d-none active-view-extra-@i" alt="Extra Preview" />
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 info-area">
+            <div class="sticky-right-panel">
+                <div class="product-info-panel">
+                    @if (!string.IsNullOrEmpty(Model.Product.Tag))
+                    {
+                        <span class="product-tag-badge d-inline-block rounded-pill mb-2">
+                            @Model.Product.Tag
+                        </span>
+                    }
+
+                    <h1 class="fw-bold text-dark tracking-wide display-6 mb-2 text-uppercase">@Model.Product.Name</h1>
+
+                    <div class="d-flex align-items-center mb-4">
+                        @for (int s = 1; s <= 5; s++)
+                        {
+                            <i class="bi bi-star-fill @(s <= Math.Floor(Model.Product.Rating) ? "star-rating-gold" : "text-secondary opacity-25") me-1"></i>
+                        }
+                        <span class="text-muted ms-2 small"> snapshot (@Model.Product.ReviewCount Reviews)</span>
+                    </div>
+
+                    <div class="fs-2 fw-bold text-dark mb-4 price-tag-display">
+                        ₱@Model.Product.Price.ToString("F2")
+                    </div>
+
+                    <hr class="border-dark opacity-25 mb-4" />
+
+                    <div class="mb-4">
+                        <label class="text-uppercase tracking-wider small fw-bold text-muted mb-2 d-block">Available Colors</label>
+                        <div class="d-flex gap-3 align-items-center spec-dot-field">
+                            @for (int i = 0; i < Model.Product.Variations.Count; i++)
+                            {
+                                string hexColor = GetHexColor(Model.Product.Variations[i].ColorName);
+                                <label for="detail-color-idx-@i" class="color-dot-selection d-inline-block rounded-circle"
+                                       style="background-color: @hexColor; border: 1px solid #e0e0e0;"></label>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label class="text-uppercase tracking-wider small fw-bold text-muted m-0">Choose Size</label>
+                            <a href="#sizeGuideModal" data-bs-toggle="modal" class="text-dark text-decoration-underline small size-guide-trigger-link">Size Guide</a>
+                        </div>
+                        <div class="d-flex gap-2 spec-size-field">
+                            @foreach (var size in Model.Product.AvailableSizes)
+                            {
+                                <input type="radio" name="product-size" id="size-@size" value="@size" class="btn-check" />
+                                <label for="size-@size" class="btn custom-size-btn">@size</label>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="text-uppercase tracking-wider small fw-bold text-muted mb-2 d-block">Quantity</label>
+                        <select class="form-select custom-bw-dropdown" style="max-width: 120px;">
+                            @for (int qty = 1; qty <= Model.Product.MaximumPurchaseLimit; qty++)
+                            {
+                                <option value="@qty">@qty</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mt-4 action-button-frame">
+                    <button type="button" class="btn w-100 py-3 fw-bold text-uppercase rounded-0 tracking-wider btn-preorder-submit">
+                        Pre-Order Now <i class="bi bi-bag-plus-fill ms-2"></i>
+                    </button>
+                </div>
+
+                <details class="product-description-accordion mt-4">
+                    <summary class="d-flex justify-content-between align-items-center fw-bold text-uppercase tracking-wider py-3">
+                        Product Description
+                        <i class="bi bi-chevron-down accordion-arrow-indicator"></i>
+                    </summary>
+                    <div class="accordion-details-content py-2 text-muted">
+                        <p style="white-space: pre-line; font-size: 0.95rem; line-height: 1.6;">
+                            @Model.Product.Description
+                        </p>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 reviews-area">
+            <div class="customer-reviews-block mt-md-4 pt-2">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="fw-bold text-dark m-0 text-uppercase h6 tracking-wide">Customer Reviews (@Model.Product.ReviewCount)</h3>
+                    <a href="#" class="text-muted text-decoration-none small fw-semibold hover-opacity-100">View All <i class="bi bi-chevron-right small"></i></a>
+                </div>
+
+                <div class="p-4 mb-4 d-flex flex-column align-items-start" style="background-color: rgba(175, 175, 175, 0.21); border: 0.50px solid #121212;">
+                    <div class="d-flex align-items-center gap-3 mb-1">
+                        <span class="display-5 fw-bold text-dark m-0" style="line-height: 1;">@Model.Product.Rating.ToString("F2")</span>
+                        <div class="d-flex">
+                            @for (int s = 1; s <= 5; s++)
+                            {
+                                <i class="bi bi-star-fill fs-4 @(s <= Math.Floor(Model.Product.Rating) ? "star-rating-gold" : "text-secondary opacity-25") me-1"></i>
+                            }
+                        </div>
+                    </div>
+                    <div class="text-muted small d-flex align-items-center gap-1 mt-1">
+                        <span class="text-decoration-underline text-uppercase fw-bold" style="font-size: 0.7rem; letter-spacing: 0.5px;">Review Policy</span>
+                        <i class="bi bi-question-circle small text-dark"></i>
+                    </div>
+                </div>
+
+                <div class="mb-4 pb-2 border-bottom border-dark border-opacity-10">
+                    <span class="small fw-bold text-dark text-uppercase tracking-wider cursor-pointer d-inline-flex align-items-center gap-1" style="font-size: 0.8rem;">
+                        Highest Rating <i class="bi bi-chevron-down small text-muted"></i>
+                    </span>
+                </div>
+
+                <div class="reviews-feed-stack d-flex flex-column gap-4">
+                    @if (Model.Product.Reviews != null && Model.Product.Reviews.Any())
+                    {
+                        @foreach (var review in Model.Product.Reviews)
+                        {
+                            <div class="row g-3 py-1">
+                                <div class="col-4 col-sm-3 d-flex flex-column align-items-start">
+                                    <div class="d-flex mb-2">
+                                        @for (int s = 1; s <= 5; s++)
+                                        {
+                                            <i class="bi bi-star-fill @(s <= review.RatingScore ? "star-rating-gold" : "text-secondary opacity-25")" style="font-size: 0.75rem; margin-right: 2px;"></i>
+                                        }
+                                    </div>
+                                    <span class="fw-bold text-dark mb-2" style="font-size: 0.95rem;">@review.ReviewerName</span>
+
+                                    @if (review.ReviewerName == "Jessica")
+                                    {
+                                        <span class="text-uppercase fw-black text-center border-0 px-2 py-1 bg-dark text-white rounded-0" style="font-size: 0.6rem; letter-spacing: 0.5px; scale: 0.95; transform-origin: left;">Verified</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-uppercase fw-bold border border-dark border-opacity-50 px-2 py-1 rounded-0" style="font-size: 0.6rem; color: #121212; background-color: rgba(0,0,0,0.03); letter-spacing: 0.3px;">Verified by shop</span>
+                                    }
+                                </div>
+
+                                <div class="col-8 col-sm-9 ps-md-4">
+                                    @if (!string.IsNullOrEmpty(review.ReviewBodyText))
+                                    {
+                                        <p class="text-dark mb-2" style="font-size: 0.95rem; line-height: 1.5; font-weight: 400;">@review.ReviewBodyText</p>
+                                    }
+                                    <div class="text-muted small mt-1" style="font-size: 0.82rem;">
+                                        <span class="fw-bold text-dark">Variant:</span> @Model.Product.AvailableSizes.FirstOrDefault() / @review.SelectedColor
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function switchDetailPreview(thumbnailElement, codeSignature) {
+        const rootContainer = thumbnailElement.closest('.modern-product-grid');
+
+        thumbnailElement.parentElement.querySelectorAll('.thumb-card').forEach(card => card.classList.remove('active'));
+        thumbnailElement.classList.add('active');
+
+        const targetImageClass = '.active-view-' + codeSignature;
+        rootContainer.querySelectorAll('.main-preview-display').forEach(img => img.classList.add('d-none'));
+
+        const activeTargetDisplay = rootContainer.querySelector(targetImageClass);
+        if(activeTargetDisplay) {
+            activeTargetDisplay.classList.remove('d-none');
+        }
+    }
+</script>

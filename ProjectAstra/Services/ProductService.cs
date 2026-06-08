@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using ProjectAstra.Models;
 
@@ -7,52 +6,43 @@ namespace ProjectAstra.Services
 {
     public class ProductService
     {
-        private List<ApparelProduct> _products;
+        private readonly List<ApparelProduct> _allProducts;
 
         public ProductService()
         {
-            // load data ONCE lang whem app starts up
-            _products = InitializeMockData();
-        }
-
-        public List<ApparelProduct> GetAllProducts()
-        {
-            return _products;
-        }
-
-        private List<ApparelProduct> InitializeMockData()
-        {
-            return new List<ApparelProduct>
+            // mock data array layer maps directly to database content rows.
+            _allProducts = new List<ApparelProduct>
             {
-                new ApparelProduct(1, "TAMARAW TEE v1", 380.00m, 5.0, 24, "BACK IN STOCK", new List<ColorVariation> {
-                    new ColorVariation("black", "https://i.ibb.co/v6TLnRZc/image-2026-06-08-012909879.png", "https://i.ibb.co/S4xVtzLY/image.png"),
-                    new ColorVariation("white", "https://i.ibb.co/example/white-front.webp", "https://i.ibb.co/example/white-back.webp")
-                }),
-                new ApparelProduct(2, "FLORENCE TEE", 380.00m, 4.0, 15, "NEW ARRIVAL", new List<ColorVariation> {
-                    new ColorVariation("teal", "https://i.ibb.co/v6TLnRZc/image-2026-06-08-012909879.png", "https://i.ibb.co/S4xVtzLY/image.png"),
-                    new ColorVariation("white", "https://i.ibb.co/example/white-front.webp", "https://i.ibb.co/example/white-back.webp")
-                }),
-                new ApparelProduct(3, "NURSING STARTER PACK", 380.00m, 5.0, 42, "BACK IN STOCK", new List<ColorVariation> {
-                    new ColorVariation("black", "https://i.ibb.co/v6TLnRZc/image-2026-06-08-012909879.png", "https://i.ibb.co/S4xVtzLY/image.png")
-                }),
-                new ApparelProduct(4, "ASTRA BASIC ESSENTIALS", 380.00m, 3.5, 19, "BACK IN STOCK", new List<ColorVariation> {
-                    new ColorVariation("white", "https://i.ibb.co/v6TLnRZc/image-2026-06-08-012909879.png", "https://i.ibb.co/S4xVtzLY/image.png")
-                }),
-                new ApparelProduct(5, "TAMARAW TEE v2", 380.00m, 4.5, 31, "NEW ARRIVAL", new List<ColorVariation> {
-                    new ColorVariation("teal", "https://i.ibb.co/v6TLnRZc/image-2026-06-08-012909879.png", "https://i.ibb.co/S4xVtzLY/image.png"),
-                    new ColorVariation("black", "https://i.ibb.co/v6TLnRZc/image-2026-06-08-012909879.png", "https://i.ibb.co/example/t2-black-back.webp")
-                }),
-                new ApparelProduct(6, "CRITICAL CARE HOODIE", 380.00m, 5.0, 8, "NEW ARRIVAL", new List<ColorVariation> {
-                    new ColorVariation("black", "https://i.ibb.co/v6TLnRZc/image-2026-06-08-012909879.png", "https://i.ibb.co/S4xVtzLY/image.png")
-                }),
-                new ApparelProduct(7, "CLINICAL OVERSIZED TEE", 380.00m, 4.0, 11, "BACK IN STOCK", new List<ColorVariation> {
-                    new ColorVariation("white", "https://i.ibb.co/v6TLnRZc/image-2026-06-08-012909879.png", "https://i.ibb.co/S4xVtzLY/image.png")
-                }),
-                new ApparelProduct(8, "ROUNDS COMFORT SHIRT", 380.00m, 4.5, 22, "BACK IN STOCK", new List<ColorVariation> {
-                    new ColorVariation("black", "https://i.ibb.co/v6TLnRZc/image-2026-06-08-012909879.png", "https://i.ibb.co/S4xVtzLY/image.png"),
-                    new ColorVariation("teal", "https://i.ibb.co/v6TLnRZc/image-2026-06-08-012909879.png", "https://i.ibb.co/example/rounds-teal-back.webp")
-                })
+                new ApparelProduct(
+                    id: 1,
+                    name: "TSHIRT 112",
+                    price: 320.00m,
+                    rating: 4.50,
+                    reviewCount: 25,
+                    tag: "BACK IN STOCK",
+                    description: "Standard School Merch Can Feel A Bit Rigid. We Engineered The Tamaraw Essential Tee To Break That Mold. Built With A Heavy-Weight Cotton Blend And A Relaxed, Slightly Boxy Silhouette, This Tee Gives You That Nonchalant, Streetwear-Ready Drape While Keeping You Completely Comfortable Through Back-To-Back Lectures Or Long Lab Hours.\n\nWhether You're Repping The Clean Aesthetic In Clinical Off-White Or Keeping It Low-Key In Stealth Pitch Black, It's An Absolute Staple For Your Daily Rotation.",
+                    variations: new List<ColorVariation>
+                    {
+                        new ColorVariation("Black", "https://i.ibb.co/zHQpr1Pb/image.png", "https://i.ibb.co/TMm4Vsh3/image.png", "/images/tshirt1_black_extra.png"),
+                        new ColorVariation("White", "/images/tshirt1_white_back.png", "/images/tshirt1_white_front.png", "/images/tshirt1_white_extra.png")
+                    },
+                    availableSizes: new List<string> { "S", "L", "XL", "2XL", "3XL", "5XL" },
+                    reviews: new List<CustomerReview>
+                    {
+                        new CustomerReview { ReviewerName = "Matthew", ReviewDate = "19 Jan,2026", RatingScore = 5, FitStatus = "True to Size", SelectedColor = "Black", SelectedSize = "XL", ReviewBodyText = "Awesome gear. Great purchase." },
+                        new CustomerReview { ReviewerName = "Jessica", ReviewDate = "10 Feb,2026", RatingScore = 5, FitStatus = "True to Size", SelectedColor = "Black", SelectedSize = "L", ReviewBodyText = "Great quality, perfectly baggy fabric finish!" },
+                        new CustomerReview { ReviewerName = "Jenn", ReviewDate = "18 Feb,2026", RatingScore = 5, FitStatus = "True to Size", SelectedColor = "White", SelectedSize = "M", ReviewBodyText = "My grandson loves it! He was so excited to get these. The quality is great, and passed down to little brother. Thanks!" }
+                    },
+                    maxLimit: 10
+                )
             };
+        }
+
+        public List<ApparelProduct> GetAllProducts() => _allProducts;
+
+        public ApparelProduct GetProductById(int id)
+        {
+            return _allProducts.FirstOrDefault(p => p.Id == id);
         }
     }
 }
