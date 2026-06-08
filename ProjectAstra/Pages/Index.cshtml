@@ -4,6 +4,7 @@
     ViewData["Title"] = "Home page";
 }
 
+<!--- HERO SECTION --->
 <div class="full-bleed-adjust">
     <section class="hero-banner">
         <div class="container-fluid px-5">
@@ -26,8 +27,9 @@
     </section>
 </div>
 
+<!--- TRENDING SECTION  --->
 <section class="trending-section my-5">
-    <div class="container overflow-hidden position-relative">
+    <div class="container-fluid px-5 overflow-hidden position-relative">
         <h2 class="trending-section-title text-center mb-5">TRENDING NOW</h2>
 
         @for (int p = 1; p <= Model.TotalPages; p++)
@@ -45,56 +47,7 @@
                         @foreach (var product in productList)
                         {
                             <div class="col-12 col-sm-6 col-lg-3">
-                                <div class="product-card-container">
-
-                                    <input type="checkbox" id="flip-@product.Id" class="state-flip-toggle" hidden />
-                                    @for (int i = 0; i < product.Colors.Count; i++)
-                                    {
-                                        <input type="radio" id="color-@product.Colors[i]-@product.Id"
-                                               name="color-group-@product.Id"
-                                               class="state-color-toggle color-@product.Colors[i]"
-                                               @(i == 0 ? "checked" : "") hidden />
-                                    }
-
-                                    <div class="card-image-container">
-                                        <label for="flip-@product.Id" class="orientation-toggle-btn">
-                                            <i class="bi bi-arrow-left-right"></i>
-                                            <span class="label-txt-front">Front</span>
-                                            <span class="label-txt-back">Back</span>
-                                        </label>
-
-                                        <div class="image-render-frame">
-                                            <img src="@product.FrontImage" class="img-view view-front" alt="@product.Name Front" />
-                                            <img src="@product.BackImage" class="img-view view-back" alt="@product.Name Back" />
-
-                                            <div class="color-tint-overlay overlay-black"></div>
-                                            <div class="color-tint-overlay overlay-white"></div>
-                                            <div class="color-tint-overlay overlay-teal"></div>
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex justify-content-between align-items-center mt-3">
-                                        <span class="product-tag-badge">@product.Tag</span>
-                                        <div class="color-selection-row">
-                                            @foreach (var colorName in product.Colors)
-                                            {
-                                                string hexColor = colorName == "black" ? "#000000" : (colorName == "teal" ? "#0D4F4E" : "#FFFFFF");
-                                                <label for="color-@colorName-@product.Id" class="color-dot-selection dot-@colorName" style="background-color: @hexColor;"></label>
-                                            }
-                                        </div>
-                                    </div>
-
-                                    <h4 class="product-title-text mb-1">@product.Name</h4>
-                                    <div class="d-flex align-items-center mb-1">
-                                        @for (int s = 1; s <= 5; s++)
-                                        {
-                                            <i class="bi bi-star-fill @(s <= Math.Floor(product.Rating) ? "rating-star-fill" : "rating-star-empty") me-1"></i>
-                                        }
-                                        <span class="reviews-count-label">@product.ReviewCount Reviews</span>
-                                    </div>
-                                    <div class="product-price-label">₱@product.Price.ToString("F2")</div>
-
-                                </div>
+                                <partial name="_ProductCard" model="product" />
                             </div>
                         }
                     </div>
