@@ -46,8 +46,18 @@
                             <i class="bi bi-search fs-5"></i>
                         </a>
 
-                        <a class="text-dark nav-icon-btn d-flex align-items-center @(currentRoute == "/Login" ? "active" : "")" asp-area="" asp-page="/Login"><i class="bi bi-person fs-4"></i></a>
-
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                            <a href="javascript:void(0)" id="openProfileBtn" class="text-dark nav-icon-btn d-flex align-items-center">
+                                <i class="bi bi-person-check-fill fs-4" style="color: #1EB580;"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="text-dark nav-icon-btn d-flex align-items-center @(currentRoute == "/Login" ? "active" : "")" asp-area="" asp-page="/Login">
+                                <i class="bi bi-person fs-4"></i>
+                            </a>
+                        }
 
                         <a href="javascript:void(0)" id="openCartBtn" class="text-dark nav-icon-btn cart-btn position-relative d-inline-block">
                             <i class="bi bi-cart3 fs-4"></i>
@@ -190,7 +200,38 @@
             </div>
         </div>
     </div>
+    <div id="profileOverlay" class="search-overlay"></div>
 
+    <div id="profileDrawer" class="search-drawer cart-drawer-bg d-flex flex-column justify-content-between">
+        <div>
+            <div class="d-flex align-items-center justify-content-between px-4 py-3 border-bottom-gold">
+                <h5 class="text-white m-0 fw-bold fs-5">My Account</h5>
+                <button type="button" id="closeProfileBtn" class="text-white bg-transparent border-0 p-0 d-flex align-items-center opacity-75 hover-opacity-100">
+                    <i class="bi bi-x-lg fs-4"></i>
+                </button>
+            </div>
+
+            <div class="px-4 py-5 mt-2 text-center">
+                <div class="mb-3">
+                    <i class="bi bi-person-circle text-warning" style="font-size: 4rem;"></i>
+                </div>
+                <h4 class="text-white fw-bold mb-1">Hello, @User.Identity.Name!</h4>
+
+                <div class="mt-5 d-flex flex-column gap-3 px-2">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a href="/Admin" class="btn btn-outline-warning w-100 fw-bold text-uppercase py-2">Admin Dashboard</a>
+                    }
+                    <a href="/MyOrders" class="btn btn-outline-light w-100 fw-bold text-uppercase py-2">My Orders</a>
+                    <a href="/Settings" class="btn btn-outline-light w-100 fw-bold text-uppercase py-2">Settings</a>
+
+                    <hr class="border-secondary my-2" />
+
+                    <a href="/Logout" class="btn btn-danger w-100 fw-bold text-uppercase py-2">Sign Out</a>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -244,6 +285,31 @@
                     clearCartContext();
                 }
             });
+        });
+
+        // PROFILE DRAWER MECHANISMS
+        $('#openProfileBtn').on('click', function (e) {
+            e.preventDefault();
+            $('#profileOverlay').addClass('active');
+            $('#profileDrawer').addClass('active');
+            $('body').css('overflow', 'hidden');
+        });
+
+        function clearProfileContext() {
+            $('#profileOverlay').removeClass('active');
+            $('#profileDrawer').removeClass('active');
+            $('body').css('overflow', '');
+        }
+
+        $('#closeProfileBtn').on('click', clearProfileContext);
+        $('#profileOverlay').on('click', clearProfileContext);
+
+        $(document).on('keydown', function (e) {
+            if (e.key === 'Escape') {
+                clearSearchContext();
+                clearCartContext();
+                clearProfileContext(); 
+            }
         });
     </script>
 

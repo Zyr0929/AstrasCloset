@@ -96,7 +96,7 @@
 
             // 2. Wait exactly 2 seconds, then redirect to your authenticated Index page
             setTimeout(function() {
-                window.location.href = '/Index';
+                window.location.href = '@Model.RedirectUrl';
             }, 2000);
         });
     </script>
