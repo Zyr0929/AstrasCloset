@@ -9,6 +9,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddRazorPages();
 
+builder.Services.AddSingleton<ProjectAstra.Services.ProductService>();
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
