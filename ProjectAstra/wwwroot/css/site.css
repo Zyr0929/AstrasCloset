@@ -605,6 +605,8 @@ html {
     user-select: none;
 }
 
+/* ----- AUTH | LOGIN ----- */
+
 /*login to ya*/
 .login-container {
     min-height: 100vh;

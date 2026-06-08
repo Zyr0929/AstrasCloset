@@ -197,9 +197,7 @@
 
     <script type="text/javascript">
                 $(document).ready(function () {
-            // ==========================================
             // SEARCH DRAWER MECHANISMS (to convert to CS hays)
-            // ==========================================
             $('#openSearchBtn').on('click', function (e) {
                 e.preventDefault();
                 $('#searchOverlay').addClass('active');
@@ -221,9 +219,7 @@
             $('#searchOverlay').on('click', clearSearchContext);
 
 
-            // ==========================================
             // SEARCH DRAWER MECHANISMS (to convert to CS, wait wag sakit sa ulo cs middleware)
-            // ==========================================
             $('#openCartBtn').on('click', function (e) {
                 e.preventDefault();
                 $('#cartOverlay').addClass('active');
@@ -241,9 +237,7 @@
             $('#cartOverlay').on('click', clearCartContext);
 
 
-            // ==========================================
             // GLOBAL stuff ewan pagod na ko rito 
-            // ==========================================
             $(document).on('keydown', function (e) {
                 if (e.key === 'Escape') {
                     clearSearchContext();
