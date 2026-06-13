@@ -8,6 +8,13 @@ namespace ProjectAstra.Models
         public int Id { get; set; }
 
         [Required]
+        [MaxLength(25)]
+        public string AstraId { get; set; } = string.Empty;
+
+        [Required]
+        public string Role { get; set; } = "User";
+
+        [Required]
         public string FirstName { get; set; } = string.Empty;
 
         [Required]
@@ -16,6 +23,10 @@ namespace ProjectAstra.Models
         [Required]
         [EmailAddress]
         public string Username { get; set; } = string.Empty;
+
+        [Required]
+        [Phone]
+        public string ContactNumber { get; set; } = string.Empty;
 
         [Required]
         public string PasswordHash { get; set; } = string.Empty;

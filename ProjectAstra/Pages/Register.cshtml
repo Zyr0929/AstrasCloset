@@ -34,7 +34,15 @@
 
                 <div class="form-text" style="font-size: 0.75rem;">Must end with @@astra.feu-nrmf.edu.ph</div>
             </div>
-
+            <div class="mb-3">
+                <label for="ContactNumber" class="form-label custom-label text-uppercase">Contact Number</label>
+                <input type="tel" class="form-control custom-input @(!string.IsNullOrEmpty(Model.ErrorMessage) ? "is-invalid" : "")"
+                       id="ContactNumber" name="ContactNumber"
+                       placeholder="Example: 09123456789"
+                       pattern="^(09|\+639)\d{9}$"
+                       title="Must be a valid Philippine mobile number (e.g., 09123456789)"
+                       required>
+            </div>
             <div class="mb-4 position-relative">
                 <label for="Password" class="form-label custom-label text-uppercase">Password</label>
                 <div class="input-group">

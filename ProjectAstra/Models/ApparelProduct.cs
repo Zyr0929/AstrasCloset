@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProjectAstra.Models
 {
@@ -42,13 +43,20 @@ namespace ProjectAstra.Models
 
     public class CustomerReview
     {
-        public string ReviewerName { get; set; }
-        public string ReviewDate { get; set; }
+        [Required]
+        public string ReviewerName { get; set; } = string.Empty;
+        [Required]
+        public string ReviewDate { get; set; } = string.Empty;
+        [Required]
         public int RatingScore { get; set; }
-        public string FitStatus { get; set; }
-        public string SelectedColor { get; set; }
-        public string SelectedSize { get; set; }
-        public string ReviewBodyText { get; set; }
+        [Required]
+        public string FitStatus { get; set; } = string.Empty;
+        [Required]
+        public string SelectedColor { get; set; } = string.Empty;
+        [Required]
+        public string SelectedSize { get; set; } = string.Empty;
+        [Required]
+        public string ReviewBodyText { get; set; } = string.Empty;
     }
 
     public class ApparelProduct : ProductBase

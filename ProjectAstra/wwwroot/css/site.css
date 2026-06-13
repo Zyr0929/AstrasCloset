@@ -123,6 +123,8 @@ html {
     transition: right 0.28s cubic-bezier(0.16, 1, 0.3, 1);
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
     .search-drawer.active {
@@ -1337,4 +1339,192 @@ border-color: #1EB580 !important;
 .success-check-icon {
     color: #1EB580;
     font-size: 1.8rem;
+}
+
+/* ----- ADMIN DASHBOARD LAYOUT ----- */
+body {
+    background-color: #f8f9fa; /* Light grey background for the whole page */
+}
+
+.dashboard-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ----- SIDEBAR ----- */
+.sidebar {
+    width: 260px;
+    background-color: #0D4F4E; /* Your signature dark green */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+
+.sidebar-header {
+    padding: 2rem 1.5rem;
+}
+
+.sidebar-nav {
+    flex-grow: 1;
+    padding: 0 1rem;
+    list-style: none;
+}
+
+    .sidebar-nav li {
+        margin-bottom: 0.5rem;
+    }
+
+    .sidebar-nav a {
+        color: #e0e0e0;
+        text-decoration: none;
+        padding: 0.8rem 1rem;
+        display: flex;
+        align-items: center;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #D6A019; /* Gold accent on hover/active */
+        }
+
+    .sidebar-nav i {
+        margin-right: 15px;
+        font-size: 1.2rem;
+    }
+
+/* Sidebar Footer (Profile) */
+.sidebar-footer {
+    padding: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* ----- MAIN CONTENT AREA ----- */
+.main-content {
+    flex-grow: 1;
+    margin-left: 260px; /* Offset by sidebar width */
+    padding: 2rem 3rem;
+}
+
+/* ----- DASHBOARD CARDS ----- */
+.summary-card {
+    border-radius: 10px;
+    padding: 1.5rem;
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    background-color: white;
+    height: 100%;
+}
+
+    .summary-card.bg-gray {
+        background-color: #e9ecef;
+    }
+
+    .summary-card.bg-warning-light {
+        background-color: #fff3cd;
+        border-color: #ffe69c;
+    }
+
+    .summary-card.bg-success-light {
+        background-color: #d1e7dd;
+        border-color: #a3cfbb;
+    }
+
+    .summary-card.bg-danger-light {
+        background-color: #f8d7da;
+        border-color: #f1aeb5;
+    }
+
+.card-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #555;
+    margin-bottom: 0.5rem;
+}
+
+.card-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #121212;
+    margin-bottom: 0.2rem;
+}
+
+.card-subtitle {
+    font-size: 0.75rem;
+    color: #777;
+}
+
+.dashboard-table-container {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+}
+
+.dashboard-table thead {
+    background-color: #cdd9d9; 
+    color: #444;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.dashboard-table th, .dashboard-table td {
+    padding: 1rem 1.5rem;
+    vertical-align: middle;
+    font-size: 0.9rem;
+}
+
+.status-badge {
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-topay {
+    background-color: #e2e3e5;
+    color: #383d41;
+}
+
+.status-incomplete {
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+.status-pending {
+    background-color: #cff4fc;
+    color: #055160;
+}
+
+.status-assessing {
+    background-color: #fff3cd;
+    color: #664d03;
+}
+
+.status-verified {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.tr-incomplete {
+    background-color: rgba(248, 215, 218, 0.3);
+}
+
+.tr-assessing {
+    background-color: rgba(255, 243, 205, 0.3);
+}
+
+.tr-verified {
+    background-color: rgba(209, 231, 221, 0.3);
 }
