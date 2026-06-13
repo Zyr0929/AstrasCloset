@@ -1,6 +1,5 @@
 ﻿@model ProjectAstra.Models.ApparelProduct
 @{
-
     string GetHexColor(string colorName)
     {
         return colorName.ToLower() switch
@@ -10,7 +9,7 @@
             "white" => "#FFFFFF",
             "off-white" => "#F8F9FA",
             "gold" => "#D6A019",
-            _ => colorName 
+            _ => colorName
         };
     }
 }
@@ -26,7 +25,7 @@
                hidden />
     }
 
-    <a asp-page="/Store/ProductDetail" asp-route-id="@Model.Id" class="text-decoration-none">
+    <a href="/Store/ProductDetail/@Model.Id" class="text-decoration-none">
         <div class="card-image-container">
             <div class="image-render-frame">
                 @for (int i = 0; i < Model.Variations.Count; i++)
@@ -50,7 +49,7 @@
         </div>
     </div>
 
-    <a asp-page="/Store/ProductDetail" asp-route-id="@Model.Id" class="text-decoration-none text-reset">
+    <a href="/Store/ProductDetail/@Model.Id" class="text-decoration-none text-reset">
         <h4 class="product-title-text mb-1 hover-gold">@Model.Name</h4>
     </a>
 
