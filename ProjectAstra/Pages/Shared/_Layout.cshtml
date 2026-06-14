@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var currentRoute = ViewContext.RouteData.Values["page"]?.ToString();
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -7,41 +11,36 @@
     <link class="styles" rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/ProjectTemplate.styles.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/ProjectTemplate.styles.css" asp-append-version="true" />
 </head>
 
 <body>
     <!--- NAVBAR --->
-    <header class="sticky-top shadow-sm" style="z-index: 1030;">
-        <nav class="navbar navbar-expand-lg navbar-dark p-0 navbar-custom position-relative" style="background: linear-gradient(to right, #0D4F4E, #1EB580);">
-            <div class="container-fluid px-5 h-100 d-flex align-items-center justify-content-between">
+        <header class="sticky-top shadow-sm" style="z-index: 2020;">
+            <nav class="navbar navbar-dark p-0 navbar-custom position-relative" style="background: linear-gradient(to right, #0D4F4E, #1EB580);">
+                <div class="container-fluid px-3 px-sm-5 h-100 d-flex align-items-center justify-content-between position-relative">
 
-                <a class="navbar-brand m-0 p-0 fs-3 fw-bold" asp-area="" asp-page="/Index" style="font-family: sans-serif; letter-spacing: -0.5px;">
-                    <span style="color: #ffffff;">ASTRA'S</span><span style="color: #D6A019; font-family: 'Georgia', serif; font-style: italic; margin-left: 2px;">Closet</span>
-                </a>
+                    <div class="d-flex align-items-center gap-3" style="z-index: 1010;">
+                        <button type="button" id="menuToggleBtn" class="text-white bg-transparent border-0 p-0 fs-2 d-flex align-items-center d-lg-none" style="cursor: pointer; min-width: 40px;">
+                            <i class="bi bi-list" id="menuToggleIcon"></i>
+                        </button>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#astraNavbar" aria-controls="astraNavbar" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                        <div class="navbar-brand-wrapper">
+                            <a class="navbar-brand m-0 p-0 fs-3 fw-bold" asp-area="" asp-page="/Index" style="font-family: sans-serif; letter-spacing: -0.5px;">
+                                <span style="color: #ffffff;">ASTRA'S</span><span style="color: #D6A019; font-family: 'Georgia', serif; font-style: italic; margin-left: 2px;">Closet</span>
+                            </a>
+                        </div>
+                    </div>
 
-                <div class="collapse navbar-collapse h-100" id="astraNavbar">
-                    @{
-                        var currentRoute = ViewContext.RouteData.Values["page"]?.ToString();
-                    }
-
-                    <ul class="navbar-nav navbar-center-desktop mx-auto d-flex align-items-center gap-4 py-2 py-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link custom-nav-link @(currentRoute == "/Index" ? "active" : "")" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link custom-nav-link @(currentRoute == "/Store" ? "active" : "")" asp-area="" asp-page="/Store">Store</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link custom-nav-link @(currentRoute == "/MyOrders" ? "active" : "")" asp-area="" asp-page="/MyOrders">My Orders</a>
-                        </li>
+                <div class="d-none d-lg-block position-absolute start-50 translate-middle-x h-100">
+                    <ul class="navbar-nav h-100 d-flex flex-row align-items-center gap-4 p-0 m-0">
+                        <li class="nav-item"><a class="nav-link custom-nav-link @(currentRoute == "/Index" ? "active" : "")" asp-area="" asp-page="/Index">Home</a></li>
+                        <li class="nav-item"><a class="nav-link custom-nav-link @(currentRoute == "/Store" ? "active" : "")" asp-area="" asp-page="/Store">Store</a></li>
+                        <li class="nav-item"><a class="nav-link custom-nav-link @(currentRoute == "/MyOrders" ? "active" : "")" asp-area="" asp-page="/MyOrders">My Orders</a></li>
                     </ul>
+                </div>
 
-                    <div class="d-flex align-items-center bg-white px-3 py-1 rounded shadow-sm ms-auto" style="height: 34px; gap: 18px;">
+                    <div class="utility-capsule d-flex align-items-center bg-white px-3 py-1 rounded shadow-sm" style="height: 34px; gap: 18px; z-index: 1010;">
                         <a href="javascript:void(0)" id="openSearchBtn" class="text-dark nav-icon-btn d-flex align-items-center">
                             <i class="bi bi-search fs-5"></i>
                         </a>
@@ -59,36 +58,39 @@
                             </a>
                         }
 
-                        @if (User.Identity != null && User.Identity.IsAuthenticated)
-                        {
-                            <a href="javascript:void(0)" id="openCartBtn" class="text-dark nav-icon-btn cart-btn position-relative d-inline-block">
-                                <i class="bi bi-cart3 fs-4"></i>
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle d-flex align-items-center justify-content-center"
-                                      style="background-color: #D6A019; color: #0D4F4E; font-size: 0.7rem; width: 18px; height: 18px; font-weight: bold; transform: translate(-15%, -25%) !important;">
-                                    0
-                                </span>
-                            </a>
-                        }
-                        else
-                        {
-                            <a href="/Login" class="text-dark nav-icon-btn cart-btn position-relative d-inline-block">
-                                <i class="bi bi-cart3 fs-4"></i>
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle d-flex align-items-center justify-content-center"
-                                      style="background-color: #D6A019; color: #0D4F4E; font-size: 0.7rem; width: 18px; height: 18px; font-weight: bold; transform: translate(-15%, -25%) !important;">
-                                    0
-                                </span>
-                            </a>
-                        }
+                        <a href="javascript:void(0)" id="openCartBtn" class="text-dark nav-icon-btn cart-btn position-relative d-inline-block">
+                            <i class="bi bi-cart3 fs-4"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle d-flex align-items-center justify-content-center"
+                                  style="background-color: #D6A019; color: #0D4F4E; font-size: 0.7rem; width: 18px; height: 18px; font-weight: bold; transform: translate(-15%, -25%) !important;">
+                                0
+                            </span>
+                        </a>
                     </div>
+
                 </div>
+            </nav>
 
+            <div class="countdown-custom d-flex align-items-center justify-content-center w-100" style="background-color: #D6A019; color: #0D4F4E; font-weight: 700; font-size: 1rem;">
+                Pre-Order Closes In 3d 12h 44m
             </div>
-        </nav>
+        </header>
 
-        <div class="countdown-custom d-flex align-items-center justify-content-center w-100" style="background-color: #D6A019; color: #0D4F4E; font-weight: 700; font-size: 1rem;">
-            Pre-Order Closes In 3d 12h 44m
+    <!--- MOBILE MENU NAVIGATION SIDEBAR --->
+    <div id="menuOverlay" class="menu-overlay"></div>
+
+    <div id="menuDrawer" class="menu-drawer">
+        <div class="p-3 d-flex flex-column gap-2 mt-4 pt-3">
+            <a class="sidebar-nav-btn @(currentRoute == "/Index" ? "active" : "")" asp-area="" asp-page="/Index">
+                Home <i class="bi bi-arrow-right ms-auto d-inline d-sm-none fs-5 text-muted"></i>
+            </a>
+            <a class="sidebar-nav-btn @(currentRoute == "/Store" ? "active" : "")" asp-area="" asp-page="/Store">
+                Store <i class="bi bi-arrow-right ms-auto d-inline d-sm-none fs-5 text-muted"></i>
+            </a>
+            <a class="sidebar-nav-btn @(currentRoute == "/MyOrders" ? "active" : "")" asp-area="" asp-page="/MyOrders">
+                My Orders <i class="bi bi-arrow-right ms-auto d-inline d-sm-none fs-5 text-muted"></i>
+            </a>
         </div>
-    </header>
+    </div>
 
     <!--- PAGE BODY --->
     <div class="container-fluid px-5">
@@ -99,71 +101,67 @@
     </div>
 
     <!--- FOOTER --->
-    <hr class="footer-divider"/>
-
+    <hr class="footer-divider" />
     <footer class="astra-footer">
-		<div class="footer-muted">
-           <div class="container">
-               <div class="row g-4">
+        <div class="footer-muted">
+            <div class="container">
+                <div class="row g-4">
 
-                   <!--Brand Column-->
-                   <div class="col-12 col-md-4 col-lg-3">
-                       <div class="brand-name mb-2">ASTRA'S<span>Closet</span></div>
-                       <p class="brand-tagline m-0"> More than merch - a statement.<br>Designed for those who lead.</p>
-                   </div>
+                    <!--Brand Column-->
+                    <div class="col-12 col-md-4 col-lg-3">
+                        <div class="brand-name mb-2">ASTRA'S<span>Closet</span></div>
+                        <p class="brand-tagline m-0"> More than merch - a statement.<br>Designed for those who lead.</p>
+                    </div>
 
-                   <!--Shop Column-->
-                   <div class="col-6 col-md-2 col-lg-2 offset-lg-1">
-						<div class="footer-heading">Shop</div>
-						<ul>
+                    <!--Shop Column-->
+                    <div class="col-6 col-md-2 col-lg-2 offset-lg-1">
+                        <div class="footer-heading">Shop</div>
+                        <ul>
                             <li> <a href="#">All Products</a></li>
                             <li> <a href="#">T-shirt</a></li>
                             <li> <a href="#">Hoodies</a></li>
                             <li> <a href="#">Tote Bags</a></li>
                             <li> <a href="#">Windbreaker</a></li>
                         </ul>
-                   </div> 
-
-                     <!--Customer Care Column-->
-                     <div class="col-6 col-md-3 col-lg-3">
-                         <div class="footer-heading">Customer Care</div>
-                         <ul>
-                             <li> <a href="#">Contact Us</a></li>
-                             <li> <a href="#">Help Center</a></li>
-                             <li> <a href="#">Returns & Exchanges</a></li>
-                         </ul>
-                     </div>
-
-					<!--About Us Column-->
-					<div class="col-6 col-md-3 col-lg-3">
-                        <div class="footer-heading">About Us</div>
-						<ul>
-							<li> <a href="#">Our Story</a></li>
-							<li> <a href="#">Size Chart</a></li>
-							<li> <a href="#">Reviews</a></li>
-                            </ul>
                     </div>
-              </div>
-           </div>
-        </div>
 
-        <hr class="footer-divider">
-        
-        <div class="footer-bottom py-3">
-            <div class="container">
-                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2">
-                        <span>&copy; 2026 - Astra's<span class="text-warning">Closet</span> - <a asp-area="" asp-page="/Privacy">Privacy</a></span>
+                    <!--Customer Care Column-->
+                    <div class="col-6 col-md-3 col-lg-3">
+                        <div class="footer-heading">Customer Care</div>
+                        <ul>
+                            <li> <a href="#">Contact Us</a></li>
+                            <li> <a href="#">Help Center</a></li>
+                            <li> <a href="#">Returns & Exchanges</a></li>
+                        </ul>
+                    </div>
+
+                    <!--About Us Column-->
+                    <div class="col-6 col-md-3 col-lg-3">
+                        <div class="footer-heading">About Us</div>
+                        <ul>
+                            <li> <a href="#">Our Story</a></li>
+                            <li> <a href="#">Size Chart</a></li>
+                            <li> <a href="#">Reviews</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
 
+        <hr class="footer-divider">
 
+        <div class="footer-bottom py-3">
+            <div class="container">
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2">
+                    <span>&copy; 2026 - Astra's<span class="text-warning">Closet</span> - <a asp-area="" asp-page="/Privacy">Privacy</a></span>
+                </div>
+            </div>
+        </div>
     </footer>
 
-    <!--- SEARCH SIDEBAR COMPONENTS--->
-    <div id="searchOverlay" class="search-overlay"></div>
-
-    <div id="searchDrawer" class="search-drawer">
+    <!--- SEARCH COMPONENTS--->
+    <div id="searchOverlay" class="utility-overlay"></div>
+    <div id="searchDrawer" class="utility-drawer">
         <div class="d-flex align-items-center justify-content-between px-4 pt-5 pb-3">
             <div class="drawer-search-wrapper d-flex align-items-center flex-grow-1 me-3">
                 <i class="bi bi-search text-white fs-5 me-3"></i>
@@ -173,7 +171,6 @@
                 <i class="bi bi-x-lg fs-4"></i>
             </button>
         </div>
-
         <div class="px-5 pt-3">
             <p class="text-muted small text-uppercase tracking-wider" style="font-size: 0.75rem; letter-spacing: 1px;">Popular Searches</p>
             <ul class="list-unstyled text-white-50 small d-flex flex-column gap-2">
@@ -184,28 +181,22 @@
         </div>
     </div>
 
-    <!--- CART SIDEBAR COMPONENTS --->
-    <div id="cartOverlay" class="search-overlay"></div>
-
-    <div id="cartDrawer" class="search-drawer cart-drawer-bg d-flex flex-column justify-content-between">
+    <!--- CART COMPONENTS --->
+    <div id="cartOverlay" class="utility-overlay"></div>
+    <div id="cartDrawer" class="utility-drawer cart-drawer-bg d-flex flex-column justify-content-between">
         <div>
-
             <div class="d-flex align-items-center justify-content-between px-4 py-3 border-bottom-gold">
                 <h5 class="text-white m-0 fw-bold fs-5">Your Cart (0)</h5>
                 <button type="button" id="closeCartBtn" class="text-white bg-transparent border-0 p-0 d-flex align-items-center opacity-75 hover-opacity-100">
                     <i class="bi bi-x-lg fs-4"></i>
                 </button>
             </div>
-
-
             <div class="px-4 py-3 border-bottom-gold pre-order-banner d-flex align-items-center justify-content-center gap-3">
                 <i class="bi bi-clock text-warning fs-3"></i>
                 <div class="text-warning fw-bold tracking-wide text-uppercase small lh-sm text-center">
                     Pre-Order Window<br><span class="fs-6">Closes In 31 Days</span>
                 </div>
             </div>
-
-
             <div class="text-center px-4 py-5 mt-5">
                 <h3 class="fw-black text-warning tracking-wide mb-2" style="font-size: 1.65rem; font-family: sans-serif;">YOUR CART IS EMPTY!</h3>
                 <p class="text-warning opacity-75 fst-italic mb-4" style="font-family: 'Georgia', serif; font-size: 1.1rem;">Shop some of our faves</p>
@@ -213,9 +204,10 @@
             </div>
         </div>
     </div>
-    <div id="profileOverlay" class="search-overlay"></div>
 
-    <div id="profileDrawer" class="search-drawer cart-drawer-bg d-flex flex-column justify-content-between">
+    <!--- PROFILE COMPONENTS --->
+    <div id="profileOverlay" class="utility-overlay"></div>
+    <div id="profileDrawer" class="utility-drawer cart-drawer-bg d-flex flex-column justify-content-between">
         <div>
             <div class="d-flex align-items-center justify-content-between px-4 py-3 border-bottom-gold">
                 <h5 class="text-white m-0 fw-bold fs-5">My Account</h5>
@@ -223,13 +215,11 @@
                     <i class="bi bi-x-lg fs-4"></i>
                 </button>
             </div>
-
             <div class="px-4 py-5 mt-2 text-center">
                 <div class="mb-3">
                     <i class="bi bi-person-circle text-warning" style="font-size: 4rem;"></i>
                 </div>
                 <h4 class="text-white fw-bold mb-1">Hello, @User.Identity.Name!</h4>
-
                 <div class="mt-5 d-flex flex-column gap-3 px-2">
                     @if (User.IsInRole("Admin"))
                     {
@@ -237,14 +227,13 @@
                     }
                     <a href="/MyOrders" class="btn btn-outline-light w-100 fw-bold text-uppercase py-2">My Orders</a>
                     <a href="/Settings" class="btn btn-outline-light w-100 fw-bold text-uppercase py-2">Settings</a>
-
                     <hr class="border-secondary my-2" />
-
                     <a href="/Logout" class="btn btn-danger w-100 fw-bold text-uppercase py-2">Sign Out</a>
                 </div>
             </div>
         </div>
     </div>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -252,73 +241,113 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            // --- SEARCH DRAWER ---
+            // HAMBURGER MENU DRAWER 
+            function openMenu() {
+                $('#menuDrawer').addClass('active');
+                $('#menuOverlay').addClass('active');
+                $('#menuToggleIcon').removeClass('bi-list').addClass('bi-x-lg');
+                lockLayoutContext();
+            }
+
+            function closeMenu() {
+                $('#menuDrawer').removeClass('active');
+                $('#menuOverlay').removeClass('active');
+                $('#menuToggleIcon').removeClass('bi-x-lg').addClass('bi-list');
+                unlockLayoutContext();
+            }
+
+            $('#menuToggleBtn').on('click', function (e) {
+                e.preventDefault();
+                if ($('#menuDrawer').hasClass('active')) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
+            });
+
+            $('#menuOverlay').on('click', closeMenu);
+
+            //auto close, tinamad na
+            $(window).on('resize', function () {
+                if ($(window).width() >= 992) {
+                    if ($('#menuDrawer').hasClass('active')) {
+                        closeMenu();
+                    }
+                }
+            });
+
+            function lockLayoutContext() {
+                $('body').css('overflow', 'hidden');
+                var $header = $('header');
+                var headerHeight = $header.outerHeight();
+                if ($(window).scrollTop() === 0) {
+                    $header.next('div').css('padding-top', headerHeight + 'px');
+                }
+                $header.addClass('fixed-top').removeClass('sticky-top');
+            }
+
+            function unlockLayoutContext() {
+                $('body').css('overflow', '');
+                var $header = $('header');
+                $header.addClass('sticky-top').removeClass('fixed-top');
+                $header.next('div').css('padding-top', '');
+            }
+
+            // -- Sidebars popup ( SEARCH, CART, PROFILE) ---
+            // Search Drawer
             $('#openSearchBtn').on('click', function (e) {
                 e.preventDefault();
                 $('#searchOverlay').addClass('active');
                 $('#searchDrawer').addClass('active');
-                $('body').css('overflow', 'hidden'); // Locks main background
-
-                setTimeout(function() {
-                    $('#sidebarSearchInput').focus();
-                }, 280);
+                lockLayoutContext();
+                setTimeout(function() { $('#sidebarSearchInput').focus(); }, 280);
             });
-
             function clearSearchContext() {
                 $('#searchOverlay').removeClass('active');
                 $('#searchDrawer').removeClass('active');
-                $('body').css('overflow', ''); // Unlocks main background
+                unlockLayoutContext();
             }
-
             $('#closeSearchBtn, #searchOverlay').on('click', clearSearchContext);
 
-
-            // --- CART DRAWER ---
+            // Cart Drawer
             $('#openCartBtn').on('click', function (e) {
                 e.preventDefault();
                 $('#cartOverlay').addClass('active');
                 $('#cartDrawer').addClass('active');
-                $('body').css('overflow', 'hidden');
+                lockLayoutContext();
             });
-
             function clearCartContext() {
                 $('#cartOverlay').removeClass('active');
                 $('#cartDrawer').removeClass('active');
-                $('body').css('overflow', '');
+                unlockLayoutContext();
             }
-
             $('#closeCartBtn, #cartOverlay').on('click', clearCartContext);
 
-
-            // --- PROFILE DRAWER ---
+            // Profile Drawer
             $('#openProfileBtn').on('click', function (e) {
                 e.preventDefault();
                 $('#profileOverlay').addClass('active');
                 $('#profileDrawer').addClass('active');
-                $('body').css('overflow', 'hidden');
+                lockLayoutContext();
             });
-
             function clearProfileContext() {
                 $('#profileOverlay').removeClass('active');
                 $('#profileDrawer').removeClass('active');
-                $('body').css('overflow', '');
+                unlockLayoutContext();
             }
-
             $('#closeProfileBtn, #profileOverlay').on('click', clearProfileContext);
 
-
-            // --- GLOBAL ESCAPE KEY (Closes whatever is open) ---
+            // --- GLOBAL ESCAPE KEY ---
             $(document).on('keydown', function (e) {
                 if (e.key === 'Escape') {
+                    closeMenu();
                     clearSearchContext();
                     clearCartContext();
                     clearProfileContext();
                 }
             });
-
         });
     </script>
-
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>
