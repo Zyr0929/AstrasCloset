@@ -1,25 +1,28 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore; 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ProjectAstra.Models;
-using ProjectAstra.Services;
 
 namespace ProjectAstra.Pages
 {
     public class StoreModel : PageModel
     {
-        private readonly ProductService _productService;
+        private readonly AppDbContext _context;
 
         public List<ApparelProduct> StoreProducts { get; set; } = new();
 
-        public StoreModel(ProductService productService)
+        public StoreModel(AppDbContext context)
         {
-            _productService = productService;
+            _context = context;
         }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            StoreProducts = _productService.GetAllProducts();
-        }   
+
+            StoreProducts = await _context.Products 
+                .Include(p => p.Variations)
+                .ToListAsync();
+        }
     }
 }

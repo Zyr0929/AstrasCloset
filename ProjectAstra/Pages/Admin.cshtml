@@ -2,162 +2,117 @@
 @model ProjectTemplate.Pages.AdminModel
 @{
     ViewData["Title"] = "Admin Dashboard";
-    Layout = null; 
+    Layout = "_AdminLayout"; 
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="~/css/site.css" />
-</head>
-<body>
+<div class="container-fluid px-4 py-5" style="font-family: 'Inter', sans-serif;">
 
-    <div class="dashboard-wrapper">
-
-        <nav class="sidebar">
-            <div class="sidebar-header">
-                <h4 style="color: white; font-weight: 800;">ASTRA'S <span style="color: #D6A019; background: #083332; padding: 2px 8px; border-radius: 4px;">Closet</span></h4>
-            </div>
-
-            <ul class="sidebar-nav">
-                <li><a href="#" class="active"><i class="bi bi-grid-1x2-fill"></i> Overview</a></li>
-                <li><a href="#"><i class="bi bi-box-seam"></i> My Orders</a></li>
-                <li><a href="#"><i class="bi bi-bell"></i> Notifications</a></li>
-                <li><a href="#"><i class="bi bi-heart"></i> Wishlist</a></li>
-                <li><a href="#"><i class="bi bi-gear"></i> Settings</a></li>
-                <li><a href="#"><i class="bi bi-plus-circle"></i> Add New Product</a></li>
-            </ul>
-
-            <div class="sidebar-footer">
-                <div class="d-flex align-items-center dropdown">
-                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://via.placeholder.com/40" class="rounded-circle me-2" alt="Admin">
-                        <div>
-                            <div style="font-size: 0.85rem; font-weight: 700;">Admin User</div>
-                            <div style="font-size: 0.7rem; color: #aaa;">example@gmail.com</div>
-                        </div>
-                    </a>
-                </div>
-                <a href="/Logout" style="color: white; font-size: 1.2rem;"><i class="bi bi-box-arrow-right"></i></a>
-            </div>
-        </nav>
-
-        <main class="main-content">
-
-            <div class="mb-5">
-                <h2 style="font-weight: 800; color: #121212;">Good Morning, Admin</h2>
-                <p style="color: #666;">Here's the summary of your account</p>
-            </div>
-
-            <div class="row g-4 mb-4">
-                <div class="col-md-4">
-                    <div class="summary-card">
-                        <div class="card-title">Total Pre-Orders</div>
-                        <div class="card-value">82</div>
-                        <div class="card-subtitle">Since March 2026</div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="summary-card">
-                        <div class="card-title">Total Revenue Estimated</div>
-                        <div class="card-value">₱31,1260.00</div>
-                        <div class="card-subtitle">Total revenue this quarter</div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="summary-card bg-gray">
-                        <div class="card-title text-muted">Pending Approval</div>
-                        <div class="card-value">44</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row g-4 mb-5">
-                <div class="col-md-4">
-                    <div class="summary-card bg-warning-light">
-                        <div class="card-title" style="color: #856404;">Under Assessment</div>
-                        <div class="card-value">32</div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="summary-card bg-success-light">
-                        <div class="card-title" style="color: #0f5132;">Verified Orders</div>
-                        <div class="card-value">3</div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="summary-card bg-danger-light">
-                        <div class="card-title" style="color: #842029;">Rejected Orders</div>
-                        <div class="card-value">6</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="dashboard-table-container">
-                <table class="table dashboard-table table-hover border-bottom mb-0">
-                    <thead>
-                        <tr>
-                            <th>ORDER ID</th>
-                            <th>CUSTOMER NAME</th>
-                            <th>YEAR & SECTION</th>
-                            <th>TOTAL ORDERS</th>
-                            <th>TOTAL PRICE</th>
-                            <th>PAYMENT STATUS</th>
-                            <th>DATE ORDERED</th>
-                            <th>ACTIONS</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="fw-bold" style="color: #0D4F4E;">ORD-2026-0101</td>
-                            <td class="fw-bold">Jane Doe</td>
-                            <td>2-B</td>
-                            <td>1</td>
-                            <td class="fw-bold">₱380</td>
-                            <td><span class="status-badge status-topay">TO PAY</span></td>
-                            <td style="color: #1EB580; font-weight: 600;">Mar 25, 2026</td>
-                            <td><i class="bi bi-three-dots" style="cursor: pointer; font-size: 1.2rem;"></i></td>
-                        </tr>
-                        <tr class="tr-incomplete">
-                            <td class="fw-bold" style="color: #0D4F4E;">ORD-2026-0101</td>
-                            <td class="fw-bold">John Kilometers</td>
-                            <td>3-A</td>
-                            <td>2</td>
-                            <td class="fw-bold">₱760</td>
-                            <td><span class="status-badge status-incomplete">INCOMPLETE</span></td>
-                            <td style="color: #d9534f; font-weight: 600;">Mar 26, 2026</td>
-                            <td><i class="bi bi-three-dots" style="cursor: pointer; font-size: 1.2rem;"></i></td>
-                        </tr>
-                        <tr class="tr-assessing">
-                            <td class="fw-bold" style="color: #0D4F4E;">ORD-2026-0101</td>
-                            <td class="fw-bold">Jane Doe</td>
-                            <td>2-B</td>
-                            <td>1</td>
-                            <td class="fw-bold">₱380</td>
-                            <td><span class="status-badge status-assessing">ASSESSING</span></td>
-                            <td style="color: #1EB580; font-weight: 600;">Mar 28, 2026</td>
-                            <td><i class="bi bi-three-dots" style="cursor: pointer; font-size: 1.2rem;"></i></td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="d-flex justify-content-between align-items-center p-3" style="background-color: white; border-top: 1px solid #eee;">
-                    <span style="font-size: 0.8rem; color: #888; font-weight: 600; letter-spacing: 0.5px;">SHOWING PAGE 1 OF 17 (82 ORDERS)</span>
-                    <div>
-                        <button class="btn btn-sm btn-light border me-1"><i class="bi bi-chevron-left"></i></button>
-                        <button class="btn btn-sm btn-light border"><i class="bi bi-chevron-right"></i></button>
-                    </div>
-                </div>
-            </div>
-
-        </main>
+    <div class="mb-5">
+        <h2 style="font-weight: 800; color: #121212;">Good Morning, Admin</h2>
+        <p style="color: #666;">Here's the summary of your account</p>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="summary-card p-4 rounded" style="border: 1px solid #eee;">
+                <div class="card-title fw-bold text-muted text-uppercase small mb-2">Total Pre-Orders</div>
+                <div class="card-value display-6 fw-bold text-dark mb-1">82</div>
+                <div class="card-subtitle small text-muted">Since March 2026</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="summary-card p-4 rounded" style="border: 1px solid #eee;">
+                <div class="card-title fw-bold text-muted text-uppercase small mb-2">Total Revenue Estimated</div>
+                <div class="card-value display-6 fw-bold text-dark mb-1">₱31,260.00</div>
+                <div class="card-subtitle small text-muted">Total revenue this quarter</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="summary-card bg-gray p-4 rounded" style="background-color: #f8f9fa; border: 1px solid #eee;">
+                <div class="card-title fw-bold text-muted text-uppercase small mb-2">Pending Approval</div>
+                <div class="card-value display-6 fw-bold text-dark mb-1">44</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="summary-card p-4 rounded" style="background-color: #fff3cd; border: 1px solid #ffe69c;">
+                <div class="card-title fw-bold text-uppercase small mb-2" style="color: #856404;">Under Assessment</div>
+                <div class="card-value display-6 fw-bold mb-1" style="color: #856404;">32</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="summary-card p-4 rounded" style="background-color: #d1e7dd; border: 1px solid #badbcc;">
+                <div class="card-title fw-bold text-uppercase small mb-2" style="color: #0f5132;">Verified Orders</div>
+                <div class="card-value display-6 fw-bold mb-1" style="color: #0f5132;">3</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="summary-card p-4 rounded" style="background-color: #f8d7da; border: 1px solid #f5c2c7;">
+                <div class="card-title fw-bold text-uppercase small mb-2" style="color: #842029;">Rejected Orders</div>
+                <div class="card-value display-6 fw-bold mb-1" style="color: #842029;">6</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-table-container bg-white rounded shadow-sm border">
+        <div class="table-responsive">
+            <table class="table dashboard-table table-hover border-bottom mb-0 align-middle">
+                <thead class="bg-light">
+                    <tr>
+                        <th class="py-3 px-4 small text-muted fw-bold tracking-wider">ORDER ID</th>
+                        <th class="py-3 small text-muted fw-bold tracking-wider">CUSTOMER NAME</th>
+                        <th class="py-3 small text-muted fw-bold tracking-wider">YEAR & SECTION</th>
+                        <th class="py-3 small text-muted fw-bold tracking-wider">TOTAL ORDERS</th>
+                        <th class="py-3 small text-muted fw-bold tracking-wider">TOTAL PRICE</th>
+                        <th class="py-3 small text-muted fw-bold tracking-wider">PAYMENT STATUS</th>
+                        <th class="py-3 small text-muted fw-bold tracking-wider">DATE ORDERED</th>
+                        <th class="py-3 px-4 small text-muted fw-bold tracking-wider text-end">ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="fw-bold px-4" style="color: #0D4F4E;">ORD-2026-0101</td>
+                        <td class="fw-bold">Jane Doe</td>
+                        <td>2-B</td>
+                        <td>1</td>
+                        <td class="fw-bold">₱380.00</td>
+                        <td><span class="badge rounded-pill" style="background-color: rgba(214, 160, 25, 0.2); color: #D6A019; border: 1px solid #D6A019;">TO PAY</span></td>
+                        <td style="color: #1EB580; font-weight: 600;">Mar 25, 2026</td>
+                        <td class="text-end px-4"><i class="bi bi-three-dots text-muted hover-dark" style="cursor: pointer; font-size: 1.2rem;"></i></td>
+                    </tr>
+                    <tr class="bg-light">
+                        <td class="fw-bold px-4" style="color: #0D4F4E;">ORD-2026-0102</td>
+                        <td class="fw-bold">John Kilometers</td>
+                        <td>3-A</td>
+                        <td>2</td>
+                        <td class="fw-bold">₱760.00</td>
+                        <td><span class="badge rounded-pill" style="background-color: rgba(217, 83, 79, 0.1); color: #d9534f; border: 1px solid #d9534f;">INCOMPLETE</span></td>
+                        <td style="color: #d9534f; font-weight: 600;">Mar 26, 2026</td>
+                        <td class="text-end px-4"><i class="bi bi-three-dots text-muted hover-dark" style="cursor: pointer; font-size: 1.2rem;"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold px-4" style="color: #0D4F4E;">ORD-2026-0103</td>
+                        <td class="fw-bold">Jane Doe</td>
+                        <td>2-B</td>
+                        <td>1</td>
+                        <td class="fw-bold">₱380.00</td>
+                        <td><span class="badge rounded-pill" style="background-color: rgba(13, 79, 78, 0.1); color: #0D4F4E; border: 1px solid #0D4F4E;">ASSESSING</span></td>
+                        <td style="color: #1EB580; font-weight: 600;">Mar 28, 2026</td>
+                        <td class="text-end px-4"><i class="bi bi-three-dots text-muted hover-dark" style="cursor: pointer; font-size: 1.2rem;"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center p-3 px-4">
+            <span style="font-size: 0.8rem; color: #888; font-weight: 600; letter-spacing: 0.5px;">SHOWING PAGE 1 OF 17 (82 ORDERS)</span>
+            <div>
+                <button class="btn btn-sm btn-light border me-1"><i class="bi bi-chevron-left"></i></button>
+                <button class="btn btn-sm btn-light border"><i class="bi bi-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+</div>

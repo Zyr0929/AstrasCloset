@@ -1,31 +1,61 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using ProjectAstra.Models;
-using ProjectAstra.Services;
+using System.Threading.Tasks;
 
 namespace ProjectAstra.Pages
 {
     public class ProductDetailModel : PageModel
     {
-        private readonly ProductService _productService;
+        private readonly AppDbContext _context;
 
-        public ProductDetailModel(ProductService productService)
+        public ProductDetailModel(AppDbContext context)
         {
-            _productService = productService;
+            _context = context;
         }
 
         public ApparelProduct Product { get; set; }
 
-        public IActionResult OnGet(int id)
-        {
-            Product = _productService.GetProductById(id);
+        [BindProperty] public string SelectedColor { get; set; }
+        [BindProperty] public string SelectedSize { get; set; }
+        [BindProperty] public int Quantity { get; set; }
 
-            if (Product == null)
+        public async Task<IActionResult> OnGetAsync(int id)
+        {
+            Product = await _context.Products
+                .Include(p => p.Variations)
+                .Include(p => p.Reviews)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (Product == null) return RedirectToPage("/Store");
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync(int id)
+        {
+            if (User.Identity == null || !User.Identity.IsAuthenticated)
             {
-                return RedirectToPage("/Store");
+                return RedirectToPage("/Login");
             }
 
-            return Page();
+            var product = await _context.Products.FindAsync(id);
+            if (product == null) return RedirectToPage("/Store");
+
+            var cartItem = new CartItem
+            {
+                Username = User.Identity.Name,
+                ProductId = id,
+                SelectedColor = SelectedColor ?? "Default", 
+                SelectedSize = SelectedSize ?? "Default",
+                Quantity = Quantity > 0 ? Quantity : 1,
+                UnitPrice = product.Price
+            };
+
+            _context.CartItems.Add(cartItem);
+            await _context.SaveChangesAsync();
+
+            return Redirect($"/Store/ProductDetail/{id}?openCart=true");
         }
     }
 }
