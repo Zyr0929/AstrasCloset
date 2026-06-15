@@ -1,0 +1,276 @@
+﻿@page
+@model ProjectAstra.Pages.AddProductModel
+@{
+    ViewData["Title"] = "Add New Product";
+    Layout = "_AdminLayout";
+}
+
+<style>
+    .admin-page-title {
+        font-weight: 800;
+        color: #121212;
+        letter-spacing: -0.5px;
+    }
+
+    .admin-input {
+        border-radius: 8px;
+        border: 1px solid #ced4da;
+        padding: 10px 15px;
+    }
+
+        .admin-input:focus {
+            border-color: #0D4F4E;
+            box-shadow: 0 0 0 0.25rem rgba(13, 79, 78, 0.1);
+        }
+
+    .btn-save-product {
+        background-color: #D6A019;
+        color: #fff;
+        font-weight: bold;
+        border: none;
+        padding: 10px 24px;
+    }
+
+        .btn-save-product:hover {
+            background-color: #c28f15;
+            color: #fff;
+        }
+
+    .btn-cancel {
+        background-color: #ffffff;
+        color: #333;
+        font-weight: bold;
+        border: 1px solid #333;
+        padding: 10px 24px;
+    }
+
+    /* New Mini Dropzone Styles */
+    .variation-card {
+        background-color: #F8F9FA;
+        border-radius: 12px;
+        border: 1px solid #E0E0E0;
+        position: relative;
+    }
+
+    .mini-upload-container {
+        background-color: #ffffff;
+        border: 2px dashed #CCCCCC;
+        border-radius: 8px;
+        height: 150px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+        .mini-upload-container:hover {
+            border-color: #D6A019;
+        }
+
+    .mini-upload-input {
+        display: none;
+    }
+
+    .mini-preview-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none;
+    }
+</style>
+
+<div class="container px-4 py-5" style="font-family: 'Inter', sans-serif; max-width: 900px;">
+    <h2 class="admin-page-title mb-1">Add New Product</h2>
+    <p class="text-muted mb-5">Add product details and color variations</p>
+
+    <form method="post" enctype="multipart/form-data">
+
+        <div class="row g-4 mb-5">
+            <div class="col-md-6">
+                <label class="fw-bold mb-2">Product Name</label>
+                <input type="text" class="form-control admin-input" name="ProductName" required>
+            </div>
+            <div class="col-md-6">
+                <label class="fw-bold mb-2">Price</label>
+                <div class="input-group">
+                    <span class="input-group-text admin-input bg-light fw-bold">₱</span>
+                    <input type="number" step="0.01" class="form-control admin-input border-start-0" name="Price" required>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label class="fw-bold mb-2">Category</label>
+                <select class="form-select admin-input" name="Category">
+                    <option value="Hoodie">Hoodie</option>
+                    <option value="T-Shirt">T-Shirt</option>
+                    <option value="Tote Bag">Tote Bag</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="fw-bold mb-2">Sizes Available</label>
+                <select class="form-select admin-input" name="Sizes">
+                    <option value="S,M,L,XL">S, M, L, XL</option>
+                    <option value="One Size">One Size</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="fw-bold mb-2">Theme/Tag</label>
+                <input type="text" class="form-control admin-input" name="Tags" placeholder="e.g. New Arrival">
+            </div>
+            <div class="col-12">
+                <label class="fw-bold mb-2">Description</label>
+                <textarea class="form-control admin-input" name="Description" rows="3" required></textarea>
+            </div>
+        </div>
+
+        <hr class="mb-5 border-secondary opacity-25" />
+
+        <h4 class="fw-bold mb-4">Color Variations & Images</h4>
+
+        <div id="variations-wrapper">
+            <div class="variation-card p-4 mb-4">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="fw-bold text-dark mb-1">Color Name</label>
+                        <input type="text" class="form-control admin-input border-warning" name="Variations[0].ColorName" placeholder="e.g., Teal" required />
+                    </div>
+                </div>
+
+                <div class="row g-3 text-center">
+                    <div class="col-4">
+                        <label class="small text-muted fw-bold mb-2">FRONT VIEW</label>
+                        <div class="mini-upload-container" onclick="document.getElementById('front-0').click()">
+                            <img id="preview-front-0" class="mini-preview-img" />
+                            <i class="bi bi-image fs-3 text-muted" id="icon-front-0"></i>
+                            <input type="file" id="front-0" name="Variations[0].FrontImage" class="mini-upload-input" accept="image/*" required onchange="previewMini(event, 'preview-front-0', 'icon-front-0')" />
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <label class="small text-muted fw-bold mb-2">BACK VIEW</label>
+                        <div class="mini-upload-container" onclick="document.getElementById('back-0').click()">
+                            <img id="preview-back-0" class="mini-preview-img" />
+                            <i class="bi bi-image fs-3 text-muted" id="icon-back-0"></i>
+                            <input type="file" id="back-0" name="Variations[0].BackImage" class="mini-upload-input" accept="image/*" required onchange="previewMini(event, 'preview-back-0', 'icon-back-0')" />
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <label class="small text-muted fw-bold mb-2">EXTRA VIEW</label>
+                        <div class="mini-upload-container" onclick="document.getElementById('extra-0').click()">
+                            <img id="preview-extra-0" class="mini-preview-img" />
+                            <i class="bi bi-image fs-3 text-muted" id="icon-extra-0"></i>
+                            <input type="file" id="extra-0" name="Variations[0].ExtraImage" class="mini-upload-input" accept="image/*" required onchange="previewMini(event, 'preview-extra-0', 'icon-extra-0')" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-outline-dark fw-bold mb-5" onclick="addNewVariation()">
+            <i class="bi bi-plus-lg me-2"></i> Add Another Color Variation
+        </button>
+
+        <div class="d-flex gap-3 justify-content-end border-top pt-4">
+            <a href="/Admin" class="btn btn-cancel rounded-0">Cancel</a>
+            <button type="submit" class="btn btn-save-product rounded-0">Save Entire Product</button>
+        </div>
+
+    </form>
+</div>
+
+<script>
+    // 1. Handles the instant image preview
+    function previewMini(event, previewId, iconId) {
+        var reader = new FileReader();
+        reader.onload = function() {
+            document.getElementById(previewId).src = reader.result;
+            document.getElementById(previewId).style.display = 'block';
+            document.getElementById(iconId).style.display = 'none';
+        }
+        if(event.target.files[0]) {
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    }
+
+    // 2. Handles duplicating the color block
+    let variationIndex = 1;
+
+    function addNewVariation() {
+        const wrapper = document.getElementById('variations-wrapper');
+
+        // Added a "Remove" button in the top right corner of the new block!
+        const newBlock = `
+            <div class="variation-card p-4 mb-4">
+                <div class="row mb-3 align-items-center">
+                    <div class="col-md-6">
+                        <label class="fw-bold text-dark mb-1">Color Name</label>
+                        <input type="text" class="form-control admin-input border-warning" name="Variations[${variationIndex}].ColorName" placeholder="e.g., Black" required />
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeVariation(this)">
+                            <i class="bi bi-trash"></i> Remove
+                        </button>
+                    </div>
+                </div>
+                <div class="row g-3 text-center">
+                    <div class="col-4">
+                        <label class="small text-muted fw-bold mb-2">FRONT VIEW</label>
+                        <div class="mini-upload-container" onclick="document.getElementById('front-${variationIndex}').click()">
+                            <img id="preview-front-${variationIndex}" class="mini-preview-img" />
+                            <i class="bi bi-image fs-3 text-muted" id="icon-front-${variationIndex}"></i>
+                            <input type="file" id="front-${variationIndex}" name="Variations[${variationIndex}].FrontImage" class="mini-upload-input" accept="image/*" required onchange="previewMini(event, 'preview-front-${variationIndex}', 'icon-front-${variationIndex}')" />
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <label class="small text-muted fw-bold mb-2">BACK VIEW</label>
+                        <div class="mini-upload-container" onclick="document.getElementById('back-${variationIndex}').click()">
+                            <img id="preview-back-${variationIndex}" class="mini-preview-img" />
+                            <i class="bi bi-image fs-3 text-muted" id="icon-back-${variationIndex}"></i>
+                            <input type="file" id="back-${variationIndex}" name="Variations[${variationIndex}].BackImage" class="mini-upload-input" accept="image/*" required onchange="previewMini(event, 'preview-back-${variationIndex}', 'icon-back-${variationIndex}')" />
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <label class="small text-muted fw-bold mb-2">EXTRA VIEW</label>
+                        <div class="mini-upload-container" onclick="document.getElementById('extra-${variationIndex}').click()">
+                            <img id="preview-extra-${variationIndex}" class="mini-preview-img" />
+                            <i class="bi bi-image fs-3 text-muted" id="icon-extra-${variationIndex}"></i>
+                            <input type="file" id="extra-${variationIndex}" name="Variations[${variationIndex}].ExtraImage" class="mini-upload-input" accept="image/*" required onchange="previewMini(event, 'preview-extra-${variationIndex}', 'icon-extra-${variationIndex}')" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        wrapper.insertAdjacentHTML('beforeend', newBlock);
+        variationIndex++;
+    }
+
+    // 3. Handles removing a block and repairing the sequence for C#
+    function removeVariation(buttonElement) {
+        // Delete the HTML block from the screen
+        buttonElement.closest('.variation-card').remove();
+
+        // Grab all remaining blocks and re-number their "name" attributes so C# doesn't crash
+        const remainingCards = document.querySelectorAll('.variation-card');
+
+        remainingCards.forEach((card, index) => {
+            const inputs = card.querySelectorAll('input');
+            inputs.forEach(input => {
+                const currentName = input.getAttribute('name');
+                if (currentName) {
+                    // Replaces the old index number with the new correct sequence (0, 1, 2...)
+                    const newName = currentName.replace(/Variations\[\d+\]/, `Variations[${index}]`);
+                    input.setAttribute('name', newName);
+                }
+            });
+        });
+
+        // Reset the master counter so the next one added is numbered correctly
+        variationIndex = remainingCards.length;
+    }
+</script>
