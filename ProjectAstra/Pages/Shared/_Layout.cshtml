@@ -1,6 +1,9 @@
-﻿@using ProjectAstra.Models
+@using ProjectAstra.Models
 @using Microsoft.EntityFrameworkCore
 @inject ProjectAstra.Models.AppDbContext DbContext
+@{
+    var currentRoute = ViewContext.RouteData.Values["page"]?.ToString();
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -34,67 +37,64 @@
         }
     }
 
-    <header class="sticky-top shadow-sm" style="z-index: 1030;">
-        <nav class="navbar navbar-expand-lg navbar-dark p-0 navbar-custom position-relative" style="background: linear-gradient(to right, #0D4F4E, #1EB580);">
-            <div class="container-fluid px-5 h-100 d-flex align-items-center justify-content-between">
+    <!--- NAVBAR --->
+    <header class="sticky-top shadow-sm" style="z-index: 2020;">
+        <nav class="navbar navbar-dark p-0 navbar-custom position-relative" style="background: linear-gradient(to right, #0D4F4E, #1EB580);">
+            <div class="container-fluid px-3 px-sm-5 h-100 d-flex align-items-center justify-content-between position-relative">
 
-                <a class="navbar-brand m-0 p-0 fs-3 fw-bold" asp-area="" asp-page="/Index" style="font-family: sans-serif; letter-spacing: -0.5px;">
-                    <span style="color: #ffffff;">ASTRA'S</span><span style="color: #D6A019; font-family: 'Georgia', serif; font-style: italic; margin-left: 2px;">Closet</span>
-                </a>
+                <div class="d-flex align-items-center gap-3" style="z-index: 1010;">
+                    <button type="button" id="menuToggleBtn" class="text-white bg-transparent border-0 p-0 fs-2 d-flex align-items-center d-lg-none" style="cursor: pointer; min-width: 40px;">
+                        <i class="bi bi-list" id="menuToggleIcon"></i>
+                    </button>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#astraNavbar" aria-controls="astraNavbar" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse h-100" id="astraNavbar">
-                    @{
-                        var currentRoute = ViewContext.RouteData.Values["page"]?.ToString();
-                    }
-
-                    <ul class="navbar-nav navbar-center-desktop mx-auto d-flex align-items-center gap-4 py-2 py-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link custom-nav-link @(currentRoute == "/Index" ? "active" : "")" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link custom-nav-link @(currentRoute == "/Store" ? "active" : "")" asp-area="" asp-page="/Store">Store</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link custom-nav-link @(currentRoute == "/MyOrders" ? "active" : "")" asp-area="" asp-page="/MyOrders">My Orders</a>
-                        </li>
-                    </ul>
-
-                    <div class="d-flex align-items-center bg-white px-3 py-1 rounded shadow-sm ms-auto" style="height: 34px; gap: 18px;">
-                        <a href="javascript:void(0)" id="openSearchBtn" class="text-dark nav-icon-btn d-flex align-items-center">
-                            <i class="bi bi-search fs-5"></i>
+                    <div class="navbar-brand-wrapper">
+                        <a class="navbar-brand m-0 p-0 fs-3 fw-bold" asp-area="" asp-page="/Index" style="font-family: sans-serif; letter-spacing: -0.5px;">
+                            <span style="color: #ffffff;">ASTRA'S</span><span style="color: #D6A019; font-family: 'Georgia', serif; font-style: italic; margin-left: 2px;">Closet</span>
                         </a>
-
-                        @if (User.Identity != null && User.Identity.IsAuthenticated)
-                        {
-                            <a href="javascript:void(0)" id="openProfileBtn" class="text-dark nav-icon-btn d-flex align-items-center">
-                                <i class="bi bi-person-check-fill fs-4" style="color: #1EB580;"></i>
-                            </a>
-                            <a href="javascript:void(0)" id="openCartBtn" class="text-dark nav-icon-btn cart-btn position-relative d-inline-block">
-                                <i class="bi bi-cart3 fs-4"></i>
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle d-flex align-items-center justify-content-center"
-                                      style="background-color: #D6A019; color: #0D4F4E; font-size: 0.7rem; width: 18px; height: 18px; font-weight: bold; transform: translate(-15%, -25%) !important;">
-                                    @cartItemCount
-                                </span>
-                            </a>
-                        }
-                        else
-                        {
-                            <a class="text-dark nav-icon-btn d-flex align-items-center @(currentRoute == "/Login" ? "active" : "")" asp-area="" asp-page="/Login">
-                                <i class="bi bi-person fs-4"></i>
-                            </a>
-                            <a href="/Login" class="text-dark nav-icon-btn cart-btn position-relative d-inline-block">
-                                <i class="bi bi-cart3 fs-4"></i>
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle d-flex align-items-center justify-content-center"
-                                      style="background-color: #D6A019; color: #0D4F4E; font-size: 0.7rem; width: 18px; height: 18px; font-weight: bold; transform: translate(-15%, -25%) !important;">
-                                    0
-                                </span>
-                            </a>
-                        }
                     </div>
+                </div>
+
+                <!--- DESKTOP LINKS (GEOMETRIC CENTER FIX) --->
+                <div class="d-none d-lg-block position-absolute start-50 translate-middle-x h-100">
+                    <ul class="navbar-nav h-100 d-flex flex-row align-items-center gap-4 p-0 m-0">
+                        <li class="nav-item"><a class="nav-link custom-nav-link @(currentRoute == "/Index" ? "active" : "")" asp-area="" asp-page="/Index">Home</a></li>
+                        <li class="nav-item"><a class="nav-link custom-nav-link @(currentRoute == "/Store" ? "active" : "")" asp-area="" asp-page="/Store">Store</a></li>
+                        <li class="nav-item"><a class="nav-link custom-nav-link @(currentRoute == "/MyOrders" ? "active" : "")" asp-area="" asp-page="/MyOrders">My Orders</a></li>
+                    </ul>
+                </div>
+
+                <!--- UTILITY UTILS --->
+                <div class="utility-capsule d-flex align-items-center bg-white px-3 py-1 rounded shadow-sm" style="height: 34px; gap: 18px; z-index: 1010;">
+                    <a href="javascript:void(0)" id="openSearchBtn" class="text-dark nav-icon-btn d-flex align-items-center">
+                        <i class="bi bi-search fs-5"></i>
+                    </a>
+
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+                    {
+                        <a href="javascript:void(0)" id="openProfileBtn" class="text-dark nav-icon-btn d-flex align-items-center">
+                            <i class="bi bi-person-check-fill fs-4" style="color: #1EB580;"></i>
+                        </a>
+                        <a href="javascript:void(0)" id="openCartBtn" class="text-dark nav-icon-btn cart-btn position-relative d-inline-block">
+                            <i class="bi bi-cart3 fs-4"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle d-flex align-items-center justify-content-center"
+                                  style="background-color: #D6A019; color: #0D4F4E; font-size: 0.7rem; width: 18px; height: 18px; font-weight: bold; transform: translate(-15%, -25%) !important;">
+                                @cartItemCount
+                            </span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="text-dark nav-icon-btn d-flex align-items-center @(currentRoute == "/Login" ? "active" : "")" asp-area="" asp-page="/Login">
+                            <i class="bi bi-person fs-4"></i>
+                        </a>
+                        <a href="/Login" class="text-dark nav-icon-btn cart-btn position-relative d-inline-block">
+                            <i class="bi bi-cart3 fs-4"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle d-flex align-items-center justify-content-center"
+                                  style="background-color: #D6A019; color: #0D4F4E; font-size: 0.7rem; width: 18px; height: 18px; font-weight: bold; transform: translate(-15%, -25%) !important;">
+                                0
+                            </span>
+                        </a>
+                    }
                 </div>
 
             </div>
@@ -105,15 +105,31 @@
         </div>
     </header>
 
+    <!--- MOBILE MENU NAVIGATION SIDEBAR --->
+    <div id="menuOverlay" class="menu-overlay"></div>
+
+    <div id="menuDrawer" class="menu-drawer">
+        <div class="p-3 d-flex flex-column gap-2 mt-4 pt-3">
+            <a class="sidebar-nav-btn @(currentRoute == "/Index" ? "active" : "")" asp-area="" asp-page="/Index">
+                Home <i class="bi bi-arrow-right ms-auto d-inline d-sm-none fs-5 text-muted"></i>
+            </a>
+            <a class="sidebar-nav-btn @(currentRoute == "/Store" ? "active" : "")" asp-area="" asp-page="/Store">
+                Store <i class="bi bi-arrow-right ms-auto d-inline d-sm-none fs-5 text-muted"></i>
+            </a>
+            <a class="sidebar-nav-btn @(currentRoute == "/MyOrders" ? "active" : "")" asp-area="" asp-page="/MyOrders">
+                My Orders <i class="bi bi-arrow-right ms-auto d-inline d-sm-none fs-5 text-muted"></i>
+            </a>
+        </div>
+    </div>
+
     <div class="container-fluid px-5">
         <main role="main" class="pb-3">
             @RenderBody()
-
         </main>
     </div>
 
+    <!--- FOOTER --->
     <hr class="footer-divider" />
-
     <footer class="astra-footer">
         <div class="footer-muted">
             <div class="container">
@@ -163,6 +179,7 @@
         </div>
     </footer>
 
+    <!--- SEARCH COMPONENTS--->
     <div id="searchOverlay" class="search-overlay"></div>
     <div id="searchDrawer" class="search-drawer">
         <div class="d-flex align-items-center justify-content-between px-4 pt-5 pb-3">
@@ -184,6 +201,7 @@
         </div>
     </div>
 
+    <!--- CART COMPONENTS --->
     <div id="cartOverlay" class="search-overlay"></div>
     <div id="cartDrawer" class="search-drawer cart-drawer-bg d-flex flex-column justify-content-between">
         <div class="d-flex flex-column h-100">
@@ -249,6 +267,7 @@
         </div>
     </div>
 
+    <!--- PROFILE COMPONENTS --->
     <div id="profileOverlay" class="search-overlay"></div>
     <div id="profileDrawer" class="search-drawer cart-drawer-bg d-flex flex-column justify-content-between">
         <div>
@@ -258,7 +277,6 @@
                     <i class="bi bi-x-lg fs-4"></i>
                 </button>
             </div>
-
             <div class="px-4 py-5 mt-2 text-center">
                 <div class="mb-3">
                     <i class="bi bi-person-circle text-warning" style="font-size: 4rem;"></i>
@@ -272,9 +290,7 @@
                     }
                     <a href="/MyOrders" class="btn btn-outline-light w-100 fw-bold text-uppercase py-2">My Orders</a>
                     <a href="/Settings" class="btn btn-outline-light w-100 fw-bold text-uppercase py-2">Settings</a>
-
                     <hr class="border-secondary my-2" />
-
                     <a href="/Logout" class="btn btn-danger w-100 fw-bold text-uppercase py-2">Sign Out</a>
                 </div>
             </div>
@@ -288,67 +304,113 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            // --- SEARCH DRAWER ---
+            // HAMBURGER MENU DRAWER 
+            function openMenu() {
+                $('#menuDrawer').addClass('active');
+                $('#menuOverlay').addClass('active');
+                $('#menuToggleIcon').removeClass('bi-list').addClass('bi-x-lg');
+                lockLayoutContext();
+            }
+
+            // Global layout lockers
+            function lockLayoutContext() {
+                $('body').css('overflow', 'hidden');
+                var $header = $('header');
+                var headerHeight = $header.outerHeight();
+                if ($(window).scrollTop() === 0) {
+                    $header.next('div').css('padding-top', headerHeight + 'px');
+                }
+                $header.addClass('fixed-top').removeClass('sticky-top');
+            }
+
+            function unlockLayoutContext() {
+                $('body').css('overflow', '');
+                var $header = $('header');
+                $header.addClass('sticky-top').removeClass('fixed-top');
+                $header.next('div').css('padding-top', '');
+            }
+
+            function closeMenu() {
+                $('#menuDrawer').removeClass('active');
+                $('#menuOverlay').removeClass('active');
+                $('#menuToggleIcon').removeClass('bi-x-lg').addClass('bi-list');
+                unlockLayoutContext();
+            }
+
+            $('#menuToggleBtn').on('click', function (e) {
+                e.preventDefault();
+                if ($('#menuDrawer').hasClass('active')) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
+            });
+
+            $('#menuOverlay').on('click', closeMenu);
+
+            $(window).on('resize', function () {
+                if ($(window).width() >= 992) {
+                    if ($('#menuDrawer').hasClass('active')) {
+                        closeMenu();
+                    }
+                }
+            });
+
+            // -- Sidebars popup ( SEARCH, CART, PROFILE) ---
+            // Search Drawer
             $('#openSearchBtn').on('click', function (e) {
                 e.preventDefault();
                 $('#searchOverlay').addClass('active');
                 $('#searchDrawer').addClass('active');
-                $('body').css('overflow', 'hidden');
-
-                setTimeout(function() {
-                    $('#sidebarSearchInput').focus();
-                }, 280);
+                lockLayoutContext();
+                setTimeout(function() { $('#sidebarSearchInput').focus(); }, 280);
             });
-
             function clearSearchContext() {
                 $('#searchOverlay').removeClass('active');
                 $('#searchDrawer').removeClass('active');
-                $('body').css('overflow', '');
+                unlockLayoutContext();
             }
-
             $('#closeSearchBtn, #searchOverlay').on('click', clearSearchContext);
 
-
-            // --- CART DRAWER ---
+            // Cart Drawer
             $('#openCartBtn').on('click', function (e) {
                 e.preventDefault();
                 $('#cartOverlay').addClass('active');
                 $('#cartDrawer').addClass('active');
-                $('body').css('overflow', 'hidden');
+                lockLayoutContext();
             });
-
             function clearCartContext() {
                 $('#cartOverlay').removeClass('active');
                 $('#cartDrawer').removeClass('active');
-                $('body').css('overflow', '');
+                unlockLayoutContext();
             }
-
             $('#closeCartBtn, #cartOverlay').on('click', clearCartContext);
 
-            // --- PROFILE DRAWER ---
+            // Profile Drawer
             $('#openProfileBtn').on('click', function (e) {
                 e.preventDefault();
                 $('#profileOverlay').addClass('active');
                 $('#profileDrawer').addClass('active');
-                $('body').css('overflow', 'hidden');
+                lockLayoutContext();
             });
-
             function clearProfileContext() {
                 $('#profileOverlay').removeClass('active');
                 $('#profileDrawer').removeClass('active');
-                $('body').css('overflow', '');
+                unlockLayoutContext();
             }
-
             $('#closeProfileBtn, #profileOverlay').on('click', clearProfileContext);
 
+            // --- GLOBAL ESCAPE KEY ---
             $(document).on('keydown', function (e) {
                 if (e.key === 'Escape') {
+                    closeMenu();
                     clearSearchContext();
                     clearCartContext();
                     clearProfileContext();
                 }
             });
 
+            // --- DEEPLINK HOOK FOR AUTOMATIC CART POPUP ---
             const urlParams = new URLSearchParams(window.location.search);
             if(urlParams.get('openCart') === 'true') {
                 $('#openCartBtn').click();
@@ -357,7 +419,6 @@
 
         });
     </script>
-
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>
