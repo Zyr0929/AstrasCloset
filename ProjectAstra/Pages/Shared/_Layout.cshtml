@@ -1,4 +1,7 @@
-﻿@{
+@using ProjectAstra.Models
+@using Microsoft.EntityFrameworkCore
+@inject ProjectAstra.Models.AppDbContext DbContext
+@{
     var currentRoute = ViewContext.RouteData.Values["page"]?.ToString();
 }
 
@@ -15,23 +18,43 @@
 </head>
 
 <body>
+    @{
+        // --- CART DATA FETCHING LOGIC ---
+        var cartItems = new List<CartItem>();
+        int cartItemCount = 0;
+        decimal cartSubtotal = 0;
+
+        if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            cartItems = DbContext.CartItems
+            .Include(c => c.Product)
+            .ThenInclude(p => p.Variations)
+            .Where(c => c.Username == User.Identity.Name)
+            .ToList();
+
+            cartItemCount = cartItems.Sum(c => c.Quantity);
+            cartSubtotal = cartItems.Sum(c => c.UnitPrice * c.Quantity);
+        }
+    }
+
     <!--- NAVBAR --->
-        <header class="sticky-top shadow-sm" style="z-index: 2020;">
-            <nav class="navbar navbar-dark p-0 navbar-custom position-relative" style="background: linear-gradient(to right, #0D4F4E, #1EB580);">
-                <div class="container-fluid px-3 px-sm-5 h-100 d-flex align-items-center justify-content-between position-relative">
+    <header class="sticky-top shadow-sm" style="z-index: 2020;">
+        <nav class="navbar navbar-dark p-0 navbar-custom position-relative" style="background: linear-gradient(to right, #0D4F4E, #1EB580);">
+            <div class="container-fluid px-3 px-sm-5 h-100 d-flex align-items-center justify-content-between position-relative">
 
-                    <div class="d-flex align-items-center gap-3" style="z-index: 1010;">
-                        <button type="button" id="menuToggleBtn" class="text-white bg-transparent border-0 p-0 fs-2 d-flex align-items-center d-lg-none" style="cursor: pointer; min-width: 40px;">
-                            <i class="bi bi-list" id="menuToggleIcon"></i>
-                        </button>
+                <div class="d-flex align-items-center gap-3" style="z-index: 1010;">
+                    <button type="button" id="menuToggleBtn" class="text-white bg-transparent border-0 p-0 fs-2 d-flex align-items-center d-lg-none" style="cursor: pointer; min-width: 40px;">
+                        <i class="bi bi-list" id="menuToggleIcon"></i>
+                    </button>
 
-                        <div class="navbar-brand-wrapper">
-                            <a class="navbar-brand m-0 p-0 fs-3 fw-bold" asp-area="" asp-page="/Index" style="font-family: sans-serif; letter-spacing: -0.5px;">
-                                <span style="color: #ffffff;">ASTRA'S</span><span style="color: #D6A019; font-family: 'Georgia', serif; font-style: italic; margin-left: 2px;">Closet</span>
-                            </a>
-                        </div>
+                    <div class="navbar-brand-wrapper">
+                        <a class="navbar-brand m-0 p-0 fs-3 fw-bold" asp-area="" asp-page="/Index" style="font-family: sans-serif; letter-spacing: -0.5px;">
+                            <span style="color: #ffffff;">ASTRA'S</span><span style="color: #D6A019; font-family: 'Georgia', serif; font-style: italic; margin-left: 2px;">Closet</span>
+                        </a>
                     </div>
+                </div>
 
+                <!--- DESKTOP LINKS (GEOMETRIC CENTER FIX) --->
                 <div class="d-none d-lg-block position-absolute start-50 translate-middle-x h-100">
                     <ul class="navbar-nav h-100 d-flex flex-row align-items-center gap-4 p-0 m-0">
                         <li class="nav-item"><a class="nav-link custom-nav-link @(currentRoute == "/Index" ? "active" : "")" asp-area="" asp-page="/Index">Home</a></li>
@@ -40,40 +63,47 @@
                     </ul>
                 </div>
 
-                    <div class="utility-capsule d-flex align-items-center bg-white px-3 py-1 rounded shadow-sm" style="height: 34px; gap: 18px; z-index: 1010;">
-                        <a href="javascript:void(0)" id="openSearchBtn" class="text-dark nav-icon-btn d-flex align-items-center">
-                            <i class="bi bi-search fs-5"></i>
+                <!--- UTILITY UTILS --->
+                <div class="utility-capsule d-flex align-items-center bg-white px-3 py-1 rounded shadow-sm" style="height: 34px; gap: 18px; z-index: 1010;">
+                    <a href="javascript:void(0)" id="openSearchBtn" class="text-dark nav-icon-btn d-flex align-items-center">
+                        <i class="bi bi-search fs-5"></i>
+                    </a>
+
+                    @if (User.Identity != null && User.Identity.IsAuthenticated)
+                    {
+                        <a href="javascript:void(0)" id="openProfileBtn" class="text-dark nav-icon-btn d-flex align-items-center">
+                            <i class="bi bi-person-check-fill fs-4" style="color: #1EB580;"></i>
                         </a>
-
-                        @if (User.Identity != null && User.Identity.IsAuthenticated)
-                        {
-                            <a href="javascript:void(0)" id="openProfileBtn" class="text-dark nav-icon-btn d-flex align-items-center">
-                                <i class="bi bi-person-check-fill fs-4" style="color: #1EB580;"></i>
-                            </a>
-                        }
-                        else
-                        {
-                            <a class="text-dark nav-icon-btn d-flex align-items-center @(currentRoute == "/Login" ? "active" : "")" asp-area="" asp-page="/Login">
-                                <i class="bi bi-person fs-4"></i>
-                            </a>
-                        }
-
                         <a href="javascript:void(0)" id="openCartBtn" class="text-dark nav-icon-btn cart-btn position-relative d-inline-block">
+                            <i class="bi bi-cart3 fs-4"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle d-flex align-items-center justify-content-center"
+                                  style="background-color: #D6A019; color: #0D4F4E; font-size: 0.7rem; width: 18px; height: 18px; font-weight: bold; transform: translate(-15%, -25%) !important;">
+                                @cartItemCount
+                            </span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="text-dark nav-icon-btn d-flex align-items-center @(currentRoute == "/Login" ? "active" : "")" asp-area="" asp-page="/Login">
+                            <i class="bi bi-person fs-4"></i>
+                        </a>
+                        <a href="/Login" class="text-dark nav-icon-btn cart-btn position-relative d-inline-block">
                             <i class="bi bi-cart3 fs-4"></i>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle d-flex align-items-center justify-content-center"
                                   style="background-color: #D6A019; color: #0D4F4E; font-size: 0.7rem; width: 18px; height: 18px; font-weight: bold; transform: translate(-15%, -25%) !important;">
                                 0
                             </span>
                         </a>
-                    </div>
-
+                    }
                 </div>
-            </nav>
 
-            <div class="countdown-custom d-flex align-items-center justify-content-center w-100" style="background-color: #D6A019; color: #0D4F4E; font-weight: 700; font-size: 1rem;">
-                Pre-Order Closes In 3d 12h 44m
             </div>
-        </header>
+        </nav>
+
+        <div class="countdown-custom d-flex align-items-center justify-content-center w-100" style="background-color: #D6A019; color: #0D4F4E; font-weight: 700; font-size: 1rem;">
+            Pre-Order Closes In 3d 12h 44m
+        </div>
+    </header>
 
     <!--- MOBILE MENU NAVIGATION SIDEBAR --->
     <div id="menuOverlay" class="menu-overlay"></div>
@@ -92,11 +122,9 @@
         </div>
     </div>
 
-    <!--- PAGE BODY --->
     <div class="container-fluid px-5">
         <main role="main" class="pb-3">
             @RenderBody()
-
         </main>
     </div>
 
@@ -106,14 +134,10 @@
         <div class="footer-muted">
             <div class="container">
                 <div class="row g-4">
-
-                    <!--Brand Column-->
                     <div class="col-12 col-md-4 col-lg-3">
                         <div class="brand-name mb-2">ASTRA'S<span>Closet</span></div>
                         <p class="brand-tagline m-0"> More than merch - a statement.<br>Designed for those who lead.</p>
                     </div>
-
-                    <!--Shop Column-->
                     <div class="col-6 col-md-2 col-lg-2 offset-lg-1">
                         <div class="footer-heading">Shop</div>
                         <ul>
@@ -124,8 +148,6 @@
                             <li> <a href="#">Windbreaker</a></li>
                         </ul>
                     </div>
-
-                    <!--Customer Care Column-->
                     <div class="col-6 col-md-3 col-lg-3">
                         <div class="footer-heading">Customer Care</div>
                         <ul>
@@ -134,8 +156,6 @@
                             <li> <a href="#">Returns & Exchanges</a></li>
                         </ul>
                     </div>
-
-                    <!--About Us Column-->
                     <div class="col-6 col-md-3 col-lg-3">
                         <div class="footer-heading">About Us</div>
                         <ul>
@@ -160,8 +180,8 @@
     </footer>
 
     <!--- SEARCH COMPONENTS--->
-    <div id="searchOverlay" class="utility-overlay"></div>
-    <div id="searchDrawer" class="utility-drawer">
+    <div id="searchOverlay" class="search-overlay"></div>
+    <div id="searchDrawer" class="search-drawer">
         <div class="d-flex align-items-center justify-content-between px-4 pt-5 pb-3">
             <div class="drawer-search-wrapper d-flex align-items-center flex-grow-1 me-3">
                 <i class="bi bi-search text-white fs-5 me-3"></i>
@@ -182,32 +202,74 @@
     </div>
 
     <!--- CART COMPONENTS --->
-    <div id="cartOverlay" class="utility-overlay"></div>
-    <div id="cartDrawer" class="utility-drawer cart-drawer-bg d-flex flex-column justify-content-between">
-        <div>
+    <div id="cartOverlay" class="search-overlay"></div>
+    <div id="cartDrawer" class="search-drawer cart-drawer-bg d-flex flex-column justify-content-between">
+        <div class="d-flex flex-column h-100">
+
             <div class="d-flex align-items-center justify-content-between px-4 py-3 border-bottom-gold">
-                <h5 class="text-white m-0 fw-bold fs-5">Your Cart (0)</h5>
+                <h5 class="text-white m-0 fw-bold fs-5">Your Cart (@cartItemCount)</h5>
                 <button type="button" id="closeCartBtn" class="text-white bg-transparent border-0 p-0 d-flex align-items-center opacity-75 hover-opacity-100">
                     <i class="bi bi-x-lg fs-4"></i>
                 </button>
             </div>
+
             <div class="px-4 py-3 border-bottom-gold pre-order-banner d-flex align-items-center justify-content-center gap-3">
                 <i class="bi bi-clock text-warning fs-3"></i>
                 <div class="text-warning fw-bold tracking-wide text-uppercase small lh-sm text-center">
                     Pre-Order Window<br><span class="fs-6">Closes In 31 Days</span>
                 </div>
             </div>
-            <div class="text-center px-4 py-5 mt-5">
-                <h3 class="fw-black text-warning tracking-wide mb-2" style="font-size: 1.65rem; font-family: sans-serif;">YOUR CART IS EMPTY!</h3>
-                <p class="text-warning opacity-75 fst-italic mb-4" style="font-family: 'Georgia', serif; font-size: 1.1rem;">Shop some of our faves</p>
-                <a href="/Store" class="btn btn-gold-fill w-100 py-2.5 fw-bold tracking-wider text-uppercase rounded-0">Start Shopping</a>
+
+            <div class="flex-grow-1 px-4 py-4" style="overflow-y: auto;">
+                @if (cartItems.Any())
+                {
+                    <div class="d-flex flex-column gap-4">
+                        @foreach (var item in cartItems)
+                        {
+                            var variation = item.Product.Variations.FirstOrDefault(v => v.ColorName == item.SelectedColor) ?? item.Product.Variations.FirstOrDefault();
+
+                            <div class="d-flex align-items-center">
+                                <img src="@variation?.FrontImage" style="width: 75px; height: 75px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);" />
+                                <div class="ms-3 text-white w-100">
+                                    <div class="fw-bold mb-1" style="font-size: 0.95rem;">@item.Product.Name</div>
+                                    <div class="text-white-50 small mb-1">Color: @item.SelectedColor | Size: @item.SelectedSize</div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="text-warning fw-bold">₱@item.UnitPrice.ToString("F2")</span>
+                                        <span class="text-white-50 small">Qty: @item.Quantity</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center mt-5 pt-4">
+                        <h3 class="fw-black text-warning tracking-wide mb-2" style="font-size: 1.65rem; font-family: sans-serif;">YOUR CART IS EMPTY!</h3>
+                        <p class="text-warning opacity-75 fst-italic mb-4" style="font-family: 'Georgia', serif; font-size: 1.1rem;">Shop some of our faves</p>
+                        <a href="/Store" class="btn w-100 py-2.5 fw-bold tracking-wider text-uppercase rounded-0" style="background-color: #D6A019; color: #121212;">Start Shopping</a>
+                    </div>
+                }
             </div>
+
+            @if (cartItems.Any())
+            {
+                <div class="px-4 py-4" style="background-color: rgba(0,0,0,0.25); border-top: 1px solid rgba(214, 160, 25, 0.3);">
+                    <div class="d-flex justify-content-between text-white fw-bold mb-3 fs-5">
+                        <span>Subtotal:</span>
+                        <span class="text-warning">₱@cartSubtotal.ToString("F2")</span>
+                    </div>
+                    <a href="/Checkout" class="btn w-100 py-3 fw-bold tracking-wider text-uppercase rounded-0" style="background-color: #D6A019; color: #121212;">
+                        Proceed to Checkout
+                    </a>
+                </div>
+            }
         </div>
     </div>
 
     <!--- PROFILE COMPONENTS --->
-    <div id="profileOverlay" class="utility-overlay"></div>
-    <div id="profileDrawer" class="utility-drawer cart-drawer-bg d-flex flex-column justify-content-between">
+    <div id="profileOverlay" class="search-overlay"></div>
+    <div id="profileDrawer" class="search-drawer cart-drawer-bg d-flex flex-column justify-content-between">
         <div>
             <div class="d-flex align-items-center justify-content-between px-4 py-3 border-bottom-gold">
                 <h5 class="text-white m-0 fw-bold fs-5">My Account</h5>
@@ -219,7 +281,8 @@
                 <div class="mb-3">
                     <i class="bi bi-person-circle text-warning" style="font-size: 4rem;"></i>
                 </div>
-                <h4 class="text-white fw-bold mb-1">Hello, @User.Identity.Name!</h4>
+                <h4 class="text-white fw-bold mb-1">Hello, @(User.Identity?.Name ?? "Guest")!</h4>
+
                 <div class="mt-5 d-flex flex-column gap-3 px-2">
                     @if (User.IsInRole("Admin"))
                     {
@@ -249,6 +312,24 @@
                 lockLayoutContext();
             }
 
+            // Global layout lockers
+            function lockLayoutContext() {
+                $('body').css('overflow', 'hidden');
+                var $header = $('header');
+                var headerHeight = $header.outerHeight();
+                if ($(window).scrollTop() === 0) {
+                    $header.next('div').css('padding-top', headerHeight + 'px');
+                }
+                $header.addClass('fixed-top').removeClass('sticky-top');
+            }
+
+            function unlockLayoutContext() {
+                $('body').css('overflow', '');
+                var $header = $('header');
+                $header.addClass('sticky-top').removeClass('fixed-top');
+                $header.next('div').css('padding-top', '');
+            }
+
             function closeMenu() {
                 $('#menuDrawer').removeClass('active');
                 $('#menuOverlay').removeClass('active');
@@ -267,7 +348,6 @@
 
             $('#menuOverlay').on('click', closeMenu);
 
-            //auto close, tinamad na
             $(window).on('resize', function () {
                 if ($(window).width() >= 992) {
                     if ($('#menuDrawer').hasClass('active')) {
@@ -275,23 +355,6 @@
                     }
                 }
             });
-
-            function lockLayoutContext() {
-                $('body').css('overflow', 'hidden');
-                var $header = $('header');
-                var headerHeight = $header.outerHeight();
-                if ($(window).scrollTop() === 0) {
-                    $header.next('div').css('padding-top', headerHeight + 'px');
-                }
-                $header.addClass('fixed-top').removeClass('sticky-top');
-            }
-
-            function unlockLayoutContext() {
-                $('body').css('overflow', '');
-                var $header = $('header');
-                $header.addClass('sticky-top').removeClass('fixed-top');
-                $header.next('div').css('padding-top', '');
-            }
 
             // -- Sidebars popup ( SEARCH, CART, PROFILE) ---
             // Search Drawer
@@ -346,6 +409,14 @@
                     clearProfileContext();
                 }
             });
+
+            // --- DEEPLINK HOOK FOR AUTOMATIC CART POPUP ---
+            const urlParams = new URLSearchParams(window.location.search);
+            if(urlParams.get('openCart') === 'true') {
+                $('#openCartBtn').click();
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+
         });
     </script>
     @await RenderSectionAsync("Scripts", required: false)

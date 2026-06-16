@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Astra Admin</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <style>
+        body {
+            background-color: #ffffff;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .admin-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .admin-sidebar {
+            width: 260px;
+            background-color: #0D4F4E; 
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 1000;
+        }
+
+        .admin-main-content {
+            flex-grow: 1;
+            margin-left: 260px;
+            min-height: 100vh;
+        }
+
+        .sidebar-brand {
+            padding: 30px 24px;
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-box {
+            background-color: #0a3b3a;
+            color: #D6A019;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .admin-nav-link {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 1.05rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+            .admin-nav-link:hover {
+                color: #D6A019;
+                background-color: rgba(255,255,255,0.05);
+            }
+
+            .admin-nav-link.active {
+                color: #D6A019;
+                background-color: rgba(214, 160, 25, 0.05);
+                border-left: 4px solid #D6A019;
+                text-shadow: 0 0 12px rgba(214, 160, 25, 0.6);
+            }
+
+                .admin-nav-link.active i {
+                    filter: drop-shadow(0 0 6px rgba(214, 160, 25, 0.8));
+                }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 20px 24px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">
+                ASTRA'S <span class="brand-box">Closet</span>
+            </div>
+
+            @{
+                var currentRoute = ViewContext.RouteData.Values["page"]?.ToString();
+            }
+
+            <div class="d-flex flex-column mt-3">
+                <a href="/Admin" class="admin-nav-link @(currentRoute == "/Admin" ? "active" : "")">
+                    <i class="bi bi-grid fs-5"></i> Overview
+                </a>
+                <a href="/Admin/Orders" class="admin-nav-link @(currentRoute == "/Admin/Orders" ? "active" : "")">
+                    <i class="bi bi-box-seam fs-5"></i> My Orders
+                </a>
+                <a href="#" class="admin-nav-link">
+                    <i class="bi bi-bell fs-5"></i> Notifications
+                </a>
+                <a href="#" class="admin-nav-link">
+                    <i class="bi bi-heart fs-5"></i> Wishlist
+                </a>
+                <a href="#" class="admin-nav-link">
+                    <i class="bi bi-gear fs-5"></i> Settings
+                </a>
+
+                <a href="/AddProduct" class="admin-nav-link @(currentRoute == "/AddProduct" ? "active" : "")">
+                    <i class="bi bi-plus-circle fs-5"></i> Add New Product
+                </a>
+            </div>
+
+            <div class="sidebar-footer">
+                <img src="https://ui-avatars.com/api/?name=Admin+User&background=D6A019&color=fff" class="rounded-circle" width="40" height="40" alt="Admin" />
+                <div class="flex-grow-1 lh-sm overflow-hidden">
+                    <div class="fw-bold text-white text-truncate">Admin User</div>
+                    <div class="small text-white-50 text-truncate" style="font-size: 0.75rem;">
+                        @(User.Identity?.Name ?? "admin@astra.com")
+                    </div>
+                </div>
+                <a href="/Logout" class="text-white opacity-75 hover-opacity-100">
+                    <i class="bi bi-box-arrow-right fs-5"></i>
+                </a>
+            </div>
+        </aside>
+
+        <main class="admin-main-content">
+            @RenderBody()
+        </main>
+
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

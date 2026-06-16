@@ -1,37 +1,38 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using ProjectAstra.Models; 
-using ProjectAstra.Services; 
+using System.Linq;
+using System.Threading.Tasks;
+using ProjectAstra.Models;
 
 namespace ProjectAstra.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ProductService _productService; 
+        private readonly AppDbContext _context;
 
         public List<List<ApparelProduct>> ProductPages { get; set; } = new();
         public int TotalPages { get; set; }
 
-        // automatically passes the single shared service here
-        public IndexModel(ProductService productService)
+        public IndexModel(AppDbContext context)
         {
-            _productService = productService;
+            _context = context;
         }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            // data from the shared service pointer
-            var allProducts = _productService.GetAllProducts();
-            int itemsPerPage = 4;
+            var trendingProducts = await _context.Products
+                .Include(p => p.Variations)
+                .Take(4)
+                .ToListAsync();
 
-            for (int i = 0; i < allProducts.Count; i += itemsPerPage)
+            int itemsPerPage = 4;
+            for (int i = 0; i < trendingProducts.Count; i += itemsPerPage)
             {
-                ProductPages.Add(allProducts.GetRange(i, Math.Min(itemsPerPage, allProducts.Count - i)));
+                ProductPages.Add(trendingProducts.Skip(i).Take(itemsPerPage).ToList());
             }
 
-            TotalPages = ProductPages.Count;
-            if (TotalPages == 0) TotalPages = 1;
+            TotalPages = ProductPages.Count == 0 ? 1 : ProductPages.Count;
         }
     }
 }
