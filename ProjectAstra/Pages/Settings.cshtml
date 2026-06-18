@@ -1,0 +1,85 @@
+﻿@page
+@model ProjectAstra.Pages.SettingsModel
+@{
+    ViewData["Title"] = "Store Settings";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4 py-5" style="font-family: 'Inter', sans-serif; max-width: 1000px;">
+
+    <div class="mb-5">
+        <h2 style="font-weight: 800; color: #121212;">Store Settings</h2>
+        <p style="color: #666;">Control your global storefront lifecycle and pre-order phases.</p>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.StatusMessage))
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm border-0" role="alert" style="background-color: #d1e7dd; color: #0f5132;">
+            <i class="bi bi-check-circle-fill me-2"></i> @Model.StatusMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card shadow-sm border-0 rounded-3 mb-5">
+        <div class="card-header bg-white border-bottom py-3 px-4">
+            <h5 class="mb-0 fw-bold" style="color: #0D4F4E;"><i class="bi bi-sliders text-warning me-2"></i> Phase Control Configuration</h5>
+        </div>
+
+        <div class="card-body p-4 p-md-5 bg-light">
+            <form method="post">
+                <div class="row g-5">
+
+                    <div class="col-md-7 border-end pe-md-5">
+
+                        <div class="mb-4">
+                            <label class="fw-bold mb-2 text-dark text-uppercase tracking-wider small">Current Store Phase</label>
+                            <select class="form-select form-select-lg shadow-none border-secondary" name="CurrentPhase" style="font-size: 1rem;" required>
+                                <option value="Preorder" selected="@(Model.CurrentPhase == "Preorder")">Phase 1: Pre-Order Active</option>
+                                <option value="Validation" selected="@(Model.CurrentPhase == "Validation")">Phase 2: Validation & Stock Prep</option>
+                                <option value="Claiming" selected="@(Model.CurrentPhase == "Claiming")">Phase 3: Claiming Active</option>
+                            </select>
+                            <div class="form-text mt-2"><i class="bi bi-info-circle me-1"></i> Changing this will immediately update the global banner on all storefront pages.</div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="fw-bold mb-2 text-dark text-uppercase tracking-wider small">Pre-Order Deadline</label>
+                            <input type="datetime-local" class="form-control form-control-lg shadow-none border-secondary"
+                                   name="PreorderDeadline"
+                                   value="@Model.PreorderDeadline.ToString("yyyy-MM-ddTHH:mm")"
+                                   style="font-size: 1rem;" required>
+                            <div class="form-text mt-2"><i class="bi bi-info-circle me-1"></i> The layout countdown timer will tick down to this exact second.</div>
+                        </div>
+
+                        <div class="mt-5 pt-3">
+                            <button type="submit" class="btn fw-bold px-5 py-3 text-uppercase tracking-wider shadow-sm" style="background-color: #D6A019; color: #fff;">
+                                Save Configuration <i class="bi bi-save ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-5 ps-md-4 d-flex flex-column justify-content-center">
+                        <div class="p-4 rounded-3" style="background-color: #ffffff; border: 1px solid #e0e0e0;">
+                            <h6 class="fw-bold text-dark text-uppercase mb-3"><i class="bi bi-book me-2 text-muted"></i> Phase Guide</h6>
+
+                            <div class="mb-3">
+                                <span class="badge" style="background-color: #D6A019; color: #0D4F4E;">Phase 1: Pre-Order</span>
+                                <p class="small text-muted mt-1 mb-0 lh-sm">Customers can browse the store, add items to their cart, and checkout. The live countdown timer will be visible.</p>
+                            </div>
+
+                            <div class="mb-3">
+                                <span class="badge" style="background-color: #0D4F4E; color: #D6A019;">Phase 2: Validation</span>
+                                <p class="small text-muted mt-1 mb-0 lh-sm">The timer disappears. The store displays a "Closed for validation" banner. Used while you prepare physical stock.</p>
+                            </div>
+
+                            <div>
+                                <span class="badge" style="background-color: #1EB580; color: #ffffff;">Phase 3: Claiming</span>
+                                <p class="small text-muted mt-1 mb-0 lh-sm">The store displays a "Ready for pickup" banner alerting students to grab their merchandise.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
