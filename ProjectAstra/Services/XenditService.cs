@@ -1,5 +1,4 @@
-﻿using Xendit.net.Model.Invoice;
-using Xendit.net.Enum;
+﻿using Xendit.net.Enum;
 using Xendit.net.Model.Invoice;
 using Xendit.net.Struct;
 
@@ -25,18 +24,25 @@ public class XenditService
             null
         );
 
-        var invoice = await invoiceClient.Create(new InvoiceParameter
-        {
-            ExternalId = orderId,
-            Amount = (long)amount,
-            PayerEmail = email,
-            Description = $"Order {orderId}",
+        var invoice = await invoiceClient.Create(
+            new InvoiceParameter
+            {
+                ExternalId = orderId,
+                Amount = (long)amount,
+                PayerEmail = email,
+                Description = $"Order {orderId}",
 
-            PaymentMethods = new[]
-    {
-        InvoicePaymentChannelType.Gcash
-    }
-        });
+                PaymentMethods = new[]
+                {
+                    InvoicePaymentChannelType.Gcash
+                },
+
+                SuccessRedirectUrl =
+                    $"https://localhost:7245/PaymentSuccess?orderId={orderId}",
+
+                FailureRedirectUrl =
+                    $"https://localhost:7245/PaymentFailed?orderId={orderId}"
+            });
 
         return invoice.InvoiceUrl;
     }
