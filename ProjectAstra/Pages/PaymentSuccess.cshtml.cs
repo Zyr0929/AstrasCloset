@@ -9,6 +9,8 @@ public class PaymentSuccessModel : PageModel
 {
     private readonly AppDbContext _context;
 
+    public Order? Order { get; set; }
+
     public PaymentSuccessModel(AppDbContext context)
     {
         _context = context;
@@ -20,13 +22,13 @@ public class PaymentSuccessModel : PageModel
     {
         OrderId = orderId;
 
-        var order = await _context.Orders
-            .FirstOrDefaultAsync(x =>
-                x.OrderReference == orderId);
+        Order = await _context.Orders
+        .FirstOrDefaultAsync(x =>
+        x.OrderReference == orderId);
 
-        if (order != null)
+        if (Order != null)
         {
-            order.PaymentStatus = "PAID";
+            Order.PaymentStatus = "PAID";
 
             await _context.SaveChangesAsync();
         }

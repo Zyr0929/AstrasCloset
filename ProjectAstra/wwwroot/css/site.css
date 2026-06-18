@@ -1338,6 +1338,70 @@ html {
     }
 }
 
+/*-- Checkout Succesful, Xendit -> Astra Sync--*/
+
+.invoice-preview-success-container {
+    max-width: 520px;
+    margin: auto;
+    border: 2px solid #2f6f6d;
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 10px 25px rgba(0,0,0,.08);
+}
+
+.invoice-preview-success-header {
+    background: #2f6f6d;
+    color: white;
+    font-size: 30px;
+    font-weight: 700;
+    text-align: center;
+    padding: 22px;
+}
+
+.invoice-preview-success-body {
+    padding: 35px;
+}
+
+.success-status-icon {
+    width: 80px;
+    height: 80px;
+    margin: auto;
+    margin-bottom: 20px;
+    border-radius: 50%;
+    background: #d4edda;
+    color: #198754;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+    font-weight: 700;
+}
+
+.success-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #ececec;
+}
+
+.success-detail-label {
+    color: #777;
+    font-weight: 500;
+}
+
+.success-detail-value {
+    font-weight: 700;
+    text-align: right;
+}
+
+.success-description {
+    max-width: 520px;
+    margin: auto;
+    font-size: 16px;
+}
+
 
 /* ----- AUTH | LOGIN ----- */
 
