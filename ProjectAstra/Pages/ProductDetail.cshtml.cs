@@ -31,7 +31,20 @@ namespace ProjectAstra.Pages
             if (Product == null) return RedirectToPage("/Store");
             return Page();
         }
+        public async Task<IActionResult> OnPostAddToWishlistAsync(int id)
+        {
+            if (User.Identity == null || !User.Identity.IsAuthenticated) return RedirectToPage("/Login");
 
+            var exists = await _context.WishlistItems.AnyAsync(w => w.Username == User.Identity.Name && w.ProductId == id);
+
+            if (!exists)
+            {
+                _context.WishlistItems.Add(new WishlistItem { Username = User.Identity.Name, ProductId = id });
+                await _context.SaveChangesAsync();
+            }
+
+            return Redirect($"/Store/ProductDetail/{id}");
+        }
         public async Task<IActionResult> OnPostAsync(int id)
         {
             if (User.Identity == null || !User.Identity.IsAuthenticated)

@@ -104,6 +104,10 @@
             }
 
             <div class="d-flex flex-column mt-3">
+
+                <a href="/Index" class="admin-nav-link @(currentRoute == "/AddProduct" ? "active" : "")">
+                    <i class="bi-house fs-5"></i> Home
+                </a>
                 <a href="/Admin" class="admin-nav-link @(currentRoute == "/Admin" ? "active" : "")">
                     <i class="bi bi-grid fs-5"></i> Overview
                 </a>
@@ -116,13 +120,14 @@
                 <a href="#" class="admin-nav-link">
                     <i class="bi bi-heart fs-5"></i> Wishlist
                 </a>
-                <a href="#" class="admin-nav-link">
+                <a href="/Settings" class="admin-nav-link">
                     <i class="bi bi-gear fs-5"></i> Settings
                 </a>
 
                 <a href="/AddProduct" class="admin-nav-link @(currentRoute == "/AddProduct" ? "active" : "")">
                     <i class="bi bi-plus-circle fs-5"></i> Add New Product
                 </a>
+
             </div>
 
             <div class="sidebar-footer">
