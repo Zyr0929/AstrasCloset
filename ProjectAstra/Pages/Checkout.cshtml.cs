@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ProjectAstra.Models;
+using ProjectAstra.Services;
 using System.ComponentModel.DataAnnotations;
 
 namespace ProjectAstra.Pages;
@@ -9,9 +10,14 @@ namespace ProjectAstra.Pages;
 public class CheckoutModel : PageModel
 {
     private readonly AppDbContext _context;
-    public CheckoutModel(AppDbContext context)
+    private readonly XenditService _xendit;
+
+    public CheckoutModel(
+    AppDbContext context,
+    XenditService xendit)
     {
         _context = context;
+        _xendit = xendit;
     }
 
     public User CurrentUser { get; set; }
@@ -82,8 +88,30 @@ public class CheckoutModel : PageModel
         if (!ModelState.IsValid)
             return Page();
 
-        TempData["Success"] = "Checkout form submitted successfully.";
+        var orderRef = $"ORD-{DateTime.Now:yyyyMMddHHmmss}";
 
-        return RedirectToPage("/Checkout");
+        var order = new Order
+        {
+            OrderReference = orderRef,
+            Username = CurrentUser.Username,
+            CustomerName = $"{CurrentUser.FirstName} {CurrentUser.LastName}",
+            YearSection = Form.YearSectionStatus,
+            TotalItems = TotalItems,
+            TotalPrice = Subtotal,
+            PaymentStatus = "TO PAY",
+            OrderDate = DateTime.Now
+        };
+
+        _context.Orders.Add(order);
+
+        await _context.SaveChangesAsync();
+
+        var paymentUrl = await _xendit.CreateInvoice(
+            orderRef,
+            Subtotal,
+            CurrentUser.Username
+        );
+
+        return Redirect(paymentUrl);
     }
 }
