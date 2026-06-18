@@ -20,13 +20,15 @@
 <body>
 
     @{
-        // --- CART DATA FETCHING LOGIC ---
+        // --- CART & USER DATA FETCHING LOGIC ---
         var cartItems = new List<CartItem>();
         int cartItemCount = 0;
         decimal cartSubtotal = 0;
+        string userAstraId = "";
 
         if (User.Identity != null && User.Identity.IsAuthenticated)
         {
+            // Fetch Cart
             cartItems = DbContext.CartItems
             .Include(c => c.Product)
             .ThenInclude(p => p.Variations)
@@ -35,7 +37,15 @@
 
             cartItemCount = cartItems.Sum(c => c.Quantity);
             cartSubtotal = cartItems.Sum(c => c.UnitPrice * c.Quantity);
+
+            // Fetch AstraID directly from the Users table
+            var currentUser = DbContext.Users.FirstOrDefault(u => u.Username == User.Identity.Name);
+            if (currentUser != null)
+            {
+                userAstraId = currentUser.AstraId;
+            }
         }
+
         // --- FETCH STORE SETTINGS ---
         var storeSetting = DbContext.StoreSettings.FirstOrDefault();
         if (storeSetting == null)
@@ -50,7 +60,6 @@
         }
     }
 
-    <!--- NAVBAR --->
     <header class="sticky-top shadow-sm" style="z-index: 2020;">
         <nav class="navbar navbar-dark p-0 navbar-custom position-relative" style="background: linear-gradient(to right, #0D4F4E, #1EB580);">
             <div class="container-fluid px-3 px-sm-5 h-100 d-flex align-items-center justify-content-between position-relative">
@@ -67,7 +76,6 @@
                     </div>
                 </div>
 
-                <!--- DESKTOP LINKS (GEOMETRIC CENTER FIX) --->
                 <div class="d-none d-lg-block position-absolute start-50 translate-middle-x h-100">
                     <ul class="navbar-nav h-100 d-flex flex-row align-items-center gap-4 p-0 m-0">
                         <li class="nav-item"><a class="nav-link custom-nav-link @(currentRoute == "/Index" ? "active" : "")" asp-area="" asp-page="/Index">Home</a></li>
@@ -76,7 +84,6 @@
                     </ul>
                 </div>
 
-                <!--- UTILITY UTILS --->
                 <div class="utility-capsule d-flex align-items-center bg-white px-3 py-1 rounded shadow-sm" style="height: 34px; gap: 18px; z-index: 1010;">
                     <a href="javascript:void(0)" id="openSearchBtn" class="text-dark nav-icon-btn d-flex align-items-center">
                         <i class="bi bi-search fs-5"></i>
@@ -137,7 +144,6 @@
         }
     </header>
 
-    <!--- MOBILE MENU NAVIGATION SIDEBAR --->
     <div id="menuOverlay" class="menu-overlay"></div>
 
     <div id="menuDrawer" class="menu-drawer">
@@ -160,7 +166,6 @@
         </main>
     </div>
 
-    <!--- FOOTER --->
     <hr class="footer-divider" />
     <footer class="astra-footer">
         <div class="footer-muted">
@@ -211,7 +216,6 @@
         </div>
     </footer>
 
-    <!--- SEARCH COMPONENTS--->
     <div id="searchOverlay" class="search-overlay"></div>
     <div id="searchDrawer" class="search-drawer">
         <div class="d-flex align-items-center justify-content-between px-4 pt-5 pb-3">
@@ -233,7 +237,6 @@
         </div>
     </div>
 
-    <!--- CART COMPONENTS --->
     <div id="cartOverlay" class="search-overlay"></div>
     <div id="cartDrawer" class="search-drawer cart-drawer-bg d-flex flex-column justify-content-between">
         <div class="d-flex flex-column h-100">
@@ -299,7 +302,6 @@
         </div>
     </div>
 
-    <!--- PROFILE COMPONENTS --->
     <div id="profileOverlay" class="search-overlay"></div>
     <div id="profileDrawer" class="search-drawer cart-drawer-bg d-flex flex-column justify-content-between">
         <div>
@@ -314,6 +316,13 @@
                     <i class="bi bi-person-circle text-warning" style="font-size: 4rem;"></i>
                 </div>
                 <h4 class="text-white fw-bold mb-1">Hello, @(User.FindFirst("FirstName")?.Value ?? "Guest")!</h4>
+
+                @if (User.Identity != null && User.Identity.IsAuthenticated && !string.IsNullOrEmpty(userAstraId))
+                {
+                    <div class="text-white-50 small mt-1 tracking-wider" style="font-family: monospace; font-size: 0.85rem; letter-spacing: 1px;">
+                        <i class="bi bi-person-badge me-1"></i> @userAstraId
+                    </div>
+                }
 
                 <div class="mt-5 d-flex flex-column gap-3 px-2">
                     @if (User.IsInRole("Admin"))
@@ -337,7 +346,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            // HAMBURGER MENU DRAWER 
+            // HAMBURGER MENU DRAWER
             function openMenu() {
                 $('#menuDrawer').addClass('active');
                 $('#menuOverlay').addClass('active');
@@ -473,7 +482,7 @@
                     const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
 
                     countdownBanner.innerHTML = `Pre-Order Closes In ${days}d ${hours}h ${minutes}m`;
-                }, 1000); 
+                }, 1000);
             }
     </script>
     @await RenderSectionAsync("Scripts", required: false)

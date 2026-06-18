@@ -2,301 +2,197 @@
 @model ProjectAstra.Pages.CheckoutModel
 
 @{
-	ViewData["Title"] = "Checkout";
+    ViewData["Title"] = "Checkout";
+
+    string GetImg(string path, string viewType)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return $"https://via.placeholder.com/400x500.png?text=No+{viewType}";
+        }
+        return path;
+    }
 }
 
 <div class="container checkout-wrapper py-5">
+    <div class="row g-5 align-items-start">
 
-	<div class="row g-5 align-items-start">
+        <div class="col-lg-6">
+            <div class="checkout-progress mb-5">
+                <div class="progress" style="height: 4px;">
+                    <div class="progress-bar bg-dark" style="width: 100%;"></div>
+                </div>
+            </div>
 
-		<!-- LEFT SIDE -->
-		<div class="col-lg-6">
-			<!-- Progress -->
-			<div class="checkout-progress mb-5">
-				<div class="progress">
-					<div class="progress-bar"></div>
-				</div>
-			</div>
+            <form method="post">
+                <div class="checkout-section">
+                    <h2 class="checkout-title fw-bold text-dark mb-4">CONTACT</h2>
+                    <div class="mb-3">
+                        <label class="form-label custom-label text-uppercase small fw-bold text-muted tracking-wider">Astra Email</label>
+                        <input class="form-control custom-input checkout-readonly bg-light" value="@Model.CurrentUser.Username" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label custom-label text-uppercase small fw-bold text-muted tracking-wider">First Name</label>
+                        <input class="form-control custom-input checkout-readonly bg-light" value="@Model.CurrentUser.FirstName" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label custom-label text-uppercase small fw-bold text-muted tracking-wider">Last Name</label>
+                        <input class="form-control custom-input checkout-readonly bg-light" value="@Model.CurrentUser.LastName" readonly />
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label custom-label text-uppercase small fw-bold text-muted tracking-wider">Contact Number</label>
+                        <input class="form-control custom-input checkout-readonly bg-light" value="@Model.CurrentUser.ContactNumber" readonly />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label custom-label text-uppercase small fw-bold text-muted tracking-wider">Facebook Link</label>
+                        <input asp-for="Form.FacebookLink" class="form-control custom-input" placeholder="https://facebook.com/yourprofile" />
+                    </div>
+                    <div class="mb-5">
+                        <label class="form-label custom-label text-uppercase small fw-bold text-muted tracking-wider">Telegram Username</label>
+                        <input asp-for="Form.TelegramUsername" class="form-control custom-input" placeholder="@@username" />
+                    </div>
+                </div>
 
-			<form method="post">
-				<!-- CONTACT -->
-				<div class="checkout-section">
-					<h2 class="checkout-title">
-						CONTACT
-					</h2>
-					<div class="mb-3">
-						<label class="form-label custom-label text-uppercase">
-							Astra Email
-						</label>
-						<input class="form-control custom-input checkout-readonly"
-							   value="@Model.CurrentUser.Username"
-							   readonly />
-					</div>
-					<div class="mb-3">
-						<label class="form-label custom-label text-uppercase">
-							First Name
-						</label>
-						<input class="form-control custom-input checkout-readonly"
-							   value="@Model.CurrentUser.FirstName"
-							   readonly />
-					</div>
-					<div class="mb-3">
-						<label class="form-label custom-label text-uppercase">
-							Last Name
-						</label>
-						<input class="form-control custom-input checkout-readonly"
-							   value="@Model.CurrentUser.LastName"
-							   readonly />
-					</div>
-					<div class="mb-4">
-						<label class="form-label custom-label text-uppercase">
-							Contact Number
-						</label>
-						<input class="form-control custom-input checkout-readonly"
-							   value="@Model.CurrentUser.ContactNumber"
-							   readonly />
-					</div>
-					<div class="mb-3">
-						<label class="form-label custom-label text-uppercase">
-							Facebook Link
-						</label>
-						<input asp-for="Form.FacebookLink"
-							   class="form-control custom-input"
-							   placeholder="https://facebook.com/yourprofile" />
-					</div>
-					<div class="mb-5">
-						<label class="form-label custom-label text-uppercase">
-							Telegram Username
-						</label>
-						<input asp-for="Form.TelegramUsername"
-							   class="form-control custom-input"
-							   placeholder="@@username" />
-					</div>
-				</div>
+                <div class="checkout-section">
+                    <h2 class="checkout-title fw-bold text-dark mb-3">YEAR & SECTION / STATUS</h2>
+                    <p class="checkout-description text-muted small mb-4 lh-sm">
+                        Please select your year level and section or Status (Faculty, Employee, Alumni, Other Programs).
+                        For irregular students, kindly choose only one year and section where you are enrolled to receive your product.
+                    </p>
 
-				<!-- YEAR SECTION -->
-				<div class="checkout-section">
-					<h2 class="checkout-title">
-						YEAR & SECTION / STATUS
-					</h2>
-					<p class="checkout-description">
-						Please select your year level and section or Status
-						(Faculty, Employee, Alumni, Other Programs).
+                    <select asp-for="Form.YearSectionStatus" class="form-select custom-input py-3 mb-2" required>
+                        <option value="">Select a Year & Section or Status</option>
+                        <optgroup label="1st Year">
+                            <option>1A</option>
+                            <option>1B</option>
+                            <option>1C</option>
+                            <option>1D</option>
+                            <option>1E</option>
+                            <option>1F</option>
+                            <option>1G</option>
+                            <option>1H</option>
+                        </optgroup>
+                        <optgroup label="2nd Year">
+                            <option>2A</option>
+                            <option>2B</option>
+                            <option>2C</option>
+                            <option>2D</option>
+                            <option>2E</option>
+                            <option>2F</option>
+                            <option>2G</option>
+                            <option>2H</option>
+                        </optgroup>
+                        <optgroup label="3rd Year">
+                            <option>3A</option>
+                            <option>3B</option>
+                            <option>3C</option>
+                            <option>3D</option>
+                            <option>3E</option>
+                            <option>3F</option>
+                            <option>3G</option>
+                            <option>3H</option>
+                        </optgroup>
+                        <optgroup label="4th Year">
+                            <option>4A</option>
+                            <option>4B</option>
+                            <option>4C</option>
+                            <option>4D</option>
+                            <option>4E</option>
+                            <option>4F</option>
+                            <option>4G</option>
+                            <option>4H</option>
+                        </optgroup>
+                        <optgroup label="Other">
+                            <option>Alumni</option>
+                            <option>Faculty</option>
+                            <option>Employee</option>
+                            <option>Other Program</option>
+                        </optgroup>
+                    </select>
+                    <span asp-validation-for="Form.YearSectionStatus" class="text-danger small fw-bold"></span>
+                </div>
 
-						For irregular students, kindly choose only one
-						year and section where you are enrolled to
-						receive your product.
-					</p>
+                <div class="checkout-section mt-5 border-top pt-4">
+                    <h2 class="checkout-title fw-bold text-dark mb-3">PAYMENT</h2>
+                    <div class="payment-card border rounded p-3 bg-light d-flex align-items-center">
+                        <div class="form-check m-0">
+                            <input class="form-check-input" checked type="radio" />
+                        </div>
+                        <div class="ms-3">
+                            <div class="fw-bold text-dark">GCash e-Wallet</div>
+                            <small class="text-muted">Xendit Secure Payment Gateway</small>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn w-100 mt-4 py-3 fw-bold text-uppercase tracking-wider rounded-0" style="background-color: #D6A019; color: #fff; font-size: 1.1rem;">
+                        Proceed to Payment <i class="bi bi-shield-lock-fill ms-2"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
 
-					<select asp-for="Form.YearSectionStatus"
-							class="form-select custom-input mb-2">
-						<option value="">
-							Select a Year & Section or Status
+        <div class="col-lg-6 checkout-right-panel ps-lg-5">
+            <div class="checkout-summary-sticky p-4 rounded bg-light" style="border: 1px solid #e0e0e0;">
 
-						</option>
+                <h5 class="fw-bold text-dark mb-4 pb-2 border-bottom text-uppercase tracking-wider">Order Summary</h5>
 
-						<option>1A</option>
-						<option>1B</option>
-						<option>1C</option>
-						<option>1D</option>
-						<option>1E</option>
-						<option>1F</option>
-						<option>1G</option>
-						<option>1H</option>
+                @foreach (var item in Model.CheckoutItems)
+                {
+                    <div class="d-flex mb-4 align-items-center">
+                        <div class="position-relative me-3">
+                            <div class="border shadow-sm rounded" style="width:75px; height:75px; overflow:hidden;">
+                                @{
+                                    var variation = item.Product.Variations.FirstOrDefault(v => v.ColorName == item.SelectedColor) ?? item.Product.Variations.FirstOrDefault();
+                                }
+                                <img src="@GetImg(variation?.FrontImage, "Product")" class="checkout-thumb w-100 h-100" style="object-fit: cover;" onerror="this.onerror=null;this.src='https://via.placeholder.com/400x500.png?text=Image+Missing';" />
+                            </div>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-dark text-white shadow-sm" style="font-size: 0.75rem;">
+                                @item.Quantity
+                            </span>
+                        </div>
 
-						<option>2A</option>
-						<option>2B</option>
-						<option>2C</option>
-						<option>2D</option>
-						<option>2E</option>
-						<option>2F</option>
-						<option>2G</option>
-						<option>2H</option>
+                        <div class="flex-grow-1">
+                            <div class="fw-bold text-dark mb-1" style="font-size: 0.95rem;">@item.Product.Name</div>
+                            <div class="text-muted small">@item.SelectedSize / @item.SelectedColor</div>
+                        </div>
 
-						<option>3A</option>
-						<option>3B</option>
-						<option>3C</option>
-						<option>3D</option>
-						<option>3E</option>
-						<option>3F</option>
-						<option>3G</option>
-						<option>3H</option>
+                        <div class="text-end fw-bold text-dark ms-3">
+                            ₱@((item.UnitPrice * item.Quantity).ToString("N2"))
+                        </div>
+                    </div>
+                }
 
-						<option>4A</option>
-						<option>4B</option>
-						<option>4C</option>
-						<option>4D</option>
-						<option>4E</option>
-						<option>4F</option>
-						<option>4G</option>
-						<option>4H</option>
+                <hr class="border-secondary opacity-25 my-4" />
 
-						<option>Alumni</option>
-						<option>Faculty</option>
-						<option>Employee</option>
-						<option>Other Program</option>
+                <div class="d-flex justify-content-between mb-3 text-muted small fw-bold text-uppercase tracking-wider">
+                    <span>Subtotal (@Model.TotalItems items)</span>
+                    <span class="text-dark">₱@Model.Subtotal.ToString("N2")</span>
+                </div>
 
-					</select>
+                <div class="d-flex justify-content-between align-items-end mb-4 pt-2">
+                    <div class="fs-5 fw-bold text-dark text-uppercase tracking-wide">Total</div>
+                    <div>
+                        <small class="text-muted fw-bold me-1">PHP</small>
+                        <span class="fs-2 fw-bold text-dark">₱@Model.Subtotal.ToString("N2")</span>
+                    </div>
+                </div>
 
-					<span asp-validation-for="Form.YearSectionStatus"
-						  class="text-danger">
-					</span>
+                <div class="border border-success rounded p-3 bg-white shadow-sm d-flex align-items-center">
+                    <div class="me-3">
+                        <div class="rounded-circle bg-success text-white d-flex justify-content-center align-items-center" style="width:40px; height:40px; font-size:20px;">
+                            <i class="bi bi-heart-fill"></i>
+                        </div>
+                    </div>
+                    <div class="small text-muted lh-sm">
+                        Your order helps fund future <strong class="text-dark">Nursing Student Council</strong> programs and student initiatives. Every piece makes a difference.
+                    </div>
+                </div>
 
-				</div>
-
-				<!-- PAYMENT -->
-				<div class="checkout-section mt-5">
-					<h2 class="checkout-title">
-						PAYMENT
-					</h2>
-					<div class="payment-card">
-						<div class="form-check">
-							<input class="form-check-input"
-								   checked
-								   type="radio" />
-						</div>
-						<div class="ms-3">
-							<div class="fw-bold">
-								GCash
-							</div>
-							<small class="text-muted">
-								Xendit Sandbox Ready
-							</small>
-						</div>
-					</div>
-					<button type="submit"
-							class="btn btn-PAYMENT w-100 mt-4">
-						PAY NOW
-					</button>
-				</div>
-			</form>
-		</div>
-
-		<!-- RIGHT SIDE -->
-		<div class="col-lg-6 checkout-right-panel">
-			<div class="checkout-summary-sticky">
-				@foreach (var item in Model.CheckoutItems)
-				{
-					<div class="d-flex mb-4">
-						<!-- IMAGE -->
-						<div class="position-relative me-3">
-
-							<div class="border shadow-sm"
-								 style="
-		                                    width:80px;
-		                                    height:80px;
-		                                    overflow:hidden;">
-								@{
-									var variation = item.Product.Variations
-									.FirstOrDefault(v => v.ColorName == item.SelectedColor)
-									?? item.Product.Variations.FirstOrDefault();
-								}
-								<img src="@variation?.FrontImage"
-									 class="checkout-thumb" />
-							</div>
-							<span class="
-		                                position-absolute
-		                                top-0
-		                                start-100
-		                                translate-middle
-		                                badge
-		                                rounded-pill
-		                                bg-warning
-		                                text-dark">
-
-								@item.Quantity
-							</span>
-						</div>
-
-						<!-- PRODUCT INFO -->
-						<div class="flex-grow-1">
-							<div class="fw-semibold">
-								@item.Product.Name
-							</div>
-							<div class="text-muted small">
-
-								@item.SelectedSize
-								/
-								@item.SelectedColor
-							</div>
-						</div>
-
-						<!-- PRICE -->
-						<div class="text-end fw-semibold">
-							₱@((item.UnitPrice * item.Quantity)
-													.ToString("N2"))
-						</div>
-					</div>
-				}
-
-				<hr />
-				<div class="
-                d-flex
-                justify-content-between
-                mb-4">
-					<span>
-						Subtotal · @Model.TotalItems items
-					</span>
-
-					<span class="fw-semibold">
-						₱@Model.Subtotal.ToString("N2")
-					</span>
-
-				</div>
-
-				<div class="
-                d-flex
-                justify-content-between
-                align-items-center
-                mb-5">
-					<div class="fs-2 fw-bold">
-						Total
-					</div>
-					<div>
-						<small class="text-muted me-1">
-							PHP
-						</small>
-
-						<span class="fs-1 fw-bold">
-							₱@Model.Subtotal.ToString("N2")
-						</span>
-					</div>
-				</div>
-
-				<!-- PANG DAG DAG LANG -->
-				<div class="border border-warning p-4">
-					<div class="d-flex align-items-center">
-						<div class="me-3">
-							<div class="
-                            rounded-circle
-                            bg-success
-                            text-white
-                            d-flex
-                            justify-content-center
-                            align-items-center"
-								 style="
-                                width:60px;
-                                height:60px;
-                                font-size:28px;">
-								♥
-							</div>
-						</div>
-
-						<div>
-							Your order helps fund future
-							<strong>
-								Nursing Student Council
-								programs and student initiatives.
-							</strong>
-							Every piece makes a difference.
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts
 {
-		<partial name="_ValidationScriptsPartial" />
+    <partial name="_ValidationScriptsPartial" />
 }

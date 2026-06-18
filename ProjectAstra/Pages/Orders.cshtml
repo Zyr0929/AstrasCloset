@@ -1,0 +1,84 @@
+﻿@page
+@model ProjectAstra.Pages.OrdersModel
+@{
+    ViewData["Title"] = "All Customer Orders";
+    Layout = "_AdminLayout";
+
+    string GetImg(string path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return "https://via.placeholder.com/50.png?text=Img";
+        }
+        return path;
+    }
+}
+
+<div class="container-fluid px-4 py-5">
+    <h2 class="fw-bold mb-4">Customer Orders Management</h2>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">ORDER REF</th>
+                            <th>CUSTOMER</th>
+                            <th>YEAR/SEC</th>
+                            <th>DATE</th>
+                            <th>STATUS</th>
+                            <th>TOTAL</th>
+                            <th>ITEMS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model.AllOrders)
+                        {
+                            <tr>
+                                <td class="ps-4 fw-bold">@order.OrderReference</td>
+                                <td>@order.CustomerName<br /><small class="text-muted">@order.Username</small></td>
+                                <td>@order.YearSection</td>
+                                <td>@order.OrderDate.ToString("MMM dd, HH:mm")</td>
+                                <td><span class="badge bg-primary">@order.PaymentStatus</span></td>
+                                <td class="fw-bold">₱@order.TotalPrice.ToString("F2")</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-dark" data-bs-toggle="collapse" data-bs-target="#items-@order.Id">
+                                        View (@order.OrderItems.Count)
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="collapse" id="items-@order.Id">
+                                <td colspan="7" class="bg-light p-3">
+                                    <div class="d-flex flex-wrap gap-3">
+                                        @foreach (var item in order.OrderItems)
+                                        {
+                                            var variation = item.Product.Variations
+                                            .FirstOrDefault(v => v.ColorName == item.SelectedColor)
+                                            ?? item.Product.Variations.FirstOrDefault();
+
+                                            <div class="border p-2 bg-white rounded shadow-sm d-flex align-items-center" style="width: 280px;">
+
+                                                <img src="@GetImg(variation?.FrontImage)"
+                                                     style="width: 50px; height: 50px; object-fit: cover; border: 1px solid #eee;"
+                                                     class="rounded me-3 d-block"
+                                                     onerror="this.onerror=null;this.src='https://via.placeholder.com/50.png?text=Img';"
+                                                     alt="Product Thumb" />
+
+                                                <div>
+                                                    <div class="fw-bold small lh-sm mb-1">@item.Product.Name</div>
+                                                    <div class="text-muted small lh-1">@item.SelectedColor / @item.SelectedSize</div>
+                                                    <div class="text-muted small mt-1">Qty: @item.Quantity | ₱@item.UnitPrice.ToString("F2")</div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

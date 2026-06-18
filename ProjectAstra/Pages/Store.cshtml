@@ -8,151 +8,169 @@
     <div class="row">
 
         <div class="col-md-3 col-lg-2 pe-md-3 mb-4">
-            <div class="filter-header mb-3">Filter</div>
+            <form method="get" id="storeFilterForm">
+                <div class="filter-header mb-3 d-flex justify-content-between align-items-center">
+                    <span>Filter</span>
+                    @if (Model.Types.Any() || Model.Colors.Any() || Model.Sizes.Any() || Model.Prices.Any() || Model.Themes.Any() || Model.Materials.Any())
+                    {
+                        <a href="/Store" class="text-muted small text-decoration-underline" style="font-size: 0.75rem;">Clear All</a>
+                    }
+                </div>
 
-            <div class="filter-section">
-                <button class="filter-toggle-btn" type="button" data-bs-toggle="collapse" data-bs-target="#filterProductType" aria-expanded="false">
-                    Product Type
-                </button>
-                <div class="collapse" id="filterProductType">
-                    <div class="checkbox-container">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="typeTshirt" value="tshirt">
-                            <label class="form-check-label" for="typeTshirt">T-Shirts</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="typeHoodie" value="hoodie">
-                            <label class="form-check-label" for="typeHoodie">Hoodies</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="typeTote" value="tote">
-                            <label class="form-check-label" for="typeTote">Tote Bags</label>
+                <div class="filter-section">
+                    <button class="filter-toggle-btn w-100 text-start bg-transparent border-0 fw-bold py-2" type="button" data-bs-toggle="collapse" data-bs-target="#filterProductType">
+                        Product Type <i class="bi bi-chevron-down float-end small"></i>
+                    </button>
+                    <div class="collapse @(Model.Types.Any() ? "show" : "")" id="filterProductType">
+                        <div class="checkbox-container py-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="Types" value="T-Shirt" id="typeTshirt" onchange="this.form.submit()" @(Model.Types.Contains("T-Shirt") ? "checked" : "")>
+                                <label class="form-check-label text-muted small" for="typeTshirt">T-Shirts</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="Types" value="Hoodie" id="typeHoodie" onchange="this.form.submit()" @(Model.Types.Contains("Hoodie") ? "checked" : "")>
+                                <label class="form-check-label text-muted small" for="typeHoodie">Hoodies</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="Types" value="Tote Bag" id="typeTote" onchange="this.form.submit()" @(Model.Types.Contains("Tote Bag") ? "checked" : "")>
+                                <label class="form-check-label text-muted small" for="typeTote">Tote Bags</label>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="filter-section">
-                <button class="filter-toggle-btn" type="button" data-bs-toggle="collapse" data-bs-target="#filterColor" aria-expanded="false">
-                    Color
-                </button>
-                <div class="collapse" id="filterColor">
-                    <div class="checkbox-container">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="colorBlack" value="black">
-                            <label class="form-check-label" for="colorBlack">Black</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="colorWhite" value="white">
-                            <label class="form-check-label" for="colorWhite">White</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="colorTeal" value="teal">
-                            <label class="form-check-label" for="colorTeal">Teal</label>
+                <div class="filter-section border-top pt-2 mt-2">
+                    <button class="filter-toggle-btn w-100 text-start bg-transparent border-0 fw-bold py-2" type="button" data-bs-toggle="collapse" data-bs-target="#filterColor">
+                        Color <i class="bi bi-chevron-down float-end small"></i>
+                    </button>
+                    <div class="collapse @(Model.Colors.Any() ? "show" : "")" id="filterColor">
+                        <div class="checkbox-container py-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="Colors" value="Black" id="colorBlack" onchange="this.form.submit()" @(Model.Colors.Contains("Black") ? "checked" : "")>
+                                <label class="form-check-label text-muted small" for="colorBlack">Black</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="Colors" value="White" id="colorWhite" onchange="this.form.submit()" @(Model.Colors.Contains("White") ? "checked" : "")>
+                                <label class="form-check-label text-muted small" for="colorWhite">White</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="Colors" value="Teal" id="colorTeal" onchange="this.form.submit()" @(Model.Colors.Contains("Teal") ? "checked" : "")>
+                                <label class="form-check-label text-muted small" for="colorTeal">Teal</label>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="filter-section">
-                <button class="filter-toggle-btn" type="button" data-bs-toggle="collapse" data-bs-target="#filterSize" aria-expanded="false">
-                    Size
-                </button>
-                <div class="collapse" id="filterSize">
-                    <div class="checkbox-container">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="sizeS" value="S">
-                            <label class="form-check-label" for="sizeS">Small</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="sizeM" value="M">
-                            <label class="form-check-label" for="sizeM">Medium</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="sizeL" value="L">
-                            <label class="form-check-label" for="sizeL">Large</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="sizeXL" value="XL">
-                            <label class="form-check-label" for="sizeXL">XL (Oversized)</label>
+                <div class="filter-section border-top pt-2 mt-2">
+                    <button class="filter-toggle-btn w-100 text-start bg-transparent border-0 fw-bold py-2" type="button" data-bs-toggle="collapse" data-bs-target="#filterSize">
+                        Size <i class="bi bi-chevron-down float-end small"></i>
+                    </button>
+                    <div class="collapse @(Model.Sizes.Any() ? "show" : "")" id="filterSize">
+                        <div class="checkbox-container py-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="Sizes" value="S" id="sizeS" onchange="this.form.submit()" @(Model.Sizes.Contains("S") ? "checked" : "")>
+                                <label class="form-check-label text-muted small" for="sizeS">Small</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="Sizes" value="M" id="sizeM" onchange="this.form.submit()" @(Model.Sizes.Contains("M") ? "checked" : "")>
+                                <label class="form-check-label text-muted small" for="sizeM">Medium</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="Sizes" value="L" id="sizeL" onchange="this.form.submit()" @(Model.Sizes.Contains("L") ? "checked" : "")>
+                                <label class="form-check-label text-muted small" for="sizeL">Large</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="Sizes" value="XL" id="sizeXL" onchange="this.form.submit()" @(Model.Sizes.Contains("XL") ? "checked" : "")>
+                                <label class="form-check-label text-muted small" for="sizeXL">XL (Oversized)</label>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="filter-section">
-                <button class="filter-toggle-btn" type="button" data-bs-toggle="collapse" data-bs-target="#filterPrice" aria-expanded="false">
-                    Price
-                </button>
-                <div class="collapse" id="filterPrice">
-                    <div class="checkbox-container">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="price1" value="0-350">
-                            <label class="form-check-label" for="price1">₱0 - ₱350</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="price2" value="351-500">
-                            <label class="form-check-label" for="price2">₱351 - ₱500</label>
+                <div class="filter-section border-top pt-2 mt-2">
+                    <button class="filter-toggle-btn w-100 text-start bg-transparent border-0 fw-bold py-2" type="button" data-bs-toggle="collapse" data-bs-target="#filterPrice">
+                        Price <i class="bi bi-chevron-down float-end small"></i>
+                    </button>
+                    <div class="collapse @(Model.Prices.Any() ? "show" : "")" id="filterPrice">
+                        <div class="checkbox-container py-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="Prices" value="0-350" id="price1" onchange="this.form.submit()" @(Model.Prices.Contains("0-350") ? "checked" : "")>
+                                <label class="form-check-label text-muted small" for="price1">₱0 - ₱350</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="Prices" value="351-500" id="price2" onchange="this.form.submit()" @(Model.Prices.Contains("351-500") ? "checked" : "")>
+                                <label class="form-check-label text-muted small" for="price2">₱351 - ₱500</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="Prices" value="500+" id="price3" onchange="this.form.submit()" @(Model.Prices.Contains("500+") ? "checked" : "")>
+                                <label class="form-check-label text-muted small" for="price3">₱500+</label>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="filter-section">
-                <button class="filter-toggle-btn" type="button" data-bs-toggle="collapse" data-bs-target="#filterTheme" aria-expanded="false">
-                    Theme
-                </button>
-                <div class="collapse" id="filterTheme">
-                    <div class="checkbox-container">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="themeTamaraw" value="tamaraw">
-                            <label class="form-check-label" for="themeTamaraw">Tamaraw Series</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="themeFlorence" value="florence">
-                            <label class="form-check-label" for="themeFlorence">Florence Nightingale</label>
+                <div class="filter-section border-top pt-2 mt-2">
+                    <button class="filter-toggle-btn w-100 text-start bg-transparent border-0 fw-bold py-2" type="button" data-bs-toggle="collapse" data-bs-target="#filterTheme">
+                        Theme <i class="bi bi-chevron-down float-end small"></i>
+                    </button>
+                    <div class="collapse @(Model.Themes.Any() ? "show" : "")" id="filterTheme">
+                        <div class="checkbox-container py-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="Themes" value="Tamaraw" id="themeTamaraw" onchange="this.form.submit()" @(Model.Themes.Contains("Tamaraw") ? "checked" : "")>
+                                <label class="form-check-label text-muted small" for="themeTamaraw">Tamaraw Series</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="Themes" value="Florence" id="themeFlorence" onchange="this.form.submit()" @(Model.Themes.Contains("Florence") ? "checked" : "")>
+                                <label class="form-check-label text-muted small" for="themeFlorence">Florence Nightingale</label>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="filter-section">
-                <button class="filter-toggle-btn" type="button" data-bs-toggle="collapse" data-bs-target="#filterMaterial" aria-expanded="false">
-                    Material
-                </button>
-                <div class="collapse" id="filterMaterial">
-                    <div class="checkbox-container">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="matCotton" value="cotton">
-                            <label class="form-check-label" for="matCotton">100% Premium Cotton</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="matCVC" value="cvc">
-                            <label class="form-check-label" for="matCVC">CVC Cotton Blend</label>
+                <div class="filter-section border-top pt-2 mt-2">
+                    <button class="filter-toggle-btn w-100 text-start bg-transparent border-0 fw-bold py-2" type="button" data-bs-toggle="collapse" data-bs-target="#filterMaterial">
+                        Material <i class="bi bi-chevron-down float-end small"></i>
+                    </button>
+                    <div class="collapse @(Model.Materials.Any() ? "show" : "")" id="filterMaterial">
+                        <div class="checkbox-container py-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="Materials" value="Cotton" id="matCotton" onchange="this.form.submit()" @(Model.Materials.Contains("Cotton") ? "checked" : "")>
+                                <label class="form-check-label text-muted small" for="matCotton">100% Premium Cotton</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="Materials" value="CVC" id="matCVC" onchange="this.form.submit()" @(Model.Materials.Contains("CVC") ? "checked" : "")>
+                                <label class="form-check-label text-muted small" for="matCVC">CVC Cotton Blend</label>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
+            </form>
         </div>
 
         <div class="col-md-9 col-lg-10 ps-md-4">
-            <h1 class="store-title">Nursing Merch</h1>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="store-title m-0 fw-bold" style="letter-spacing: -0.5px;">Nursing Merch</h1>
+                <span class="text-muted small">Showing @Model.StoreProducts.Count Results</span>
+            </div>
 
             <div class="row g-4">
                 @if (Model.StoreProducts != null && Model.StoreProducts.Any())
                 {
                     @foreach (var product in Model.StoreProducts)
                     {
-                        <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                        <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
                             <partial name="_ProductCard" model="product" />
                         </div>
                     }
                 }
                 else
                 {
-                    <div class="col-12 text-center my-5">
-                        <p class="text-muted fs-5">No products currently available inside the store service.</p>
+                    <div class="col-12 text-center my-5 py-5 border rounded bg-light">
+                        <i class="bi bi-search fs-1 text-muted mb-3 d-block"></i>
+                        <h5 class="fw-bold text-dark">No products found</h5>
+                        <p class="text-muted mb-4">Try removing some filters to see more results.</p>
+                        <a href="/Store" class="btn text-white fw-bold tracking-wider rounded-0" style="background-color: #0D4F4E;">Clear All Filters</a>
                     </div>
                 }
             </div>

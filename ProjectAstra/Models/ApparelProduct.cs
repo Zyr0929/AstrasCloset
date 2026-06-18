@@ -9,6 +9,9 @@ namespace ProjectAstra.Models
         public int Id { get; set; }
         public string Name { get; set; }
 
+        // ADDED THE CATEGORY PROPERTY HERE
+        public string Category { get; set; }
+
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
 
@@ -19,9 +22,17 @@ namespace ProjectAstra.Models
 
         protected ProductBase() { }
 
-        protected ProductBase(int id, string name, decimal price, double rating, int reviewCount, string tag, string description)
+        // Updated the constructor to include 'category'
+        protected ProductBase(int id, string name, string category, decimal price, double rating, int reviewCount, string tag, string description)
         {
-            Id = id; Name = name; Price = price; Rating = rating; ReviewCount = reviewCount; Tag = tag; Description = description;
+            Id = id;
+            Name = name;
+            Category = category;
+            Price = price;
+            Rating = rating;
+            ReviewCount = reviewCount;
+            Tag = tag;
+            Description = description;
         }
     }
 
@@ -62,8 +73,8 @@ namespace ProjectAstra.Models
 
         public ApparelProduct() { }
 
-        public ApparelProduct(int id, string name, decimal price, double rating, int reviewCount, string tag, string description, List<ColorVariation> variations, List<string> availableSizes, List<CustomerReview> reviews, int maxLimit = 10)
-            : base(id, name, price, rating, reviewCount, tag, description)
+        public ApparelProduct(int id, string name, string category, decimal price, double rating, int reviewCount, string tag, string description, List<ColorVariation> variations, List<string> availableSizes, List<CustomerReview> reviews, int maxLimit = 10)
+            : base(id, name, category, price, rating, reviewCount, tag, description)
         {
             Variations = variations; AvailableSizes = availableSizes; Reviews = reviews; MaximumPurchaseLimit = maxLimit;
         }
