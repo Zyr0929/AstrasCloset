@@ -9,18 +9,14 @@ namespace ProjectAstra.Pages;
 public class CheckoutModel : PageModel
 {
     private readonly AppDbContext _context;
-
     public CheckoutModel(AppDbContext context)
     {
         _context = context;
     }
 
     public User CurrentUser { get; set; }
-
     public List<CartItem> CheckoutItems { get; set; } = new();
-
     public decimal Subtotal { get; set; }
-
     public int TotalItems { get; set; }
 
     [BindProperty]
@@ -30,9 +26,7 @@ public class CheckoutModel : PageModel
     {
         [Required]
         public string YearSectionStatus { get; set; } = "";
-
         public string? FacebookLink { get; set; }
-
         public string? TelegramUsername { get; set; }
     }
 
@@ -49,6 +43,7 @@ public class CheckoutModel : PageModel
 
         CheckoutItems = await _context.CartItems
             .Include(x => x.Product)
+            .ThenInclude(p => p.Variations)
             .Where(x => x.Username == User.Identity.Name)
             .ToListAsync();
 
@@ -87,33 +82,8 @@ public class CheckoutModel : PageModel
         if (!ModelState.IsValid)
             return Page();
 
-        var order = new Order
-        {
-            OrderReference =
-                $"ASTRA-{DateTime.Now:yyyy}-{Guid.NewGuid().ToString()[..6].ToUpper()}",
+        TempData["Success"] = "Checkout form submitted successfully.";
 
-            Username = CurrentUser.Username,
-
-            CustomerName =
-                $"{CurrentUser.FirstName} {CurrentUser.LastName}",
-
-            YearSection = Form.YearSectionStatus,
-
-            TotalItems = TotalItems,
-
-            TotalPrice = Subtotal,
-
-            PaymentStatus = "TO PAY",
-
-            OrderDate = DateTime.Now
-        };
-
-        _context.Orders.Add(order);
-
-        await _context.SaveChangesAsync();
-
-        return RedirectToPage(
-            "/OrderSubmitted",
-            new { id = order.Id });
+        return RedirectToPage("/Checkout");
     }
 }
