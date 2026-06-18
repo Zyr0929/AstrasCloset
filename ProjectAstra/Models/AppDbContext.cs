@@ -13,5 +13,7 @@ namespace ProjectAstra.Models
         public DbSet<ApparelProduct> Products { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<StoreSetting> StoreSettings { get; set; }
+        public DbSet<WishlistItem> WishlistItems { get; set; }
     }
 }

@@ -18,6 +18,7 @@
 </head>
 
 <body>
+
     @{
         // --- CART DATA FETCHING LOGIC ---
         var cartItems = new List<CartItem>();
@@ -34,6 +35,18 @@
 
             cartItemCount = cartItems.Sum(c => c.Quantity);
             cartSubtotal = cartItems.Sum(c => c.UnitPrice * c.Quantity);
+        }
+        // --- FETCH STORE SETTINGS ---
+        var storeSetting = DbContext.StoreSettings.FirstOrDefault();
+        if (storeSetting == null)
+        {
+            storeSetting = new StoreSetting
+            {
+                CurrentPhase = "Preorder",
+                PreorderDeadline = DateTime.Now.AddDays(3)
+            };
+            DbContext.StoreSettings.Add(storeSetting);
+            DbContext.SaveChanges();
         }
     }
 
@@ -100,9 +113,28 @@
             </div>
         </nav>
 
-        <div class="countdown-custom d-flex align-items-center justify-content-center w-100" style="background-color: #D6A019; color: #0D4F4E; font-weight: 700; font-size: 1rem;">
-            Pre-Order Closes In 3d 12h 44m
-        </div>
+        @if (storeSetting.CurrentPhase == "Preorder")
+        {
+            <div id="dynamic-countdown-banner" class="countdown-custom d-flex align-items-center justify-content-center w-100"
+                 style="background-color: #D6A019; color: #0D4F4E; font-weight: 700; font-size: 1rem;"
+                 data-deadline="@storeSetting.PreorderDeadline.ToString("yyyy-MM-ddTHH:mm:ss")">
+                Calculating time remaining...
+            </div>
+        }
+        else if (storeSetting.CurrentPhase == "Validation")
+        {
+            <div class="countdown-custom d-flex align-items-center justify-content-center w-100"
+                 style="background-color: #0D4F4E; color: #D6A019; font-weight: 700; font-size: 1rem;">
+                <i class="bi bi-shield-lock-fill me-2"></i> Validation Phase: Pre-orders are now closed.
+            </div>
+        }
+        else if (storeSetting.CurrentPhase == "Claiming")
+        {
+            <div class="countdown-custom d-flex align-items-center justify-content-center w-100"
+                 style="background-color: #1EB580; color: #ffffff; font-weight: 700; font-size: 1rem;">
+                <i class="bi bi-box2-heart-fill me-2"></i> Claiming Phase is Active: Ready for pickup!
+            </div>
+        }
     </header>
 
     <!--- MOBILE MENU NAVIGATION SIDEBAR --->
@@ -289,7 +321,8 @@
                         <a href="/Admin" class="btn btn-outline-warning w-100 fw-bold text-uppercase py-2">Admin Dashboard</a>
                     }
                     <a href="/MyOrders" class="btn btn-outline-light w-100 fw-bold text-uppercase py-2">My Orders</a>
-                    <a href="/Settings" class="btn btn-outline-light w-100 fw-bold text-uppercase py-2">Settings</a>
+                    <a href="/Wishlist" class="btn btn-outline-light w-100 fw-bold text-uppercase py-2">Wishlist</a>
+                    <a href="/ProfileSettings" class="btn btn-outline-light w-100 fw-bold text-uppercase py-2">Settings</a>
                     <hr class="border-secondary my-2" />
                     <a href="/Logout" class="btn btn-danger w-100 fw-bold text-uppercase py-2">Sign Out</a>
                 </div>
@@ -418,6 +451,30 @@
             }
 
         });
+        // --- LIVE COUNTDOWN TIMER LOGIC ---
+            const countdownBanner = document.getElementById('dynamic-countdown-banner');
+
+            if (countdownBanner) {
+                const deadlineString = countdownBanner.getAttribute('data-deadline');
+                const deadline = new Date(deadlineString).getTime();
+
+                const timerInterval = setInterval(function () {
+                    const now = new Date().getTime();
+                    const timeRemaining = deadline - now;
+
+                    if (timeRemaining <= 0) {
+                        clearInterval(timerInterval);
+                        countdownBanner.innerHTML = "Pre-Order Window Has Closed";
+                        return;
+                    }
+
+                    const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+
+                    countdownBanner.innerHTML = `Pre-Order Closes In ${days}d ${hours}h ${minutes}m`;
+                }, 1000); 
+            }
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 

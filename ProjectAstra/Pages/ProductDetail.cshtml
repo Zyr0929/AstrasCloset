@@ -1,21 +1,74 @@
 ﻿@page "/Store/ProductDetail/{id:int}"
 @model ProjectAstra.Pages.ProductDetailModel
+@inject ProjectAstra.Models.AppDbContext DbContext
 @{
     ViewData["Title"] = Model.Product.Name + " - Details";
 
+    var storeSetting = DbContext.StoreSettings.FirstOrDefault();
+    bool isPreorderActive = storeSetting == null || storeSetting.CurrentPhase == "Preorder";
+
     string GetHexColor(string colorName)
     {
-        return colorName.ToLower() switch
+        return colorName.ToLower().Trim() switch
         {
             "black" => "#000000",
             "teal" => "#0D4F4E",
             "white" => "#FFFFFF",
             "off-white" => "#F8F9FA",
             "gold" => "#D6A019",
+            "red" => "#dc3545",
+            "green" => "#28a745",
+            "blue" => "#0d6efd",
             _ => colorName
         };
     }
+
+    string GetImg(string path, string viewType)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return $"https://placehold.co/400x500/eeeeee/999999?text=No+{viewType}+Image";
+        }
+        return path;
+    }
 }
+
+<style>
+    input[name="SelectedColor"]:checked + .color-dot-selection {
+        border: 3px solid #0D4F4E !important;
+        box-shadow: 0 0 0 2px #ffffff inset;
+        transform: scale(1.1);
+    }
+
+    .color-dot-selection {
+        transition: all 0.2s ease-in-out;
+    }
+
+    .main-image-render-box {
+        min-height: 450px;
+        background-color: #f8f9fa;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .main-frame-group {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+    }
+
+    .main-preview-display {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+</style>
 
 <div class="container my-5 text-dark dynamic-detail-wrapper" style="font-family: 'Inter', sans-serif;">
     <div class="mb-4">
@@ -25,56 +78,48 @@
     </div>
 
     <form method="post">
-
-        @for (int i = 0; i < Model.Product.Variations.Count; i++)
-        {
-            <input type="radio"
-                   id="detail-color-idx-@i"
-                   name="SelectedColor"
-                   value="@Model.Product.Variations[i].ColorName"
-                   class="state-color-toggle color-idx-@i"
-                   @(i == 0 ? "checked" : "")
-                   hidden />
-        }
-
         <div class="row modern-product-grid">
 
             <div class="col-12 col-md-6 media-area">
-                <div class="product-detail-media-container">
+                <div class="product-detail-media-container d-flex gap-3">
+
                     <div class="thumbnail-selection-column">
                         @for (int i = 0; i < Model.Product.Variations.Count; i++)
                         {
                             var variation = Model.Product.Variations[i];
-                            <div class="thumb-strip-group color-thumb-grp-@i gap-3">
-                                <div class="thumb-card active" onclick="switchDetailPreview(this, 'front-@i')">
-                                    <img src="@variation.FrontImage" alt="Front Thumb" />
-                                </div>
-                                <div class="thumb-card" onclick="switchDetailPreview(this, 'back-@i')">
-                                    <img src="@variation.BackImage" alt="Back Thumb" />
-                                </div>
-                                <div class="thumb-card" onclick="switchDetailPreview(this, 'extra-@i')">
-                                    <img src="@variation.ExtraImage" alt="Extra Thumb" />
+                            <div class="color-thumb-wrapper color-thumb-grp-@i @(i == 0 ? "" : "d-none")">
+                                <div class="thumb-strip-group d-flex flex-column gap-3">
+                                    <div class="thumb-card active" onclick="switchDetailPreview(this, 'front-@i')">
+                                        <img src="@GetImg(variation.FrontImage, "Front")" alt="Front Thumb" style="width: 100%; object-fit: cover;" />
+                                    </div>
+                                    <div class="thumb-card" onclick="switchDetailPreview(this, 'back-@i')">
+                                        <img src="@GetImg(variation.BackImage, "Back")" alt="Back Thumb" style="width: 100%; object-fit: cover;" />
+                                    </div>
+                                    <div class="thumb-card" onclick="switchDetailPreview(this, 'extra-@i')">
+                                        <img src="@GetImg(variation.ExtraImage, "Extra")" alt="Extra Thumb" style="width: 100%; object-fit: cover;" />
+                                    </div>
                                 </div>
                             </div>
                         }
                     </div>
 
-                    <div class="main-image-render-box flex-grow-1">
+                    <div class="main-image-render-box flex-grow-1 rounded border">
                         @for (int i = 0; i < Model.Product.Variations.Count; i++)
                         {
                             var variation = Model.Product.Variations[i];
-                            <div class="main-frame-group image-group-idx-@i text-center w-100">
-                                <img src="@variation.FrontImage" class="img-fluid main-preview-display active-view-front-@i" alt="Front Preview" />
-                                <img src="@variation.BackImage" class="img-fluid main-preview-display d-none active-view-back-@i" alt="Back Preview" />
-                                <img src="@variation.ExtraImage" class="img-fluid main-preview-display d-none active-view-extra-@i" alt="Extra Preview" />
+                            <div class="main-frame-group image-group-idx-@i @(i == 0 ? "" : "d-none")">
+                                <img src="@GetImg(variation.FrontImage, "Front")" class="img-fluid main-preview-display active-view-front-@i" alt="Front Preview" />
+                                <img src="@GetImg(variation.BackImage, "Back")" class="img-fluid main-preview-display d-none active-view-back-@i" alt="Back Preview" />
+                                <img src="@GetImg(variation.ExtraImage, "Extra")" class="img-fluid main-preview-display d-none active-view-extra-@i" alt="Extra Preview" />
                             </div>
                         }
                     </div>
+
                 </div>
             </div>
 
             <div class="col-12 col-md-6 info-area">
-                <div class="sticky-right-panel">
+                <div class="sticky-right-panel ps-md-4">
                     <div class="product-info-panel">
                         @if (!string.IsNullOrEmpty(Model.Product.Tag))
                         {
@@ -103,8 +148,18 @@
                                 @for (int i = 0; i < Model.Product.Variations.Count; i++)
                                 {
                                     string hexColor = GetHexColor(Model.Product.Variations[i].ColorName);
-                                    <label for="detail-color-idx-@i" class="color-dot-selection d-inline-block rounded-circle"
-                                           style="background-color: @hexColor; border: 1px solid #e0e0e0;"></label>
+
+                                    <input type="radio"
+                                           name="SelectedColor"
+                                           id="detail-color-idx-@i"
+                                           value="@Model.Product.Variations[i].ColorName"
+                                           class="d-none"
+                                           onchange="switchColorGallery(@i)"
+                                           @(i == 0 ? "checked" : "") />
+
+                                    <label for="detail-color-idx-@i"
+                                           class="color-dot-selection d-inline-block rounded-circle"
+                                           style="width: 35px; height: 35px; background-color: @hexColor; border: 1px solid #ccc; cursor: pointer;"></label>
                                 }
                             </div>
                         </div>
@@ -134,9 +189,22 @@
                         </div>
                     </div>
 
-                    <div class="mt-4 action-button-frame">
-                        <button type="submit" class="btn w-100 py-3 fw-bold text-uppercase rounded-0 tracking-wider btn-preorder-submit">
-                            Pre-Order Now <i class="bi bi-bag-plus-fill ms-2"></i>
+                    <div class="mt-4 d-flex gap-2 action-button-frame">
+                        @if (isPreorderActive)
+                        {
+                            <button type="submit" class="btn flex-grow-1 py-3 fw-bold text-uppercase rounded-0 tracking-wider btn-preorder-submit">
+                                Pre-Order Now <i class="bi bi-bag-plus-fill ms-2"></i>
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn flex-grow-1 py-3 fw-bold text-uppercase rounded-0 tracking-wider text-white" style="background-color: #6c757d; border: none; cursor: not-allowed;" disabled>
+                                Pre-Orders Closed <i class="bi bi-lock-fill ms-2"></i>
+                            </button>
+                        }
+
+                        <button type="submit" asp-page-handler="AddToWishlist" class="btn py-3 px-4 rounded-0" style="background-color: #f8f9fa; border: 1px solid #ccc; color: #dc3545; transition: all 0.2s ease;" title="Save to Wishlist" onmouseover="this.style.backgroundColor='#ffeeba'" onmouseout="this.style.backgroundColor='#f8f9fa'">
+                            <i class="bi bi-heart-fill fs-5"></i>
                         </button>
                     </div>
 
@@ -224,6 +292,19 @@
         const activeTargetDisplay = rootContainer.querySelector(targetImageClass);
         if(activeTargetDisplay) {
             activeTargetDisplay.classList.remove('d-none');
+        }
+    }
+
+    function switchColorGallery(colorIndex) {
+        document.querySelectorAll('.color-thumb-wrapper').forEach(el => el.classList.add('d-none'));
+        document.querySelectorAll('.main-frame-group').forEach(el => el.classList.add('d-none'));
+
+        document.querySelector('.color-thumb-grp-' + colorIndex).classList.remove('d-none');
+        document.querySelector('.image-group-idx-' + colorIndex).classList.remove('d-none');
+
+        const firstThumb = document.querySelector('.color-thumb-grp-' + colorIndex + ' .thumb-card');
+        if (firstThumb) {
+            firstThumb.click();
         }
     }
 </script>
