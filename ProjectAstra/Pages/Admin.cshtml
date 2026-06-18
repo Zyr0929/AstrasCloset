@@ -1,8 +1,8 @@
 ﻿@page
-@model ProjectTemplate.Pages.AdminModel
+@model ProjectAstra.Pages.AdminModel
 @{
     ViewData["Title"] = "Admin Dashboard";
-    Layout = "_AdminLayout"; 
+    Layout = "_AdminLayout";
 }
 
 <div class="container-fluid px-4 py-5" style="font-family: 'Inter', sans-serif;">
@@ -16,21 +16,21 @@
         <div class="col-md-4">
             <div class="summary-card p-4 rounded" style="border: 1px solid #eee;">
                 <div class="card-title fw-bold text-muted text-uppercase small mb-2">Total Pre-Orders</div>
-                <div class="card-value display-6 fw-bold text-dark mb-1">82</div>
-                <div class="card-subtitle small text-muted">Since March 2026</div>
+                <div class="card-value display-6 fw-bold text-dark mb-1">@Model.TotalPreOrders</div>
+                <div class="card-subtitle small text-muted">All-time orders</div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="summary-card p-4 rounded" style="border: 1px solid #eee;">
                 <div class="card-title fw-bold text-muted text-uppercase small mb-2">Total Revenue Estimated</div>
-                <div class="card-value display-6 fw-bold text-dark mb-1">₱31,260.00</div>
-                <div class="card-subtitle small text-muted">Total revenue this quarter</div>
+                <div class="card-value display-6 fw-bold text-dark mb-1">₱@Model.TotalRevenue.ToString("F2")</div>
+                <div class="card-subtitle small text-muted">From verified orders</div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="summary-card bg-gray p-4 rounded" style="background-color: #f8f9fa; border: 1px solid #eee;">
                 <div class="card-title fw-bold text-muted text-uppercase small mb-2">Pending Approval</div>
-                <div class="card-value display-6 fw-bold text-dark mb-1">44</div>
+                <div class="card-value display-6 fw-bold text-dark mb-1">@Model.PendingApproval</div>
             </div>
         </div>
     </div>
@@ -39,19 +39,19 @@
         <div class="col-md-4">
             <div class="summary-card p-4 rounded" style="background-color: #fff3cd; border: 1px solid #ffe69c;">
                 <div class="card-title fw-bold text-uppercase small mb-2" style="color: #856404;">Under Assessment</div>
-                <div class="card-value display-6 fw-bold mb-1" style="color: #856404;">32</div>
+                <div class="card-value display-6 fw-bold mb-1" style="color: #856404;">@Model.UnderAssessment</div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="summary-card p-4 rounded" style="background-color: #d1e7dd; border: 1px solid #badbcc;">
                 <div class="card-title fw-bold text-uppercase small mb-2" style="color: #0f5132;">Verified Orders</div>
-                <div class="card-value display-6 fw-bold mb-1" style="color: #0f5132;">3</div>
+                <div class="card-value display-6 fw-bold mb-1" style="color: #0f5132;">@Model.VerifiedOrders</div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="summary-card p-4 rounded" style="background-color: #f8d7da; border: 1px solid #f5c2c7;">
                 <div class="card-title fw-bold text-uppercase small mb-2" style="color: #842029;">Rejected Orders</div>
-                <div class="card-value display-6 fw-bold mb-1" style="color: #842029;">6</div>
+                <div class="card-value display-6 fw-bold mb-1" style="color: #842029;">@Model.RejectedOrders</div>
             </div>
         </div>
     </div>
@@ -64,7 +64,7 @@
                         <th class="py-3 px-4 small text-muted fw-bold tracking-wider">ORDER ID</th>
                         <th class="py-3 small text-muted fw-bold tracking-wider">CUSTOMER NAME</th>
                         <th class="py-3 small text-muted fw-bold tracking-wider">YEAR & SECTION</th>
-                        <th class="py-3 small text-muted fw-bold tracking-wider">TOTAL ORDERS</th>
+                        <th class="py-3 small text-muted fw-bold tracking-wider">TOTAL ITEMS</th>
                         <th class="py-3 small text-muted fw-bold tracking-wider">TOTAL PRICE</th>
                         <th class="py-3 small text-muted fw-bold tracking-wider">PAYMENT STATUS</th>
                         <th class="py-3 small text-muted fw-bold tracking-wider">DATE ORDERED</th>
@@ -72,47 +72,53 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="fw-bold px-4" style="color: #0D4F4E;">ORD-2026-0101</td>
-                        <td class="fw-bold">Jane Doe</td>
-                        <td>2-B</td>
-                        <td>1</td>
-                        <td class="fw-bold">₱380.00</td>
-                        <td><span class="badge rounded-pill" style="background-color: rgba(214, 160, 25, 0.2); color: #D6A019; border: 1px solid #D6A019;">TO PAY</span></td>
-                        <td style="color: #1EB580; font-weight: 600;">Mar 25, 2026</td>
-                        <td class="text-end px-4"><i class="bi bi-three-dots text-muted hover-dark" style="cursor: pointer; font-size: 1.2rem;"></i></td>
-                    </tr>
-                    <tr class="bg-light">
-                        <td class="fw-bold px-4" style="color: #0D4F4E;">ORD-2026-0102</td>
-                        <td class="fw-bold">John Kilometers</td>
-                        <td>3-A</td>
-                        <td>2</td>
-                        <td class="fw-bold">₱760.00</td>
-                        <td><span class="badge rounded-pill" style="background-color: rgba(217, 83, 79, 0.1); color: #d9534f; border: 1px solid #d9534f;">INCOMPLETE</span></td>
-                        <td style="color: #d9534f; font-weight: 600;">Mar 26, 2026</td>
-                        <td class="text-end px-4"><i class="bi bi-three-dots text-muted hover-dark" style="cursor: pointer; font-size: 1.2rem;"></i></td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold px-4" style="color: #0D4F4E;">ORD-2026-0103</td>
-                        <td class="fw-bold">Jane Doe</td>
-                        <td>2-B</td>
-                        <td>1</td>
-                        <td class="fw-bold">₱380.00</td>
-                        <td><span class="badge rounded-pill" style="background-color: rgba(13, 79, 78, 0.1); color: #0D4F4E; border: 1px solid #0D4F4E;">ASSESSING</span></td>
-                        <td style="color: #1EB580; font-weight: 600;">Mar 28, 2026</td>
-                        <td class="text-end px-4"><i class="bi bi-three-dots text-muted hover-dark" style="cursor: pointer; font-size: 1.2rem;"></i></td>
-                    </tr>
+                    @if (Model.RecentOrders.Any())
+                    {
+                        @foreach (var order in Model.RecentOrders)
+                        {
+                            string badgeBg = order.PaymentStatus switch
+                            {
+                                "TO PAY" => "rgba(214, 160, 25, 0.2)",
+                                "INCOMPLETE" => "rgba(217, 83, 79, 0.1)",
+                                "ASSESSING" => "rgba(13, 79, 78, 0.1)",
+                                "VERIFIED" => "rgba(25, 135, 84, 0.1)",
+                                "REJECTED" => "rgba(220, 53, 69, 0.1)",
+                                _ => "#eee"
+                            };
+                            string badgeColor = order.PaymentStatus switch
+                            {
+                                "TO PAY" => "#D6A019",
+                                "INCOMPLETE" => "#d9534f",
+                                "ASSESSING" => "#0D4F4E",
+                                "VERIFIED" => "#198754",
+                                "REJECTED" => "#dc3545",
+                                _ => "#333"
+                            };
+
+                            <tr>
+                                <td class="fw-bold px-4" style="color: #0D4F4E;">@order.OrderReference</td>
+                                <td class="fw-bold">@order.CustomerName</td>
+                                <td>@order.YearSection</td>
+                                <td>@order.TotalItems</td>
+                                <td class="fw-bold">₱@order.TotalPrice.ToString("F2")</td>
+                                <td>
+                                    <span class="badge rounded-pill" style="background-color: @badgeBg; color: @badgeColor; border: 1px solid @badgeColor;">
+                                        @order.PaymentStatus
+                                    </span>
+                                </td>
+                                <td style="font-weight: 600; color: #666;">@order.OrderDate.ToString("MMM dd, yyyy")</td>
+                                <td class="text-end px-4"><i class="bi bi-three-dots text-muted hover-dark" style="cursor: pointer; font-size: 1.2rem;"></i></td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8" class="text-center py-5 text-muted fst-italic">No orders have been placed yet.</td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
-
-        <div class="d-flex justify-content-between align-items-center p-3 px-4">
-            <span style="font-size: 0.8rem; color: #888; font-weight: 600; letter-spacing: 0.5px;">SHOWING PAGE 1 OF 17 (82 ORDERS)</span>
-            <div>
-                <button class="btn btn-sm btn-light border me-1"><i class="bi bi-chevron-left"></i></button>
-                <button class="btn btn-sm btn-light border"><i class="bi bi-chevron-right"></i></button>
-            </div>
-        </div>
     </div>
-
 </div>
