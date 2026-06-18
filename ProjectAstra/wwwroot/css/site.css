@@ -21,7 +21,25 @@ html {
     overflow-x: hidden;
 }
 
-/* ----- UNIVERSAL | NAV BAR | AND ITS SIDEBARS----- */
+#cartOverlay,
+#profileOverlay,
+#searchOverlay,
+.cart-overlay,
+.profile-overlay,
+.search-overlay {
+    z-index: 2050 !important;
+}
+
+#cartDrawer,
+#profileDrawer,
+#searchDrawer,
+.cart-drawer,
+.profile-drawer,
+.search-drawer {
+    z-index: 2100 !important;
+}
+
+/* ----- UNIVERSAL | NAV BAR | AND ITS SIDEBARS----- gyera naging ganap dito perds, sakit sa ulo */
 .custom-nav-link {
     color: #D6A019 !important;
     font-family: 'Arial Black', Impact, sans-serif;
@@ -55,13 +73,11 @@ html {
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-
     .custom-nav-link:hover::after,
     .custom-nav-link.active::after {
         transform: scaleX(1);
         transform-origin: bottom left;
     }
-
 
 .nav-icon-btn {
     display: inline-block;
@@ -74,11 +90,9 @@ html {
         color: #1EB580 !important;
     }
 
-
 .cart-btn:hover {
     animation: cartMicroBounce 0.6s ease infinite alternate;
 }
-
 
 @keyframes cartMicroBounce {
     0% {
@@ -90,15 +104,16 @@ html {
     }
 }
 
+/* OVERLAYS & BACKDROP COVERS */
 .search-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(2px);
-    z-index: 2000;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    z-index: 2050;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.25s ease, visibility 0.25s ease;
@@ -109,7 +124,7 @@ html {
         visibility: visible;
     }
 
-
+/* SLIDE OUT COMPONENT FROM RIGHT (Search, Cart, Profile Drawers) */
 .search-drawer {
     position: fixed;
     top: 0;
@@ -118,7 +133,7 @@ html {
     max-width: 100%;
     height: 100vh;
     background-color: #022529;
-    z-index: 2001;
+    z-index: 2100;
     box-shadow: -8px 0 26px rgba(0, 0, 0, 0.4);
     transition: right 0.28s cubic-bezier(0.16, 1, 0.3, 1);
     display: flex;
@@ -130,7 +145,6 @@ html {
     .search-drawer.active {
         right: 0;
     }
-
 
 .drawer-search-wrapper {
     border-bottom: 2px solid rgba(255, 255, 255, 0.15);
@@ -155,10 +169,8 @@ html {
 
     .sidebar-search-input::placeholder {
         color: rgba(255, 255, 255, 0.65) !important;
-        opacity: 1 !important;
         font-style: italic;
     }
-
 
 .cart-drawer-bg {
     background-color: #083130 !important;
@@ -192,12 +204,10 @@ html {
     transition: background-color 0.2s ease-in-out;
 }
 
-    .btn-gold-fill:hover,
-    .btn-gold-fill:focus {
+    .btn-gold-fill:hover, .btn-gold-fill:focus {
         background-color: #be8e14 !important;
         color: #083130 !important;
     }
-
 
 .close-drawer-btn {
     transition: transform 0.25s ease, color 0.25s ease;
@@ -208,6 +218,122 @@ html {
         color: #D6A019 !important;
     }
 
+/* SLIDE OUT MENU FROM LEFT (Mobile Site Nav Drawer) */
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+    z-index: 2010; 
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+    .menu-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+
+.menu-drawer {
+    position: fixed;
+    top: 58px; 
+    height: calc(100vh - 58px);
+    width: 360px;
+    max-width: 100%;
+    background-color: #083130;
+    z-index: 2015; 
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 8px 0 26px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-overlay {
+    position: fixed;
+    top: 58px; 
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 58px);
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+    z-index: 2010;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+    .menu-drawer.active {
+        transform: translateX(0);
+    }
+
+.sidebar-nav-btn {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 14px 20px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-family: 'Arial Black', Impact, sans-serif;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 4px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+    .sidebar-nav-btn:hover {
+        background-color: rgba(30, 181, 128, 0.15);
+        color: #D6A019 !important;
+    }
+
+    .sidebar-nav-btn.active {
+        background-color: rgba(30, 181, 128, 0.25);
+        color: #D6A019 !important;
+        border-left: 4px solid #1EB580;
+    }
+
+.navbar-nav {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important; 
+    align-items: center !important;
+    gap: 40px !important;
+    width: 100%;
+}
+
+.nav-links-wrapper {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+}
+
+@media (max-width: 550px) {
+    .navbar-custom .container-fluid {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    .navbar-brand {
+        font-size: 1.35rem !important;
+        letter-spacing: -0.3px !important;
+    }
+
+    .navbar-custom .btn,
+    .navbar-custom .navbar-toggler {
+        padding: 0.35rem 0.6rem !important;
+        font-size: 0.85rem !important;
+    }
+
+    .navbar-custom .bi {
+        font-size: 1.1rem !important;
+    }
+}
 
 @media (min-width: 992px) {
     .navbar-custom {
@@ -218,13 +344,48 @@ html {
         height: 32px !important;
     }
 
-    .navbar-center-desktop {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 1000;
+    .menu-drawer, .menu-overlay {
+        top: 65px !important;
+        height: calc(100vh - 65px) !important;
     }
 }
+
+@media (max-width: 991.98px) {
+    .navbar-brand-wrapper {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1010;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+@media (max-width: 750px) {
+    .menu-drawer {
+        width: 100% !important;
+    }
+}
+
+@media (max-width: 390px) {
+    .navbar-custom .container-fluid {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
+
+    .navbar-brand {
+        font-size: 1.1rem !important;
+        letter-spacing: -0.4px !important;
+    }
+
+    .utility-capsule {
+        gap: 10px !important;
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
+}
+
 
 /* ----- UNIVERSAL | FOOTER ----- */
 .astra-footer {
@@ -500,7 +661,6 @@ html {
 }
 
 
-/* Ensure all catalog product images are hidden by default layout */
 .product-card-container .image-render-frame .img-view {
     display: none;
 }
@@ -699,7 +859,6 @@ html {
 /* ----- Product Detail View Page | And Dynamic product data ----- */
 
 @media (min-width: 768px) {
-    /* Convert the main row wrapper into a 2-column grid layout */
     .modern-product-grid {
         display: grid !important;
         grid-template-columns: 1fr 1fr;
@@ -983,8 +1142,7 @@ html {
     }
 }
 
-/* ----- Homepag trending Section| Store page| Product Detail View Page | STYLING ----- */
-/* Hide variation asset frames entirely by default to fix multi-image launch leak */
+/* ----- Homepage trending Section| Store page | Product Detail View Page | !!!PRODUCT CARD STYLING!!! ----- */
 .main-frame-group {
     display: none;
 }
@@ -1069,6 +1227,116 @@ html {
         border: 2px solid #D6A019 !important;
         box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
+ 
+/* ----- CHECKOUT PAGE ------*/
+.checkout-title {
+    color: #0D4F4E;
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+}
+
+.checkout-description {
+    color: #666;
+    font-size: .9rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+.checkout-section {
+    margin-bottom: 3rem;
+}
+
+.checkout-readonly {
+    background: #f7f8fa !important;
+    color: #666 !important;
+    cursor: default;
+}
+
+.checkout-progress .progress {
+    height: 8px;
+    border-radius: 0;
+    background: #e9ecef;
+}
+
+.checkout-progress .progress-bar {
+    width: 35%;
+    background: #0D4F4E;
+}
+
+.payment-card {
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    background: #fff;
+}
+.btn-PAYMENT {
+    background: #D6A019;
+    color: #121212;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 2px;
+}
+
+.checkout-summary-sticky {
+    position: sticky;
+    top: 75px; 
+
+    background: #fafafa;
+    border: 1px solid #ececec;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,.04);
+}
+
+
+.checkout-right-panel {
+    background-color: #f7f8fa;
+    border-left: px solid #e5e7eb;
+    padding: 2rem;
+    border-radius: 12px;
+}
+
+.checkout-thumb {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.checkout-wrapper {
+    min-height: 100vh;
+}
+
+.quantity-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #7C8F86;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .75rem;
+    font-weight: 700;
+}
+
+@media (max-width: 991px) {
+
+    .checkout-summary-sticky {
+        position: static;
+        margin-top: 3rem;
+    }
+}
 
 
 /* ----- AUTH | LOGIN ----- */
@@ -1343,7 +1611,7 @@ border-color: #1EB580 !important;
 
 /* ----- ADMIN DASHBOARD LAYOUT ----- */
 body {
-    background-color: #f8f9fa; /* Light grey background for the whole page */
+    background-color: #f8f9fa;
 }
 
 .dashboard-wrapper {
@@ -1354,7 +1622,7 @@ body {
 /* ----- SIDEBAR ----- */
 .sidebar {
     width: 260px;
-    background-color: #0D4F4E; /* Your signature dark green */
+    background-color: #0D4F4E;
     color: white;
     display: flex;
     flex-direction: column;
@@ -1391,7 +1659,7 @@ body {
 
         .sidebar-nav a:hover, .sidebar-nav a.active {
             background-color: rgba(255, 255, 255, 0.1);
-            color: #D6A019; /* Gold accent on hover/active */
+            color: #D6A019;
         }
 
     .sidebar-nav i {
@@ -1399,7 +1667,47 @@ body {
         font-size: 1.2rem;
     }
 
-/* Sidebar Footer (Profile) */
+.utility-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    z-index: 2050;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+    .utility-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+.utility-drawer {
+    position: fixed;
+    top: 0;
+    right: -460px;
+    width: 450px;
+    max-width: 100%;
+    height: 100vh;
+    background-color: #022529;
+    z-index: 2100; 
+    box-shadow: -8px 0 26px rgba(0, 0, 0, 0.4);
+    transition: right 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+    .utility-drawer.active {
+        right: 0;
+    }
+
+
 .sidebar-footer {
     padding: 1.5rem;
     border-top: 1px solid rgba(255,255,255,0.1);
@@ -1408,14 +1716,13 @@ body {
     justify-content: space-between;
 }
 
-/* ----- MAIN CONTENT AREA ----- */
 .main-content {
     flex-grow: 1;
-    margin-left: 260px; /* Offset by sidebar width */
+    margin-left: 260px;
     padding: 2rem 3rem;
 }
 
-/* ----- DASHBOARD CARDS ----- */
+
 .summary-card {
     border-radius: 10px;
     padding: 1.5rem;
