@@ -1,0 +1,302 @@
+﻿@page
+@model ProjectAstra.Pages.CheckoutModel
+
+@{
+	ViewData["Title"] = "Checkout";
+}
+
+<div class="container checkout-wrapper py-5">
+
+	<div class="row g-5 align-items-start">
+
+		<!-- LEFT SIDE -->
+		<div class="col-lg-6">
+			<!-- Progress -->
+			<div class="checkout-progress mb-5">
+				<div class="progress">
+					<div class="progress-bar"></div>
+				</div>
+			</div>
+
+			<form method="post">
+				<!-- CONTACT -->
+				<div class="checkout-section">
+					<h2 class="checkout-title">
+						CONTACT
+					</h2>
+					<div class="mb-3">
+						<label class="form-label custom-label text-uppercase">
+							Astra Email
+						</label>
+						<input class="form-control custom-input checkout-readonly"
+							   value="@Model.CurrentUser.Username"
+							   readonly />
+					</div>
+					<div class="mb-3">
+						<label class="form-label custom-label text-uppercase">
+							First Name
+						</label>
+						<input class="form-control custom-input checkout-readonly"
+							   value="@Model.CurrentUser.FirstName"
+							   readonly />
+					</div>
+					<div class="mb-3">
+						<label class="form-label custom-label text-uppercase">
+							Last Name
+						</label>
+						<input class="form-control custom-input checkout-readonly"
+							   value="@Model.CurrentUser.LastName"
+							   readonly />
+					</div>
+					<div class="mb-4">
+						<label class="form-label custom-label text-uppercase">
+							Contact Number
+						</label>
+						<input class="form-control custom-input checkout-readonly"
+							   value="@Model.CurrentUser.ContactNumber"
+							   readonly />
+					</div>
+					<div class="mb-3">
+						<label class="form-label custom-label text-uppercase">
+							Facebook Link
+						</label>
+						<input asp-for="Form.FacebookLink"
+							   class="form-control custom-input"
+							   placeholder="https://facebook.com/yourprofile" />
+					</div>
+					<div class="mb-5">
+						<label class="form-label custom-label text-uppercase">
+							Telegram Username
+						</label>
+						<input asp-for="Form.TelegramUsername"
+							   class="form-control custom-input"
+							   placeholder="@@username" />
+					</div>
+				</div>
+
+				<!-- YEAR SECTION -->
+				<div class="checkout-section">
+					<h2 class="checkout-title">
+						YEAR & SECTION / STATUS
+					</h2>
+					<p class="checkout-description">
+						Please select your year level and section or Status
+						(Faculty, Employee, Alumni, Other Programs).
+
+						For irregular students, kindly choose only one
+						year and section where you are enrolled to
+						receive your product.
+					</p>
+
+					<select asp-for="Form.YearSectionStatus"
+							class="form-select custom-input mb-2">
+						<option value="">
+							Select a Year & Section or Status
+
+						</option>
+
+						<option>1A</option>
+						<option>1B</option>
+						<option>1C</option>
+						<option>1D</option>
+						<option>1E</option>
+						<option>1F</option>
+						<option>1G</option>
+						<option>1H</option>
+
+						<option>2A</option>
+						<option>2B</option>
+						<option>2C</option>
+						<option>2D</option>
+						<option>2E</option>
+						<option>2F</option>
+						<option>2G</option>
+						<option>2H</option>
+
+						<option>3A</option>
+						<option>3B</option>
+						<option>3C</option>
+						<option>3D</option>
+						<option>3E</option>
+						<option>3F</option>
+						<option>3G</option>
+						<option>3H</option>
+
+						<option>4A</option>
+						<option>4B</option>
+						<option>4C</option>
+						<option>4D</option>
+						<option>4E</option>
+						<option>4F</option>
+						<option>4G</option>
+						<option>4H</option>
+
+						<option>Alumni</option>
+						<option>Faculty</option>
+						<option>Employee</option>
+						<option>Other Program</option>
+
+					</select>
+
+					<span asp-validation-for="Form.YearSectionStatus"
+						  class="text-danger">
+					</span>
+
+				</div>
+
+				<!-- PAYMENT -->
+				<div class="checkout-section mt-5">
+					<h2 class="checkout-title">
+						PAYMENT
+					</h2>
+					<div class="payment-card">
+						<div class="form-check">
+							<input class="form-check-input"
+								   checked
+								   type="radio" />
+						</div>
+						<div class="ms-3">
+							<div class="fw-bold">
+								GCash
+							</div>
+							<small class="text-muted">
+								Xendit Sandbox Ready
+							</small>
+						</div>
+					</div>
+					<button type="submit"
+							class="btn btn-PAYMENT w-100 mt-4">
+						PAY NOW
+					</button>
+				</div>
+			</form>
+		</div>
+
+		<!-- RIGHT SIDE -->
+		<div class="col-lg-6 checkout-right-panel">
+			<div class="checkout-summary-sticky">
+				@foreach (var item in Model.CheckoutItems)
+				{
+					<div class="d-flex mb-4">
+						<!-- IMAGE -->
+						<div class="position-relative me-3">
+
+							<div class="border shadow-sm"
+								 style="
+		                                    width:80px;
+		                                    height:80px;
+		                                    overflow:hidden;">
+								@{
+									var variation = item.Product.Variations
+									.FirstOrDefault(v => v.ColorName == item.SelectedColor)
+									?? item.Product.Variations.FirstOrDefault();
+								}
+								<img src="@variation?.FrontImage"
+									 class="checkout-thumb" />
+							</div>
+							<span class="
+		                                position-absolute
+		                                top-0
+		                                start-100
+		                                translate-middle
+		                                badge
+		                                rounded-pill
+		                                bg-warning
+		                                text-dark">
+
+								@item.Quantity
+							</span>
+						</div>
+
+						<!-- PRODUCT INFO -->
+						<div class="flex-grow-1">
+							<div class="fw-semibold">
+								@item.Product.Name
+							</div>
+							<div class="text-muted small">
+
+								@item.SelectedSize
+								/
+								@item.SelectedColor
+							</div>
+						</div>
+
+						<!-- PRICE -->
+						<div class="text-end fw-semibold">
+							₱@((item.UnitPrice * item.Quantity)
+													.ToString("N2"))
+						</div>
+					</div>
+				}
+
+				<hr />
+				<div class="
+                d-flex
+                justify-content-between
+                mb-4">
+					<span>
+						Subtotal · @Model.TotalItems items
+					</span>
+
+					<span class="fw-semibold">
+						₱@Model.Subtotal.ToString("N2")
+					</span>
+
+				</div>
+
+				<div class="
+                d-flex
+                justify-content-between
+                align-items-center
+                mb-5">
+					<div class="fs-2 fw-bold">
+						Total
+					</div>
+					<div>
+						<small class="text-muted me-1">
+							PHP
+						</small>
+
+						<span class="fs-1 fw-bold">
+							₱@Model.Subtotal.ToString("N2")
+						</span>
+					</div>
+				</div>
+
+				<!-- PANG DAG DAG LANG -->
+				<div class="border border-warning p-4">
+					<div class="d-flex align-items-center">
+						<div class="me-3">
+							<div class="
+                            rounded-circle
+                            bg-success
+                            text-white
+                            d-flex
+                            justify-content-center
+                            align-items-center"
+								 style="
+                                width:60px;
+                                height:60px;
+                                font-size:28px;">
+								♥
+							</div>
+						</div>
+
+						<div>
+							Your order helps fund future
+							<strong>
+								Nursing Student Council
+								programs and student initiatives.
+							</strong>
+							Every piece makes a difference.
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+@section Scripts
+{
+		<partial name="_ValidationScriptsPartial" />
+}

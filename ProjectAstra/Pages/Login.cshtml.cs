@@ -41,7 +41,8 @@ namespace ProjectAstra.Pages
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.FirstName),
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim("FirstName", user.FirstName),
                     new Claim(ClaimTypes.Email, user.Username),
                     new Claim(ClaimTypes.Role, user.Role), 
                     new Claim("AstraId", user.AstraId)
