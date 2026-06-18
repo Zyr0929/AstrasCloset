@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProjectAstra.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
-
+using ProjectAstra.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +11,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddRazorPages();
 
 builder.Services.AddSingleton<ProjectAstra.Services.ProductService>();
+
+builder.Services.AddScoped<XenditService>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
