@@ -1,0 +1,125 @@
+﻿@page
+@model ProjectAstra.Pages.CheckoutModel
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-7">
+            <h2 class="fw-bold mb-4">
+                Checkout
+            </h2>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="mb-3">
+                        Student Information
+                    </h5>
+                    <p>
+                        <strong>Astra ID:</strong>
+                        @Model.CurrentUser.AstraId
+                    </p>
+                    <p>
+                        <strong>Name:</strong>
+                        @Model.CurrentUser.FirstName
+                        @Model.CurrentUser.LastName
+                    </p>
+                    <p>
+                        <strong>Email:</strong>
+                        @Model.CurrentUser.Username
+                    </p>
+                    <p>
+                        <strong>Contact:</strong>
+                        @Model.CurrentUser.ContactNumber
+                    </p>
+                </div>
+            </div>
+
+            <form method="post">
+                <div class="mb-3">
+                    <label class="form-label">
+                        Year & Section
+                    </label>
+                    <input asp-for="Form.YearSectionStatus"
+                           class="form-control" />
+                    <span asp-validation-for="Form.YearSectionStatus"
+                          class="text-danger">
+                    </span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Facebook Link
+                    </label>
+                    <input asp-for="Form.FacebookLink"
+                           class="form-control" />
+
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Telegram Username
+                    </label>
+                    <input asp-for="Form.TelegramUsername"
+                           class="form-control" />
+                </div>
+
+                <button type="submit"
+                        class="btn btn-warning w-100">
+                    Submit Order
+                </button>
+            </form>
+
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="mb-4">
+                        Order Summary
+                    </h4>
+
+                    @foreach (var item in Model.CheckoutItems)
+                    {
+                        <div class="border-bottom pb-3 mb-3">
+                            <h6>
+                                @item.Product.Name
+                            </h6>
+
+                            <small>
+                                @item.SelectedSize /
+                                @item.SelectedColor
+                            </small>
+
+                            <div>
+                                Qty:
+                                @item.Quantity
+                            </div>
+
+                            <div>
+                                ₱@((item.UnitPrice * item.Quantity)
+                                                            .ToString("N2"))
+                            </div>
+                        </div>
+                    }
+
+                    <div class="d-flex justify-content-between">
+                        <strong>
+                            Total
+                        </strong>
+                        <strong>
+                            ₱@Model.Subtotal.ToString("N2")
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}
