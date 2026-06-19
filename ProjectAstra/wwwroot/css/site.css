@@ -1899,3 +1899,29 @@ body {
 .tr-verified {
     background-color: rgba(209, 231, 221, 0.3);
 }
+
+/*-- for my orders --*/
+.archived-order {
+    opacity: .45;
+    transition: .25s;
+}
+
+    .archived-order:hover {
+        opacity: .75;
+    }
+
+.order-product-card {
+    width: 280px;
+}
+
+.product-thumb {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border: 1px solid #eee;
+}
+
+.table td,
+.table th {
+    vertical-align: middle;
+}

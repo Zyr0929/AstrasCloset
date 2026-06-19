@@ -1,0 +1,158 @@
+﻿@page
+@model ProjectAstra.Pages.MyOrdersModel
+@{
+    ViewData["Title"] = "My Orders";
+    Layout = "_Layout";
+
+    string GetImg(string path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return "https://via.placeholder.com/50.png?text=Img";
+        }
+        return path;
+    }
+}
+
+<div class="container py-5 min-vh-100">
+    <h2 class="fw-bold mb-2">
+        My Orders
+    </h2>
+
+    <p class="text-muted mb-0">
+        View your purchases, payment status, and pickup progress.
+    </p> 
+
+    @if (!Model.MyOrders.Any())
+    {
+        <div class="card shadow-sm border-0">
+            <div class="card-body text-center py-5">
+                <h4 class="fw-bold">
+                    No Orders Yet
+                </h4>
+                <p class="text-muted">
+                    Your completed purchases will appear here.
+                </p>
+                <a asp-page="/Store"
+                   class="btn btn-warning">
+                    Browse Store
+                </a>
+            </div>
+        </div>
+    }
+else
+{
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-4">ORDER REF</th>
+                                <th>DATE</th>
+                                <th>STATUS</th>
+                                <th>TOTAL</th>
+                                <th>ITEMS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in Model.MyOrders)
+                            {
+                                var badgeColor = order.PaymentStatus switch
+                                {
+                                                "TO PAY" => "secondary",
+                                                "PAID" => "success",
+                                                "ASSESSING" => "warning",
+                                                "VERIFIED" => "primary",
+                                                "CLAIMED" => "dark",
+                                                "REJECTED" => "danger",
+                                    _ => "secondary"
+                                };
+
+                                var archived =
+                                order.PaymentStatus == "CLAIMED";
+
+                                <tr class="@(archived ? "archived-order" : "")">
+                                    <td class="ps-4 fw-bold">
+                                        @order.OrderReference
+                                    </td>
+                                    <td>
+                                        @order.OrderDate.ToString("MMM dd, yyyy")
+                                        <br />
+                                        <small class="text-muted">
+                                            @order.OrderDate.ToString("hh:mm tt")
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-@badgeColor">
+                                            @order.PaymentStatus
+                                        </span>
+                                    </td>
+                                    <td class="fw-bold">
+                                        ₱@order.TotalPrice.ToString("F2")
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-dark"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#items-@order.Id">
+
+                                            View (@order.OrderItems.Count)
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <a href="#"
+                                           class="btn btn-sm btn-outline-primary">
+                                            Contact Support
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <tr class="collapse @(archived ? "archived-order" : "")"
+                                    id="items-@order.Id">
+                                    <td colspan="6"
+                                        class="bg-light p-3">
+                                        <div class="d-flex flex-wrap gap-3">
+                                            @foreach (var item in order.OrderItems)
+                                            {
+                                                var variation =
+                                                item.Product.Variations
+                                                .FirstOrDefault(v =>
+                                                v.ColorName ==
+                                                item.SelectedColor)
+                                                ??
+                                                item.Product.Variations
+                                                .FirstOrDefault();
+
+                                                <div class="border bg-white rounded shadow-sm p-2 d-flex align-items-center order-product-card">
+                                                    <img src="@GetImg(variation?.FrontImage)"
+                                                         class="rounded me-3 product-thumb"
+                                                         onerror="this.onerror=null;this.src='https://via.placeholder.com/50.png?text=Img';" />
+                                                    <div>
+                                                        <div class="fw-bold small mb-1">
+                                                            @item.Product.Name
+                                                        </div>
+                                                        <div class="text-muted small">
+                                                            @item.SelectedColor /
+                                                            @item.SelectedSize
+                                                        </div>
+                                                        <div class="text-muted small mt-1">
+                                                            Qty:
+                                                            @item.Quantity
+                                                            |
+                                                            ₱@item.UnitPrice.ToString("F2")
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+}
+
