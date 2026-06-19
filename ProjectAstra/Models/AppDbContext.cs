@@ -17,5 +17,6 @@ namespace ProjectAstra.Models
         public DbSet<WishlistItem> WishlistItems { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<ProductReview> ProductReviews { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
     }
 }

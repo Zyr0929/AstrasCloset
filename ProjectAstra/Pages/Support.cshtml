@@ -1,0 +1,57 @@
+﻿@page
+@model ProjectAstra.Pages.SupportModel
+@{
+    ViewData["Title"] = "Customer Support";
+}
+
+<div class="container py-5" style="max-width: 600px; font-family: 'Inter', sans-serif;">
+    <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
+
+        <div class="bg-dark text-white p-3 d-flex align-items-center">
+            <div class="rounded-circle bg-white text-dark d-flex justify-content-center align-items-center me-3" style="width: 40px; height: 40px;">
+                <i class="bi bi-headset fs-5"></i>
+            </div>
+            <div>
+                <h5 class="m-0 fw-bold tracking-wider text-uppercase">Astra Support</h5>
+                <small class="text-white-50">Usually replies within a few hours</small>
+            </div>
+        </div>
+
+        <div class="card-body bg-light p-4" id="chatWindow" style="height: 400px; overflow-y: auto;">
+            @if (!Model.Messages.Any())
+            {
+                <div class="text-center text-muted mt-5">
+                    <i class="bi bi-chat-dots fs-1 mb-2 d-block opacity-50"></i>
+                    <p>Send a message to start the conversation.</p>
+                </div>
+            }
+
+            @foreach (var msg in Model.Messages)
+            {
+                bool isMe = msg.SenderUsername == User.Identity!.Name;
+                <div class="d-flex mb-3 @(isMe ? "justify-content-end" : "justify-content-start")">
+                    <div class="p-3 rounded-3 shadow-sm" style="max-width: 75%; background-color: @(isMe ? "#0D4F4E" : "#ffffff"); color: @(isMe ? "#ffffff" : "#333"); border: @(isMe ? "none" : "1px solid #dee2e6");">
+                        <div style="font-size: 0.95rem;">@msg.MessageText</div>
+                        <div class="mt-1 text-end" style="font-size: 0.7rem; opacity: @(isMe ? "0.7" : "0.5");">@msg.Timestamp.ToString("MMM dd, hh:mm tt")</div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="card-footer bg-white p-3 border-top">
+            <form method="post" class="d-flex gap-2">
+                <input type="text" asp-for="NewMessage" class="form-control rounded-pill shadow-none px-4" placeholder="Type your message..." required autocomplete="off" />
+                <button type="submit" class="btn rounded-circle text-white shadow-sm" style="background-color: #D6A019; width: 45px; height: 45px;">
+                    <i class="bi bi-send-fill"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var chatWindow = document.getElementById("chatWindow");
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    });
+</script>

@@ -1,0 +1,75 @@
+﻿@page
+@model ProjectAstra.Pages.Admin.MessagesModel
+@{
+    ViewData["Title"] = "Customer Messages";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid px-4 py-5" style="font-family: 'Inter', sans-serif;">
+    <h2 class="fw-bold mb-4 text-dark">Customer Messages</h2>
+
+    <div class="row g-0 border rounded bg-white shadow-sm" style="height: 600px;">
+
+        <div class="col-md-4 border-end h-100 overflow-auto bg-light">
+            <div class="p-3 bg-white border-bottom fw-bold text-uppercase tracking-wider small text-muted">Active Conversations</div>
+            <div class="list-group list-group-flush">
+                @if (!Model.ActiveUsers.Any())
+                {
+                    <div class="p-4 text-center text-muted small">No active conversations.</div>
+                }
+                @foreach (var userEmail in Model.ActiveUsers)
+                {
+                    <a href="/Messages?SelectedUser=@userEmail" class="list-group-item list-group-item-action p-3 @(Model.SelectedUser == userEmail ? "active bg-dark border-dark" : "")">
+                        <div class="fw-bold mb-1" style="font-size: 0.9rem;">@userEmail</div>
+                    </a>
+                }
+            </div>
+        </div>
+
+        <div class="col-md-8 d-flex flex-column h-100">
+            @if (string.IsNullOrEmpty(Model.SelectedUser))
+            {
+                <div class="m-auto text-center text-muted">
+                    <i class="bi bi-chat-left-text fs-1 mb-3 d-block opacity-50"></i>
+                    Select a conversation from the sidebar to view messages.
+                </div>
+            }
+            else
+            {
+                <div class="p-3 border-bottom bg-white fw-bold d-flex align-items-center">
+                    <i class="bi bi-person-circle fs-4 me-2 text-muted"></i> Chatting with @Model.SelectedUser
+                </div>
+
+                <div class="p-4 flex-grow-1 overflow-auto bg-light" id="adminChatWindow">
+                    @foreach (var msg in Model.CurrentChat)
+                    {
+                        bool isAdmin = msg.SenderUsername == "Admin";
+                        <div class="d-flex mb-3 @(isAdmin ? "justify-content-end" : "justify-content-start")">
+                            <div class="p-3 rounded shadow-sm" style="max-width: 75%; background-color: @(isAdmin ? "#0D4F4E" : "#ffffff"); color: @(isAdmin ? "#ffffff" : "#333");">
+                                <div style="font-size: 0.95rem;">@msg.MessageText</div>
+                                <div class="mt-1 text-end" style="font-size: 0.7rem; opacity: 0.7;">@msg.Timestamp.ToString("MMM dd, hh:mm tt")</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="p-3 bg-white border-top">
+                    <form method="post" class="d-flex gap-2">
+                        <input type="hidden" asp-for="SelectedUser" />
+                        <input type="text" asp-for="AdminReply" class="form-control rounded-0 shadow-none px-3" placeholder="Type your reply to @Model.SelectedUser..." required autocomplete="off" />
+                        <button type="submit" class="btn text-white rounded-0 fw-bold px-4" style="background-color: #D6A019;">Reply</button>
+                    </form>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var chatWindow = document.getElementById("adminChatWindow");
+        if (chatWindow) {
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+    });
+</script>
