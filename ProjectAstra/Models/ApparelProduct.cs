@@ -68,7 +68,7 @@ namespace ProjectAstra.Models
     {
         public List<ColorVariation> Variations { get; set; } = new();
         public List<string> AvailableSizes { get; set; } = new();
-        public List<CustomerReview> Reviews { get; set; } = new();
+        public List<ProductReview> ProductReviews { get; set; } = new();
         public int MaximumPurchaseLimit { get; set; }
 
         public ApparelProduct() { }
