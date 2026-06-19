@@ -1,0 +1,103 @@
+﻿@page
+@model ProjectAstra.Pages.ProfileSettingsModel
+@{
+    ViewData["Title"] = "Profile Settings";
+}
+
+<div class="container my-5" style="font-family: 'Inter', sans-serif; max-width: 800px;">
+
+    <div class="mb-5 border-bottom border-2 border-dark pb-3">
+        <h1 class="fw-bold text-dark text-uppercase tracking-wide mb-1 display-6">Account Settings</h1>
+        <p class="text-muted mb-0">Update your social profiles and manage your security.</p>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.StatusMessage))
+    {
+        <div class="alert alert-success alert-dismissible fade show fw-bold shadow-sm rounded-0" role="alert" style="background-color: #d1e7dd; color: #0f5132; border-left: 5px solid #198754;">
+            <i class="bi bi-check-circle-fill me-2"></i> @Model.StatusMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="row g-4">
+
+        <div class="col-12">
+            <div class="card border-0 shadow-sm rounded-0" style="border: 1px solid #eee !important;">
+                <div class="card-header bg-light py-3 border-bottom">
+                    <h5 class="fw-bold m-0 text-uppercase tracking-wider" style="color: #0D4F4E;">
+                        <i class="bi bi-link-45deg me-2"></i>Social Connections
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" asp-page-handler="UpdateSocials">
+                        <div class="mb-4">
+                            <label asp-for="Socials.FacebookLink" class="form-label text-uppercase small fw-bold text-muted tracking-wider">Facebook Profile Link</label>
+                            <input asp-for="Socials.FacebookLink" class="form-control py-2 rounded-0 border-secondary" placeholder="https://facebook.com/yourprofile" />
+                            <span asp-validation-for="Socials.FacebookLink" class="text-danger small fw-bold mt-1 d-block"></span>
+                            <div class="form-text small text-muted">This helps our student council verify your identity during the claiming phase.</div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Socials.TelegramUsername" class="form-label text-uppercase small fw-bold text-muted tracking-wider">Telegram Username</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light rounded-0 border-secondary text-muted">@@</span>
+                                <input asp-for="Socials.TelegramUsername" class="form-control py-2 rounded-0 border-secondary border-start-0" placeholder="username" />
+                            </div>
+                            <span asp-validation-for="Socials.TelegramUsername" class="text-danger small fw-bold mt-1 d-block"></span>
+                        </div>
+
+                        <button type="submit" class="btn fw-bold text-uppercase tracking-wider px-4 py-2 rounded-0 text-white" style="background-color: #0D4F4E;">
+                            Save Social Links
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 mt-5">
+            <div class="card border-0 shadow-sm rounded-0" style="border: 1px solid #eee !important;">
+                <div class="card-header bg-light py-3 border-bottom">
+                    <h5 class="fw-bold m-0 text-uppercase tracking-wider text-dark">
+                        <i class="bi bi-shield-lock me-2"></i>Security & Password
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" asp-page-handler="ChangePassword">
+                        <div class="mb-4">
+                            <label asp-for="PasswordSettings.CurrentPassword" class="form-label text-uppercase small fw-bold text-muted tracking-wider">Current Password</label>
+                            <input asp-for="PasswordSettings.CurrentPassword" class="form-control py-2 rounded-0 border-secondary" type="password" />
+                            <span asp-validation-for="PasswordSettings.CurrentPassword" class="text-danger small fw-bold mt-1 d-block"></span>
+                        </div>
+
+                        <hr class="border-secondary opacity-25 my-4" />
+
+                        <div class="row">
+                            <div class="col-md-6 mb-4 mb-md-0">
+                                <label asp-for="PasswordSettings.NewPassword" class="form-label text-uppercase small fw-bold text-muted tracking-wider">New Password</label>
+                                <input asp-for="PasswordSettings.NewPassword" class="form-control py-2 rounded-0 border-secondary" type="password" />
+                                <span asp-validation-for="PasswordSettings.NewPassword" class="text-danger small fw-bold mt-1 d-block"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="PasswordSettings.ConfirmPassword" class="form-label text-uppercase small fw-bold text-muted tracking-wider">Confirm New Password</label>
+                                <input asp-for="PasswordSettings.ConfirmPassword" class="form-control py-2 rounded-0 border-secondary" type="password" />
+                                <span asp-validation-for="PasswordSettings.ConfirmPassword" class="text-danger small fw-bold mt-1 d-block"></span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="submit" class="btn fw-bold text-uppercase tracking-wider px-4 py-2 rounded-0 text-white" style="background-color: #D6A019;">
+                                Update Password
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

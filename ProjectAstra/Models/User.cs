@@ -27,7 +27,9 @@ namespace ProjectAstra.Models
         [Required]
         [Phone]
         public string ContactNumber { get; set; } = string.Empty;
+        public string? FacebookLink { get; set; }
 
+        public string? TelegramUsername { get; set; }
         [Required]
         public string PasswordHash { get; set; } = string.Empty;
     }

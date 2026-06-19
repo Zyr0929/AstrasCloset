@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using ProjectAstra.Models; // Added to access your ApparelProduct model
+using ProjectAstra.Models;
 
 namespace ProjectAstra.Pages
 {
@@ -22,7 +22,7 @@ namespace ProjectAstra.Pages
     public class AddProductModel : PageModel
     {
         private readonly IWebHostEnvironment _env;
-        private readonly AppDbContext _context; // 1. Added your database context!
+        private readonly AppDbContext _context;
 
         public AddProductModel(IWebHostEnvironment env, AppDbContext context)
         {
@@ -39,7 +39,10 @@ namespace ProjectAstra.Pages
         [BindProperty] public string Tags { get; set; }
         [BindProperty] public string Description { get; set; }
         [BindProperty] public string Category { get; set; }
-        [BindProperty] public string Sizes { get; set; }
+
+        // Changed to Lists to handle multiple checkbox selections
+        [BindProperty] public List<string> Sizes { get; set; } = new();
+        [BindProperty] public List<string> Types { get; set; } = new();
 
         public void OnGet()
         {
@@ -50,17 +53,18 @@ namespace ProjectAstra.Pages
             string folderPath = Path.Combine(_env.WebRootPath, "images", "products");
             Directory.CreateDirectory(folderPath);
 
-            // 2. Prepare the new product object
             var newProduct = new ApparelProduct
             {
                 Name = ProductName,
                 Price = Price,
                 Description = Description,
-                Tag = string.IsNullOrEmpty(Tags) ? Category : Tags, // Fallback to Category if Tags is empty
-                AvailableSizes = Sizes != null ? Sizes.Split(',').ToList() : new List<string>(),
+                Tag = string.IsNullOrEmpty(Tags) ? Category : Tags,
+                Category = Category,
+                AvailableSizes = Sizes, 
+                Types = Types,         
                 Rating = 0,
                 ReviewCount = 0,
-                MaximumPurchaseLimit = 5, // Default pre-order limit
+                MaximumPurchaseLimit = 5,
                 Variations = new List<ColorVariation>()
             };
 
@@ -68,12 +72,10 @@ namespace ProjectAstra.Pages
             {
                 if (variation.FrontImage != null && variation.BackImage != null && variation.ExtraImage != null)
                 {
-                    // Generate unique filenames
                     string frontFileName = Guid.NewGuid().ToString() + Path.GetExtension(variation.FrontImage.FileName);
                     string backFileName = Guid.NewGuid().ToString() + Path.GetExtension(variation.BackImage.FileName);
                     string extraFileName = Guid.NewGuid().ToString() + Path.GetExtension(variation.ExtraImage.FileName);
 
-                    // Save images physically
                     using (var stream = new FileStream(Path.Combine(folderPath, frontFileName), FileMode.Create))
                         await variation.FrontImage.CopyToAsync(stream);
 
@@ -83,7 +85,6 @@ namespace ProjectAstra.Pages
                     using (var stream = new FileStream(Path.Combine(folderPath, extraFileName), FileMode.Create))
                         await variation.ExtraImage.CopyToAsync(stream);
 
-                    // 3. Attach the saved image paths to the new product
                     newProduct.Variations.Add(new ColorVariation
                     {
                         ColorName = variation.ColorName,
@@ -94,11 +95,9 @@ namespace ProjectAstra.Pages
                 }
             }
 
-            // 4. Officially save it to the SQL Database!
             _context.Products.Add(newProduct);
             await _context.SaveChangesAsync();
 
-            // Redirect back to the store so you can immediately see it!
             return RedirectToPage("/Store");
         }
     }

@@ -9,7 +9,6 @@ namespace ProjectAstra.Models
         public int Id { get; set; }
         public string Name { get; set; }
 
-        // ADDED THE CATEGORY PROPERTY HERE
         public string Category { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
@@ -22,7 +21,6 @@ namespace ProjectAstra.Models
 
         protected ProductBase() { }
 
-        // Updated the constructor to include 'category'
         protected ProductBase(int id, string name, string category, decimal price, double rating, int reviewCount, string tag, string description)
         {
             Id = id;
@@ -66,6 +64,7 @@ namespace ProjectAstra.Models
 
     public class ApparelProduct : ProductBase
     {
+        public List<string> Types { get; set; } = new();
         public List<ColorVariation> Variations { get; set; } = new();
         public List<string> AvailableSizes { get; set; } = new();
         public List<CustomerReview> Reviews { get; set; } = new();

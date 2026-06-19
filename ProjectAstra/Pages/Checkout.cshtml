@@ -45,11 +45,11 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label custom-label text-uppercase small fw-bold text-muted tracking-wider">Facebook Link</label>
-                        <input asp-for="Form.FacebookLink" class="form-control custom-input" placeholder="https://facebook.com/yourprofile" />
+                        <input class="form-control custom-input checkout-readonly bg-light" value="@Model.CurrentUser.FacebookLink" readonly />
                     </div>
                     <div class="mb-5">
                         <label class="form-label custom-label text-uppercase small fw-bold text-muted tracking-wider">Telegram Username</label>
-                        <input asp-for="Form.TelegramUsername" class="form-control custom-input" placeholder="@@username" />
+                        <input class="form-control custom-input checkout-readonly bg-light" value="@Model.CurrentUser.TelegramUsername" readonly />
                     </div>
                 </div>
 
