@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ProjectAstra.Models;
 using BCrypt.Net;
+using System.ComponentModel.DataAnnotations; // Required for [Compare] and [Required] attributes
+using System;
+using System.Threading.Tasks;
 
 namespace ProjectAstra.Pages
 {
@@ -16,19 +19,31 @@ namespace ProjectAstra.Pages
         }
 
         [BindProperty]
+        [Required]
         public string FirstName { get; set; } = string.Empty;
 
         [BindProperty]
+        [Required]
         public string LastName { get; set; } = string.Empty;
 
         [BindProperty]
+        [Required]
         public string Username { get; set; } = string.Empty;
 
         [BindProperty]
+        [Required]
         public string ContactNumber { get; set; } = string.Empty;
 
         [BindProperty]
+        [Required(ErrorMessage = "Password is required.")]
+        [MinLength(8, ErrorMessage = "Password must be at least 8 characters.")]
         public string Password { get; set; } = string.Empty;
+
+        // --- NEW CONFIRM PASSWORD PROPERTY ---
+        [BindProperty]
+        [Required(ErrorMessage = "Please confirm your password.")]
+        [Compare("Password", ErrorMessage = "The passwords do not match.")]
+        public string ConfirmPassword { get; set; } = string.Empty;
 
         public string? ErrorMessage { get; set; }
         public string? SuccessMessage { get; set; }
@@ -39,8 +54,16 @@ namespace ProjectAstra.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
+            // 1. Validates all DataAnnotations (including the [Compare] attribute above)
             if (!ModelState.IsValid)
             {
+                return Page();
+            }
+
+            // 2. Extra Server-Side Security Check
+            if (Password != ConfirmPassword)
+            {
+                ErrorMessage = "Passwords do not match.";
                 return Page();
             }
 
@@ -65,7 +88,7 @@ namespace ProjectAstra.Pages
 
             var newUser = new User
             {
-                AstraId = GenerateAstraId(), 
+                AstraId = GenerateAstraId(),
                 FirstName = FirstName,
                 LastName = LastName,
                 Username = Username,
@@ -83,7 +106,7 @@ namespace ProjectAstra.Pages
         // Unique ID per customer tired na ako
         private string GenerateAstraId()
         {
-            var year = DateTime.Now.Year.ToString(); 
+            var year = DateTime.Now.Year.ToString();
             var random = new Random();
 
             var part1 = random.Next(0, 10000).ToString("D4");

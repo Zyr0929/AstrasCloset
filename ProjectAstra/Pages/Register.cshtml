@@ -15,12 +15,12 @@
 
             <div class="mb-3">
                 <label for="FirstName" class="form-label custom-label text-uppercase">First Name</label>
-                <input type="text" class="form-control custom-input" @(!string.IsNullOrEmpty(Model.ErrorMessage) ? "is-invalid" : "")" id="FirstName" name="FirstName" placeholder="Example: Juan" required>
+                <input type="text" class="form-control custom-input @(!string.IsNullOrEmpty(Model.ErrorMessage) ? "is-invalid" : "")" id="FirstName" name="FirstName" placeholder="Example: Juan" required>
             </div>
 
             <div class="mb-3">
                 <label for="LastName" class="form-label custom-label text-uppercase">Last Name</label>
-                <input type="text" class="form-control custom-input" @(!string.IsNullOrEmpty(Model.ErrorMessage) ? "is-invalid" : "")" id="LastName" name="LastName" placeholder="Example: Dela Cruz" required>
+                <input type="text" class="form-control custom-input @(!string.IsNullOrEmpty(Model.ErrorMessage) ? "is-invalid" : "")" id="LastName" name="LastName" placeholder="Example: Dela Cruz" required>
             </div>
 
             <div class="mb-3">
@@ -34,6 +34,7 @@
 
                 <div class="form-text" style="font-size: 0.75rem;">Must end with @@astra.feu-nrmf.edu.ph</div>
             </div>
+
             <div class="mb-3">
                 <label for="ContactNumber" class="form-label custom-label text-uppercase">Contact Number</label>
                 <input type="tel" class="form-control custom-input @(!string.IsNullOrEmpty(Model.ErrorMessage) ? "is-invalid" : "")"
@@ -43,11 +44,12 @@
                        title="Must be a valid Philippine mobile number (e.g., 09123456789)"
                        required>
             </div>
-            <div class="mb-4 position-relative">
+
+            <div class="mb-3 position-relative">
                 <label for="Password" class="form-label custom-label text-uppercase">Password</label>
                 <div class="input-group">
-                    <input type="password" class="form-control custom-input" @(!string.IsNullOrEmpty(Model.ErrorMessage) ? "is-invalid" : "")" id="RegisterPassword" name="Password" placeholder="••••••••" required>
-                    <span class="input-group-text eye-icon-btn" id="toggleRegPassword">
+                    <input type="password" class="form-control custom-input @(!string.IsNullOrEmpty(Model.ErrorMessage) ? "is-invalid" : "")" id="RegisterPassword" name="Password" placeholder="••••••••" required>
+                    <span class="input-group-text eye-icon-btn" id="toggleRegPassword" style="cursor:pointer;">
                         <i class="bi bi-eye-fill"></i>
                     </span>
                 </div>
@@ -73,6 +75,17 @@
                 </div>
             </div>
 
+            <div class="mb-4 position-relative">
+                <label for="ConfirmPassword" class="form-label custom-label text-uppercase">Confirm Password</label>
+                <div class="input-group">
+                    <input type="password" class="form-control custom-input @(!string.IsNullOrEmpty(Model.ErrorMessage) ? "is-invalid" : "")" id="ConfirmPassword" name="ConfirmPassword" placeholder="••••••••" required>
+                    <span class="input-group-text eye-icon-btn" id="toggleConfirmPassword" style="cursor:pointer;">
+                        <i class="bi bi-eye-fill"></i>
+                    </span>
+                </div>
+                <div id="passwordMatchError" class="text-danger small mt-1 d-none fw-bold"><i class="bi bi-exclamation-circle me-1"></i> Passwords do not match.</div>
+            </div>
+
             <div class="mt-4 mb-3">
                 <button type="submit" class="btn btn-signin w-100" id="btnRegister" disabled>Sign Up</button>
             </div>
@@ -84,20 +97,17 @@
         </form>
     </div>
 </div>
+
 <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered custom-modal-width">
         <div class="modal-content success-modal-box text-center p-4">
-
             <h5 class="auth-modal-title mb-4">Account Created!</h5>
-
             <div class="success-icon-box mb-4">
                 <i class="bi bi-check-lg success-check-icon"></i>
             </div>
-
             <p class="auth-modal-text mb-0">
                 @Model.SuccessMessage
             </p>
-
         </div>
     </div>
 </div>
@@ -106,69 +116,86 @@
 {
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // 1. Show the success modal
             var successModal = new bootstrap.Modal(document.getElementById('successModal'));
             successModal.show();
 
-            // 2. Wait exactly 2 seconds, then redirect to the login page
             setTimeout(function() {
                 window.location.href = '/Login';
             }, 2000);
         });
     </script>
 }
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const passwordInput = document.getElementById("RegisterPassword");
+        const confirmInput = document.getElementById("ConfirmPassword");
         const strengthCard = document.getElementById("strengthCard");
         const strengthBar = document.getElementById("strengthBar");
         const btnRegister = document.getElementById("btnRegister");
+        const matchError = document.getElementById("passwordMatchError");
 
         const reqLength = document.getElementById("req-length");
         const reqCapital = document.getElementById("req-capital");
         const reqNumber = document.getElementById("req-number");
         const reqSpace = document.getElementById("req-space");
 
-        passwordInput.addEventListener("focus", () => strengthCard.classList.add("active"));
-        passwordInput.addEventListener("blur", () => {
-            strengthCard.classList.remove("active");
-        });
+        let currentPasswordScore = 0;
 
+        passwordInput.addEventListener("focus", () => strengthCard.classList.add("active"));
+        passwordInput.addEventListener("blur", () => strengthCard.classList.remove("active"));
+
+        // Evaluate main password strength
         passwordInput.addEventListener("input", function () {
             const val = passwordInput.value;
             let score = 0;
 
-            if (val.length >= 8 && val.length <= 20) {
-                updateReq(reqLength, true); score++;
-            } else {
-                updateReq(reqLength, false);
-            }
+            if (val.length >= 8 && val.length <= 20) { updateReq(reqLength, true); score++; }
+            else { updateReq(reqLength, false); }
 
-            if (/[A-Z]/.test(val)) {
-                updateReq(reqCapital, true); score++;
-            } else {
-                updateReq(reqCapital, false, true); 
-            }
+            if (/[A-Z]/.test(val)) { updateReq(reqCapital, true); score++; }
+            else { updateReq(reqCapital, false, true); }
 
-            if (/[0-9]/.test(val)) {
-                updateReq(reqNumber, true); score++;
-            } else {
-                updateReq(reqNumber, false);
-            }
+            if (/[0-9]/.test(val)) { updateReq(reqNumber, true); score++; }
+            else { updateReq(reqNumber, false); }
 
-            if (!/\s/.test(val) && val.length > 0) {
-                updateReq(reqSpace, true); score++;
-            } else {
-                updateReq(reqSpace, false);
-            }
+            if (!/\s/.test(val) && val.length > 0) { updateReq(reqSpace, true); score++; }
+            else { updateReq(reqSpace, false); }
 
             strengthBar.style.width = (score * 25) + "%";
-            if (score <= 1) strengthBar.style.backgroundColor = "#d9534f"; 
+            if (score <= 1) strengthBar.style.backgroundColor = "#d9534f";
             else if (score <= 3) strengthBar.style.backgroundColor = "#D6A019";
-            else strengthBar.style.backgroundColor = "#1EB580"; 
+            else strengthBar.style.backgroundColor = "#1EB580";
 
-            btnRegister.disabled = (score !== 4);
+            currentPasswordScore = score;
+            checkFormValidity();
         });
+
+        // Evaluate password match on either input change
+        confirmInput.addEventListener("input", checkFormValidity);
+
+        function checkFormValidity() {
+            const passVal = passwordInput.value;
+            const confirmVal = confirmInput.value;
+            let isMatch = false;
+
+            if (confirmVal.length > 0) {
+                if (passVal !== confirmVal) {
+                    matchError.classList.remove("d-none");
+                    confirmInput.style.borderColor = "#dc3545";
+                } else {
+                    matchError.classList.add("d-none");
+                    confirmInput.style.borderColor = "#198754";
+                    isMatch = true;
+                }
+            } else {
+                matchError.classList.add("d-none");
+                confirmInput.style.borderColor = "";
+            }
+
+            // Button unlocks ONLY if strength is perfect AND passwords match
+            btnRegister.disabled = !(currentPasswordScore === 4 && isMatch);
+        }
 
         function updateReq(el, isMet, isWarning = false) {
             const icon = el.querySelector(".req-icon");
@@ -185,28 +212,42 @@
             }
         }
 
+        // Toggle Main Password
         document.getElementById("toggleRegPassword").addEventListener("click", function () {
             const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
             passwordInput.setAttribute("type", type);
-        });
-    const fNameInput = document.getElementById("FirstName");
-    const lNameInput = document.getElementById("LastName");
-
-    function forceTitleCase(event) {
-        const input = event.target;
-        const start = input.selectionStart;
-        const end = input.selectionEnd;
-
-        input.value = input.value.replace(/\b([a-z])/g, function (match) {
-            return match.toUpperCase();
+            this.querySelector('i').classList.toggle('bi-eye-slash-fill');
+            this.querySelector('i').classList.toggle('bi-eye-fill');
         });
 
-        input.setSelectionRange(start, end);
-    }
+        // Toggle Confirm Password
+        document.getElementById("toggleConfirmPassword").addEventListener("click", function () {
+            const type = confirmInput.getAttribute("type") === "password" ? "text" : "password";
+            confirmInput.setAttribute("type", type);
+            this.querySelector('i').classList.toggle('bi-eye-slash-fill');
+            this.querySelector('i').classList.toggle('bi-eye-fill');
+        });
 
-    fNameInput.addEventListener("input", forceTitleCase);
-    lNameInput.addEventListener("input", forceTitleCase);
+        // Title Case formatting
+        const fNameInput = document.getElementById("FirstName");
+        const lNameInput = document.getElementById("LastName");
+
+        function forceTitleCase(event) {
+            const input = event.target;
+            const start = input.selectionStart;
+            const end = input.selectionEnd;
+
+            input.value = input.value.replace(/\b([a-z])/g, function (match) {
+                return match.toUpperCase();
+            });
+
+            input.setSelectionRange(start, end);
+        }
+
+        fNameInput.addEventListener("input", forceTitleCase);
+        lNameInput.addEventListener("input", forceTitleCase);
     });
+
     document.getElementById('registerForm').addEventListener('submit', function (event) {
         if (!this.checkValidity()) {
             event.preventDefault();

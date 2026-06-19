@@ -31,9 +31,9 @@ namespace ProjectAstra.Pages
 
             if (Order != null)
             {
-                if (Order.PaymentStatus != "PAID")
+                if (Order.PaymentStatus != "SETTLED")
                 {
-                    Order.PaymentStatus = "PAID";
+                    Order.PaymentStatus = "SETTLED";
                     await _context.SaveChangesAsync();
 
                     await SendInvoiceEmailAsync(Order);
