@@ -50,7 +50,7 @@ namespace ProjectAstra.Pages
                 return RedirectToPage("/Login");
             }
 
-            // Load the hidden fields so they get submitted in the POST request
+            // load the hidden fields so they get submitted in the post request
             Input.Email = email;
             Input.Token = token;
 
@@ -63,17 +63,16 @@ namespace ProjectAstra.Pages
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == Input.Email && u.ResetToken == Input.Token);
 
-            // Verify if token exists and hasn't expired
+            // verify if token exists and hasn't expired
             if (user == null || user.ResetTokenExpiry == null || user.ResetTokenExpiry < DateTime.UtcNow)
             {
                 ModelState.AddModelError(string.Empty, "This password reset link is invalid or has expired. Please request a new one.");
                 return Page();
             }
 
-            // Hash the new password and update the database
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(Input.NewPassword);
 
-            // Clear the tokens so the link cannot be clicked again!
+            // clear the tokens so the link cannot be clicked again
             user.ResetToken = null;
             user.ResetTokenExpiry = null;
 

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ProjectAstra.Models;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProjectAstra.Pages
 {
+    [Authorize(Roles = "Admin")]
     public class OrdersModel : PageModel
     {
         private readonly AppDbContext _context;

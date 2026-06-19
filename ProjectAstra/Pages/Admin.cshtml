@@ -251,19 +251,17 @@
 
     <script>
         $(document).ready(function () {
-            // 1. Initialize DataTables
             $('#ordersTable').DataTable({
                 "pageLength": 10,
                 "ordering": true,
                 "info": true,
                 "lengthChange": true,
-                "order": [[ 6, "desc" ]], // Sort by the Date column (Index 6) by default
+                "order": [[ 6, "desc" ]], 
                 "language": {
                     "search": "Search Orders:"
                 }
             });
 
-            // 2. Tab Navigation styling hook
             document.querySelectorAll('#dashboardTabs .nav-link').forEach(tab => {
                 tab.addEventListener('click', function() {
                     document.querySelectorAll('#dashboardTabs .nav-link').forEach(t => {
@@ -275,7 +273,6 @@
                 });
             });
 
-            // Force initial active state styling on load
             var activeTab = document.querySelector('#dashboardTabs .nav-link.active');
             if (activeTab) {
                 activeTab.style.backgroundColor = '#0D4F4E';

@@ -1,0 +1,177 @@
+﻿@page
+@model ProjectAstra.Pages.Admin.ProductsManagementModel
+@{
+    ViewData["Title"] = "Manage Products";
+    Layout = "_AdminLayout";
+
+    string GetImg(string path)
+    {
+        if (string.IsNullOrWhiteSpace(path)) return "https://via.placeholder.com/45.png?text=NoImg";
+        if (!path.StartsWith("/") && !path.StartsWith("http")) return "/" + path;
+        return path;
+    }
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
+
+<div class="container-fluid px-4 py-5" style="font-family: 'Inter', sans-serif;">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-dark m-0">Catalog Management</h2>
+            <p class="text-muted m-0">View, sort, filter, modify, or archive store merchandise models.</p>
+        </div>
+        <a href="/AddProduct" class="btn text-white fw-bold px-4 py-2 rounded-0 text-uppercase tracking-wider shadow-sm" style="background-color: #0D4F4E;">
+            <i class="bi bi-plus-lg me-1"></i> Add Product
+        </a>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.StatusMessage))
+    {
+        <div class="alert alert-success alert-dismissible fade show fw-bold border-0 shadow-sm rounded-0 mb-4" role="alert" style="background-color: #d1e7dd; color: #0f5132;">
+            <i class="bi bi-check-circle-fill me-2"></i> @Model.StatusMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="mb-4">
+        <div class="btn-group rounded-0 shadow-sm border" role="group">
+            <a href="?CurrentFilter=Active" class="btn px-4 py-2 fw-bold @(Model.CurrentFilter == "Active" ? "btn-dark" : "btn-light text-muted")">Active</a>
+            <a href="?CurrentFilter=Archived" class="btn px-4 py-2 fw-bold @(Model.CurrentFilter == "Archived" ? "btn-dark" : "btn-light text-muted")">Archived</a>
+            <a href="?CurrentFilter=T-Shirt" class="btn px-4 py-2 fw-bold @(Model.CurrentFilter == "T-Shirt" ? "btn-dark" : "btn-light text-muted")">T-Shirts</a>
+            <a href="?CurrentFilter=Hoodie" class="btn px-4 py-2 fw-bold @(Model.CurrentFilter == "Hoodie" ? "btn-dark" : "btn-light text-muted")">Hoodies</a>
+            <a href="?CurrentFilter=ToteBag" class="btn px-4 py-2 fw-bold @(Model.CurrentFilter == "ToteBag" ? "btn-dark" : "btn-light text-muted")">Tote Bags</a>
+            <a href="?CurrentFilter=All" class="btn px-4 py-2 fw-bold @(Model.CurrentFilter == "All" ? "btn-dark" : "btn-light text-muted")">Show All</a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border p-4 bg-white rounded-0">
+        <div class="table-responsive">
+            <table id="adminProductsTable" class="table table-hover align-middle mb-0 w-100">
+                <thead style="background-color: #d8e2dc; color: #333;">
+                    <tr>
+                        <th class="py-3 px-3 small fw-bold text-uppercase tracking-wider">Product Info</th>
+                        <th class="py-3 small fw-bold text-uppercase tracking-wider">Category</th>
+                        <th class="py-3 small fw-bold text-uppercase tracking-wider">Merch Types</th>
+                        <th class="py-3 small fw-bold text-uppercase tracking-wider">Base Price</th>
+                        <th class="py-3 small fw-bold text-uppercase tracking-wider">Sizes</th>
+                        <th class="py-3 small fw-bold text-uppercase tracking-wider">Catalog Status</th>
+                        <th class="py-3 px-3 small fw-bold text-uppercase tracking-wider text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in Model.Products)
+                    {
+                        var primaryVariation = product.Variations.FirstOrDefault();
+
+                        <tr>
+                            <td class="px-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="border rounded bg-light me-3 shadow-sm" style="width: 45px; height: 45px; overflow: hidden;">
+                                        <img src="@GetImg(primaryVariation?.FrontImage)" class="w-100 h-100" style="object-fit: cover;" onerror="this.onerror=null;this.src='https://via.placeholder.com/45.png?text=Img';" />
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-dark lh-sm">@product.Name</div>
+                                        <small class="text-muted" style="font-size: 0.75rem;">Tag: @(string.IsNullOrEmpty(product.Tag) ? "None" : product.Tag)</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="small fw-semibold text-muted">@product.Category</td>
+                            <td class="small">
+                                @if (product.Types != null && product.Types.Any())
+                                {
+                                    @string.Join(", ", product.Types)
+                                }
+                                else
+                                {
+                                    <span class="text-muted fst-italic">None Specified</span>
+                                }
+                            </td>
+                            <td class="fw-bold text-dark">₱@product.Price.ToString("N2")</td>
+                            <td class="small text-muted fw-semibold">
+                                @if (product.AvailableSizes != null && product.AvailableSizes.Any())
+                                {
+                                    @string.Join(", ", product.AvailableSizes)
+                                }
+                                else
+                                {
+                                    <span>--</span>
+                                }
+                            </td>
+                            <td>
+                                @if (product.IsArchived)
+                                {
+                                    <span class="badge bg-danger rounded-pill px-3 py-1 fw-bold tracking-wide">ARCHIVED</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success rounded-pill px-3 py-1 fw-bold tracking-wide">ACTIVE</span>
+                                }
+                            </td>
+                            <td class="text-center px-3">
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-light border dropdown-toggle fw-bold" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Manage
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                                        <li><h6 class="dropdown-header fw-bold text-dark">Configuration</h6></li>
+                                        <li>
+                                            <a class="dropdown-item py-2" href="/EditProduct/@product.Id">
+                                                <i class="bi bi-pencil-square text-muted me-2"></i> Edit Product
+                                            </a>
+                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
+
+                                        @if (!product.IsArchived)
+                                        {
+                                            <li>
+                                                <form method="post" asp-page-handler="Archive" onsubmit="return confirm('Are you sure you want to archive this product? This clears student active shopping carts and saves item properties into user wishlists.');">
+                                                    <input type="hidden" name="id" value="@product.Id" />
+                                                    <button type="submit" class="dropdown-item py-2 text-danger">
+                                                        <i class="bi bi-archive-fill me-2"></i> Archive Asset
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li>
+                                                <form method="post" asp-page-handler="Unarchive" onsubmit="return confirm('Restore this item back to the main user catalog store pages?');">
+                                                    <input type="hidden" name="id" value="@product.Id" />
+                                                    <button type="submit" class="dropdown-item py-2 text-success fw-bold">
+                                                        <i class="bi bi-arrow-counterclockwise me-2"></i> Restore Product
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#adminProductsTable').DataTable({
+                "pageLength": 10,
+                "ordering": true,
+                "info": true,
+                "lengthChange": true,
+                "order": [[0, "asc"]], // Order alphabetically by name default
+                "language": {
+                    "search": "Quick Lookup:"
+                }
+            });
+        });
+    </script>
+}

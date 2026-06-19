@@ -1,0 +1,52 @@
+﻿@page "{id:int}"
+@model ProjectAstra.Pages.Admin.EditProductModel
+@{
+    ViewData["Title"] = "Edit Product";
+    Layout = "_AdminLayout";
+}
+
+<div class="container px-4 py-5" style="max-width: 800px;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold m-0">Edit Product</h2>
+
+        <form method="post" asp-page-handler="Archive" onsubmit="return confirm('Archive this product? It will be removed from the store and all user carts will be converted to wishlists.');">
+            <input type="hidden" name="id" value="@Model.Product.Id" />
+            <button type="submit" class="btn btn-outline-danger fw-bold text-uppercase tracking-wider">
+                <i class="bi bi-archive me-1"></i> Archive Product
+            </button>
+        </form>
+    </div>
+
+    <div class="card border-0 shadow-sm p-4">
+        <form method="post" asp-page-handler="Update">
+            <input type="hidden" asp-for="Product.Id" />
+
+            <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                    <label class="fw-bold mb-2">Product Name</label>
+                    <input type="text" asp-for="Product.Name" class="form-control" required />
+                </div>
+                <div class="col-md-6">
+                    <label class="fw-bold mb-2">Price</label>
+                    <div class="input-group">
+                        <span class="input-group-text">₱</span>
+                        <input type="number" asp-for="Product.Price" step="0.01" class="form-control" required />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label class="fw-bold mb-2">Category</label>
+                    <input type="text" asp-for="Product.Category" class="form-control" required />
+                </div>
+                <div class="col-12">
+                    <label class="fw-bold mb-2">Description</label>
+                    <textarea asp-for="Product.Description" class="form-control" rows="4" required></textarea>
+                </div>
+            </div>
+
+            <div class="d-flex gap-3 justify-content-end border-top pt-4 mt-4">
+                <a href="/Store" class="btn btn-light border fw-bold px-4">Cancel</a>
+                <button type="submit" class="btn text-white fw-bold px-4" style="background-color: #0D4F4E;">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
