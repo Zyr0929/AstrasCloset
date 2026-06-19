@@ -178,27 +178,47 @@
                     <div class="col-6 col-md-2 col-lg-2 offset-lg-1">
                         <div class="footer-heading">Shop</div>
                         <ul>
-                            <li> <a href="#">All Products</a></li>
-                            <li> <a href="#">T-shirt</a></li>
-                            <li> <a href="#">Hoodies</a></li>
-                            <li> <a href="#">Tote Bags</a></li>
-                            <li> <a href="#">Windbreaker</a></li>
+                            <li>
+                                <a asp-page="/Store">
+                                    All Products
+                                </a>
+                            </li>
+
+                            <li>
+                                <a asp-page="/Store"
+                                   asp-route-Types="T-Shirt">
+                                    T-Shirts
+                                </a>
+                            </li>
+
+                            <li>
+                                <a asp-page="/Store"
+                                   asp-route-Types="Hoodie">
+                                    Hoodies
+                                </a>
+                            </li>
+
+                            <li>
+                                <a asp-page="/Store"
+                                   asp-route-Types="Tote Bag">
+                                    Tote Bags
+                                </a>
+                            </li>
+
+                            <li>
+                                <a asp-page="/Store"
+                                   asp-route-Types="Windbreaker">
+                                    Windbreakers
+                                </a>
+                            </li>
                         </ul>
                     </div>
                     <div class="col-6 col-md-3 col-lg-3">
                         <div class="footer-heading">Customer Care</div>
                         <ul>
-                            <li> <a href="#">Contact Us</a></li>
-                            <li> <a href="#">Help Center</a></li>
-                            <li> <a href="#">Returns & Exchanges</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-6 col-md-3 col-lg-3">
-                        <div class="footer-heading">About Us</div>
-                        <ul>
-                            <li> <a href="#">Our Story</a></li>
-                            <li> <a href="#">Size Chart</a></li>
-                            <li> <a href="#">Reviews</a></li>
+                            <li>
+                                <a asp-page="/Support">Contact Us</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
