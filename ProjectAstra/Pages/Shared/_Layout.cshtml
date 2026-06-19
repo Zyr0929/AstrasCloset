@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="~/ProjectTemplate.styles.css" asp-append-version="true" />
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
 
     @{
         // --- CART & USER DATA FETCHING LOGIC ---
@@ -160,11 +160,11 @@
         </div>
     </div>
 
-    <div class="container-fluid px-5">
-        <main role="main" class="pb-3">
+    <main class="flex-grow-1">
+        <div class="container-fluid px-5">
             @RenderBody()
-        </main>
-    </div>
+        </div>
+    </main>
 
     <hr class="footer-divider" />
     <footer class="astra-footer">
@@ -432,6 +432,19 @@
                 $('#searchDrawer').removeClass('active');
                 unlockLayoutContext();
             }
+                    $('#sidebarSearchInput').on('keypress', function (e) {
+
+            if (e.which === 13) {
+
+                const searchTerm = $(this).val().trim();
+
+                if (searchTerm.length > 0) {
+                    window.location.href =
+                        '/Store?Search=' +
+                        encodeURIComponent(searchTerm);
+                }
+            }
+        });
             $('#closeSearchBtn, #searchOverlay').on('click', clearSearchContext);
 
             // Cart Drawer
