@@ -1925,3 +1925,35 @@ body {
 .table th {
     vertical-align: middle;
 }
+
+/* ===== SIZE GUIDE ===== */
+
+.size-guide-modal {
+    border: none;
+    border-radius: 4px;
+    padding: 12px;
+}
+
+.modal-backdrop.show {
+    opacity: .7;
+}
+
+.size-guide-image-wrapper {
+    height: 540px;
+    border: 1px solid #eee;
+    overflow: hidden;
+}
+
+    .size-guide-image-wrapper img {
+        object-fit: cover;
+    }
+
+.size-guide-description {
+    font-size: .95rem;
+    color: #555;
+    line-height: 2;
+}
+
+.size-guide-trigger-link:hover {
+    color: #1f5d5d !important;
+}
