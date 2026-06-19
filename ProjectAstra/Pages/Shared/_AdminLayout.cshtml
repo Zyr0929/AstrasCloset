@@ -117,16 +117,20 @@
                 <a href="#" class="admin-nav-link">
                     <i class="bi bi-bell fs-5"></i> Notifications
                 </a>
-                <a href="#" class="admin-nav-link">
-                    <i class="bi bi-heart fs-5"></i> Wishlist
+                <a href="/AdminWishlist" class="admin-nav-link @(currentRoute == "/AdminWishlist" ? "active" : "")">
+                    <i class="bi bi-heart fs-5"></i> User Wishlist
+                </a>
+                <a href="/Products" class="admin-nav-link @(currentRoute == "/Products" ? "active" : "")">
+                    <i class="bi bi-plus-circle fs-5"></i> All Products
+                </a>
+                <a href="/AddProduct" class="admin-nav-link @(currentRoute == "/AddProduct" ? "active" : "")">
+                    <i class="bi bi-plus-circle fs-5"></i> Add New Product
                 </a>
                 <a href="/Settings" class="admin-nav-link" @(currentRoute == "/Settings" ? "active" : "")">
                     <i class="bi bi-gear fs-5"></i> Settings
                 </a>
 
-                <a href="/AddProduct" class="admin-nav-link @(currentRoute == "/AddProduct" ? "active" : "")">
-                    <i class="bi bi-plus-circle fs-5"></i> Add New Product
-                </a>
+
 
             </div>
 

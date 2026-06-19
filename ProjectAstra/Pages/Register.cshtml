@@ -145,7 +145,6 @@
         passwordInput.addEventListener("focus", () => strengthCard.classList.add("active"));
         passwordInput.addEventListener("blur", () => strengthCard.classList.remove("active"));
 
-        // Evaluate main password strength
         passwordInput.addEventListener("input", function () {
             const val = passwordInput.value;
             let score = 0;
@@ -171,7 +170,6 @@
             checkFormValidity();
         });
 
-        // Evaluate password match on either input change
         confirmInput.addEventListener("input", checkFormValidity);
 
         function checkFormValidity() {
@@ -193,7 +191,6 @@
                 confirmInput.style.borderColor = "";
             }
 
-            // Button unlocks ONLY if strength is perfect AND passwords match
             btnRegister.disabled = !(currentPasswordScore === 4 && isMatch);
         }
 

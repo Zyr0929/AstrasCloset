@@ -34,24 +34,20 @@ namespace ProjectAstra.Pages
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == Email);
 
-            // SECURITY BEST PRACTICE: Even if the email doesn't exist, we show a success message. 
-            // This prevents malicious users from guessing which emails are registered in your database.
             if (user != null)
             {
-                // 1. Generate a unique, secure token valid for 1 hour
+                // generate a unique, secure token valid lng for 1 hour
                 var token = Guid.NewGuid().ToString("N");
                 user.ResetToken = token;
                 user.ResetTokenExpiry = DateTime.UtcNow.AddHours(1);
                 await _context.SaveChangesAsync();
 
-                // 2. Build the exact clickable link for the email
                 var resetLink = Url.Page(
                     "/ResetPassword",
                     pageHandler: null,
                     values: new { email = user.Username, token = token },
                     protocol: Request.Scheme);
 
-                // 3. Send the Email using Resend
                 await SendResetEmailAsync(user.Username, user.FirstName, resetLink);
             }
 

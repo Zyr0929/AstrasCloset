@@ -33,14 +33,20 @@ namespace ProjectAstra.Pages
 
         public async Task OnGetAsync()
         {
-            var allProducts = await _context.Products.Include(p => p.Variations).ToListAsync();
+            var allProducts = await _context.Products
+                .Include(p => p.Variations)
+                .Where(p => !p.IsArchived)
+                .ToListAsync();
 
             DbTypes = allProducts.SelectMany(p => p.Types ?? new List<string>()).Distinct().OrderBy(t => t).ToList();
             DbSizes = allProducts.SelectMany(p => p.AvailableSizes ?? new List<string>()).Distinct().OrderBy(s => s).ToList();
             DbColors = allProducts.SelectMany(p => p.Variations.Select(v => v.ColorName)).Distinct().OrderBy(c => c).ToList();
             DbThemes = allProducts.Where(p => !string.IsNullOrEmpty(p.Tag)).Select(p => p.Tag).Distinct().OrderBy(t => t).ToList();
 
-            var query = _context.Products.Include(p => p.Variations).AsQueryable();
+            var query = _context.Products
+                .Include(p => p.Variations)
+                .Where(p => !p.IsArchived)
+                .AsQueryable();
             var products = await query.ToListAsync();
 
             if (Types.Any())
