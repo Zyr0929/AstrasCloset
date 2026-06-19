@@ -3,276 +3,157 @@
 
 @{
     ViewData["Title"] = "Payment Successful";
+
+    string GetImg(string path)
+    {
+        if (string.IsNullOrWhiteSpace(path)) return "https://via.placeholder.com/80.png?text=NoImg";
+        if (!path.StartsWith("/") && !path.StartsWith("http")) return "/" + path;
+        return path;
+    }
 }
 
 <div class="container checkout-wrapper py-5">
-
     <div class="row g-5 align-items-start">
 
-        <!-- LEFT SIDE -->
         <div class="col-lg-6">
 
-            <!-- Progress -->
             <div class="checkout-progress mb-5">
                 <div class="progress">
-                    <div class="progress-bar bg-success"
-                         style="width:100%">
-                    </div>
+                    <div class="progress-bar bg-success" style="width:100%"></div>
                 </div>
             </div>
 
-            <h1 class="fw-bold text-center mb-3">
+            <h1 class="fw-bold text-center mb-3 text-dark">
                 Payment Successful
             </h1>
 
-            <hr class="mb-4" />
+            <hr class="mb-4 opacity-25" />
 
-            <p class="success-description text-center mb-5">
+            <p class="success-description text-center mb-5 text-muted">
                 You will receive an in-app notification and email
                 when your order is available for pickup at the campus.
             </p>
 
-            <!-- INVOICE PREVIEW SUCCESS CONTAINER -->
-            <div class="invoice-preview-success-container">
+            <div class="invoice-preview-success-container border shadow-sm rounded bg-white p-4">
 
-                <div class="invoice-preview-success-header">
+                <div class="invoice-preview-success-header fw-bold text-uppercase tracking-wider mb-4 pb-3 border-bottom" style="color: White;">
                     ASTRA'S Closet
                 </div>
 
                 <div class="invoice-preview-success-body">
-
-                    <div class="success-status-icon">
-                        ✓
+                    <div class="success-status-icon text-success fs-1 mb-2">
+                        <i class="bi bi-check-circle-fill"></i>
                     </div>
 
-                    <h4 class="fw-bold mb-2">
-                        Payment Confirmed
-                    </h4>
+                    <h4 class="fw-bold mb-2 text-dark">Payment Confirmed</h4>
 
-                    <p class="text-muted mb-4">
-                        Your order has been successfully paid and recorded.
+                    <p class="text-muted mb-4 small">
+                        Your order has been successfully paid and an email receipt has been sent.
                     </p>
 
-                    <div class="success-detail-row">
-                        <span class="success-detail-label">
-                            Order Reference
-                        </span>
-
-                        <span class="success-detail-value">
-                            @Model.OrderId
-                        </span>
+                    <div class="success-detail-row d-flex justify-content-between mb-2 pb-2 border-bottom border-light">
+                        <span class="success-detail-label text-muted small fw-bold text-uppercase">Order Reference</span>
+                        <span class="success-detail-value fw-bold text-dark">@Model.OrderId</span>
                     </div>
 
-                    <div class="success-detail-row">
-                        <span class="success-detail-label">
-                            Customer
-                        </span>
-
-                        <span class="success-detail-value">
-                            @Model.Order?.CustomerName
-                        </span>
+                    <div class="success-detail-row d-flex justify-content-between mb-2 pb-2 border-bottom border-light">
+                        <span class="success-detail-label text-muted small fw-bold text-uppercase">Customer</span>
+                        <span class="success-detail-value text-dark text-end">@Model.Order?.CustomerName</span>
                     </div>
 
-                    <div class="success-detail-row">
-                        <span class="success-detail-label">
-                            Year & Section
-                        </span>
-
-                        <span class="success-detail-value">
-                            @Model.Order?.YearSection
-                        </span>
+                    <div class="success-detail-row d-flex justify-content-between mb-2 pb-2 border-bottom border-light">
+                        <span class="success-detail-label text-muted small fw-bold text-uppercase">Year & Section</span>
+                        <span class="success-detail-value text-dark">@Model.Order?.YearSection</span>
                     </div>
 
-                    <div class="success-detail-row">
-                        <span class="success-detail-label">
-                            Date Submitted
-                        </span>
-
-                        <span class="success-detail-value">
-                            @Model.Order?.OrderDate.ToString("MMM dd, yyyy")
-                        </span>
+                    <div class="success-detail-row d-flex justify-content-between mb-2 pb-2 border-bottom border-light">
+                        <span class="success-detail-label text-muted small fw-bold text-uppercase">Date Submitted</span>
+                        <span class="success-detail-value text-dark">@Model.Order?.OrderDate.ToString("MMM dd, yyyy")</span>
                     </div>
 
-                    <div class="success-detail-row">
-                        <span class="success-detail-label">
-                            Time Submitted
-                        </span>
-
-                        <span class="success-detail-value">
-                            @Model.Order?.OrderDate.ToString("hh:mm tt")
-                        </span>
+                    <div class="success-detail-row d-flex justify-content-between mb-3 pb-2 border-bottom border-light">
+                        <span class="success-detail-label text-muted small fw-bold text-uppercase">Time</span>
+                        <span class="success-detail-value text-dark">@Model.Order?.OrderDate.ToString("hh:mm tt")</span>
                     </div>
 
-                    <div class="success-detail-row border-0">
-                        <span class="success-detail-label">
-                            Payment Status
-                        </span>
-
-                        <span class="badge bg-success px-3 py-2">
-                            SETTLED
-                        </span>
+                    <div class="success-detail-row border-0 d-flex justify-content-between align-items-center mt-4">
+                        <span class="success-detail-label text-muted small fw-bold text-uppercase">Payment Status</span>
+                        <span class="badge bg-success px-3 py-2 tracking-wider">SETTLED</span>
                     </div>
-
                 </div>
-
             </div>
 
             <div class="d-flex gap-3 justify-content-center mt-5">
-
-                <a asp-page="/MyOrders"
-                   class="btn btn-warning px-5 py-3 fw-semibold">
+                <a asp-page="/MyOrders" class="btn px-5 py-3 fw-bold text-uppercase tracking-wider rounded-0" style="background-color: #D6A019; color: #121212;">
                     View My Orders
                 </a>
-
-                <a asp-page="/Index"
-                   class="btn btn-outline-secondary px-5 py-3 fw-semibold">
+                <a asp-page="/Index" class="btn btn-outline-dark px-5 py-3 fw-bold text-uppercase tracking-wider rounded-0">
                     Back To Home
                 </a>
-
             </div>
-
         </div>
 
-        <!-- RIGHT SIDE -->
-        <div class="col-lg-6 checkout-right-panel">
+        <div class="col-lg-6 checkout-right-panel ps-lg-5">
+            <div class="checkout-summary-sticky p-4 rounded bg-light" style="border: 1px solid #e0e0e0;">
 
-            <div class="checkout-summary-sticky">
+                <h5 class="fw-bold text-dark mb-4 pb-2 border-bottom text-uppercase tracking-wider">Order Items</h5>
 
-                <!-- SAMPLE PRODUCTS FOR NOW ad nalang tables ni ed -->
+                @if (Model.Order != null && Model.Order.OrderItems != null)
+                {
+                    @foreach (var item in Model.Order.OrderItems)
+                    {
+                        var variation = item.Product.Variations.FirstOrDefault(v => v.ColorName == item.SelectedColor) ?? item.Product.Variations.FirstOrDefault();
 
-                <div class="d-flex mb-4">
-
-                    <div class="position-relative me-3">
-
-                        <div class="border shadow-sm"
-                             style="
-                                width:80px;
-                                height:80px;
-                                overflow:hidden;">
-
-                            <img src="/images/sample-shirt.png"
-                                 class="checkout-thumb" />
-
-                        </div>
-
-                        <span class="
-                            position-absolute
-                            top-0
-                            start-100
-                            translate-middle
-                            badge
-                            rounded-pill
-                            bg-warning
-                            text-dark">
-
-                            1
-
-                        </span>
-
-                    </div>
-
-                    <div class="flex-grow-1">
-
-                        <div class="fw-semibold">
-                            Sample Product
-                        </div>
-
-                        <div class="text-muted small">
-                            XL / Black
-                        </div>
-
-                    </div>
-
-                    <div class="fw-semibold">
-                        ₱500.00
-                    </div>
-
-                </div>
-
-                <hr />
-
-                <div class="d-flex justify-content-between mb-4">
-
-                    <span>
-                        Subtotal ·
-                        @Model.Order?.TotalItems items
-                    </span>
-
-                    <span class="fw-semibold">
-                        ₱@Model.Order?.TotalPrice.ToString("N2")
-                    </span>
-
-                </div>
-
-                <div class="
-                    d-flex
-                    justify-content-between
-                    align-items-center
-                    mb-5">
-
-                    <div class="fs-2 fw-bold">
-                        Total Paid
-                    </div>
-
-                    <div>
-
-                        <small class="text-muted me-1">
-                            PHP
-                        </small>
-
-                        <span class="fs-1 fw-bold">
-                            ₱@Model.Order?.TotalPrice.ToString("N2")
-                        </span>
-
-                    </div>
-
-                </div>
-
-                <div class="border border-warning p-4">
-
-                    <div class="d-flex align-items-center">
-
-                        <div class="me-3">
-
-                            <div class="
-                                rounded-circle
-                                bg-success
-                                text-white
-                                d-flex
-                                justify-content-center
-                                align-items-center"
-                                 style="
-                                    width:60px;
-                                    height:60px;
-                                    font-size:28px;">
-
-                                ♥
-
+                        <div class="d-flex mb-4 align-items-center">
+                            <div class="position-relative me-3">
+                                <div class="border shadow-sm bg-white" style="width:80px; height:80px; overflow:hidden; border-radius: 8px;">
+                                    <img src="@GetImg(variation?.FrontImage)" class="w-100 h-100" style="object-fit: cover;" onerror="this.onerror=null;this.src='https://via.placeholder.com/80.png?text=Img';" />
+                                </div>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-dark text-white shadow-sm" style="font-size: 0.75rem;">
+                                    @item.Quantity
+                                </span>
                             </div>
 
+                            <div class="flex-grow-1">
+                                <div class="fw-bold text-dark mb-1" style="font-size: 0.95rem;">@item.Product.Name</div>
+                                <div class="text-muted small">@item.SelectedSize / @item.SelectedColor</div>
+                            </div>
+
+                            <div class="fw-bold text-dark ms-3">
+                                ₱@((item.UnitPrice * item.Quantity).ToString("N2"))
+                            </div>
                         </div>
+                    }
+                }
 
-                        <div>
+                <hr class="border-secondary opacity-25 my-4" />
 
-                            Your order helps fund future
+                <div class="d-flex justify-content-between mb-3 text-muted small fw-bold text-uppercase tracking-wider">
+                    <span>Subtotal · @Model.Order?.TotalItems items</span>
+                    <span class="text-dark">₱@Model.Order?.TotalPrice.ToString("N2")</span>
+                </div>
 
-                            <strong>
-                                Nursing Student Council
-                                programs and student initiatives.
-                            </strong>
-
-                            Every piece makes a difference.
-
-                        </div>
-
+                <div class="d-flex justify-content-between align-items-end mb-4 pt-2">
+                    <div class="fs-5 fw-bold text-dark text-uppercase tracking-wide">Total Paid</div>
+                    <div>
+                        <small class="text-muted fw-bold me-1">PHP</small>
+                        <span class="fs-2 fw-bold text-dark">₱@Model.Order?.TotalPrice.ToString("N2")</span>
                     </div>
+                </div>
 
+                <div class="border border-success rounded p-3 bg-white shadow-sm d-flex align-items-center">
+                    <div class="me-3">
+                        <div class="rounded-circle bg-success text-white d-flex justify-content-center align-items-center" style="width:40px; height:40px; font-size:20px;">
+                            <i class="bi bi-heart-fill"></i>
+                        </div>
+                    </div>
+                    <div class="small text-muted lh-sm">
+                        Your order helps fund future <strong class="text-dark">Nursing Student Council</strong> programs and student initiatives. Every piece makes a difference.
+                    </div>
                 </div>
 
             </div>
-
         </div>
 
     </div>
-
 </div>

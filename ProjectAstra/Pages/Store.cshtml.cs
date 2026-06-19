@@ -19,7 +19,11 @@ namespace ProjectAstra.Pages
 
         public List<ApparelProduct> StoreProducts { get; set; } = new();
 
-        // 1. Catch all active filters from the URL
+        public List<string> DbTypes { get; set; } = new();
+        public List<string> DbColors { get; set; } = new();
+        public List<string> DbSizes { get; set; } = new();
+        public List<string> DbThemes { get; set; } = new();
+
         [BindProperty(SupportsGet = true)] public List<string> Types { get; set; } = new();
         [BindProperty(SupportsGet = true)] public List<string> Colors { get; set; } = new();
         [BindProperty(SupportsGet = true)] public List<string> Sizes { get; set; } = new();
@@ -29,26 +33,37 @@ namespace ProjectAstra.Pages
 
         public async Task OnGetAsync()
         {
+            var allProducts = await _context.Products.Include(p => p.Variations).ToListAsync();
+
+            DbTypes = allProducts.SelectMany(p => p.Types ?? new List<string>()).Distinct().OrderBy(t => t).ToList();
+            DbSizes = allProducts.SelectMany(p => p.AvailableSizes ?? new List<string>()).Distinct().OrderBy(s => s).ToList();
+            DbColors = allProducts.SelectMany(p => p.Variations.Select(v => v.ColorName)).Distinct().OrderBy(c => c).ToList();
+            DbThemes = allProducts.Where(p => !string.IsNullOrEmpty(p.Tag)).Select(p => p.Tag).Distinct().OrderBy(t => t).ToList();
+
             var query = _context.Products.Include(p => p.Variations).AsQueryable();
+            var products = await query.ToListAsync();
 
             if (Types.Any())
             {
-                query = query.Where(p => Types.Contains(p.Category));
+                products = products.Where(p => p.Types != null && p.Types.Any(t => Types.Contains(t))).ToList();
             }
 
             if (Colors.Any())
             {
                 var lowerColors = Colors.Select(c => c.ToLower()).ToList();
-                query = query.Where(p => p.Variations.Any(v => lowerColors.Contains(v.ColorName.ToLower())));
+                products = products.Where(p => p.Variations.Any(v => lowerColors.Contains(v.ColorName.ToLower()))).ToList();
             }
 
             if (Themes.Any())
             {
                 var lowerThemes = Themes.Select(t => t.ToLower()).ToList();
-                query = query.Where(p => !string.IsNullOrEmpty(p.Tag) && lowerThemes.Any(t => p.Tag.ToLower().Contains(t)));
+                products = products.Where(p => !string.IsNullOrEmpty(p.Tag) && lowerThemes.Any(t => p.Tag.ToLower().Contains(t))).ToList();
             }
 
-            var products = await query.ToListAsync();
+            if (Sizes.Any())
+            {
+                products = products.Where(p => p.AvailableSizes != null && p.AvailableSizes.Any(s => Sizes.Contains(s))).ToList();
+            }
 
             if (Prices.Any())
             {
@@ -57,11 +72,6 @@ namespace ProjectAstra.Pages
                 if (Prices.Contains("351-500")) filteredByPrice.AddRange(products.Where(p => p.Price > 350 && p.Price <= 500));
                 if (Prices.Contains("500+")) filteredByPrice.AddRange(products.Where(p => p.Price > 500));
                 products = filteredByPrice.Distinct().ToList();
-            }
-
-            if (Sizes.Any())
-            {
-                products = products.Where(p => p.AvailableSizes.Any(s => Sizes.Contains(s))).ToList();
             }
 
             if (Materials.Any())

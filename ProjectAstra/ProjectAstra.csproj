@@ -13,6 +13,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Resend" Version="0.5.1" />
     <PackageReference Include="Xendit.net" Version="1.1.0" />
   </ItemGroup>
 

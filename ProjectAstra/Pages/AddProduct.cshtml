@@ -104,20 +104,57 @@
                     <input type="number" step="0.01" class="form-control admin-input border-start-0" name="Price" required>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label class="fw-bold mb-2">Category</label>
                 <select class="form-select admin-input" name="Category">
-                    <option value="Hoodie">Hoodie</option>
-                    <option value="T-Shirt">T-Shirt</option>
-                    <option value="Tote Bag">Tote Bag</option>
+                    <option value="Apparel">Apparel</option>
+                    <option value="Accessories">Accessories</option>
+                    <option value="Supplies">Supplies</option>
                 </select>
             </div>
-            <div class="col-md-4">
+
+            <div class="col-md-5">
                 <label class="fw-bold mb-2">Sizes Available</label>
-                <select class="form-select admin-input" name="Sizes">
-                    <option value="S,M,L,XL">S, M, L, XL</option>
-                    <option value="One Size">One Size</option>
-                </select>
+                <div class="d-flex flex-wrap gap-3 mt-1">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="Sizes" value="XS" id="sizeXS">
+                        <label class="form-check-label" for="sizeXS">XS</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="Sizes" value="S" id="sizeS">
+                        <label class="form-check-label" for="sizeS">S</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="Sizes" value="M" id="sizeM">
+                        <label class="form-check-label" for="sizeM">M</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="Sizes" value="L" id="sizeL">
+                        <label class="form-check-label" for="sizeL">L</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="Sizes" value="XL" id="sizeXL">
+                        <label class="form-check-label" for="sizeXL">XL</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label class="fw-bold mb-2">Merch Type</label>
+                <div class="d-flex flex-wrap gap-3 mt-1">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="Types" value="T-Shirt" id="typeTshirt">
+                        <label class="form-check-label" for="typeTshirt">T-Shirt</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="Types" value="Hoodie" id="typeHoodie">
+                        <label class="form-check-label" for="typeHoodie">Hoodie</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="Types" value="Tote Bag" id="typeTote">
+                        <label class="form-check-label" for="typeTote">Tote Bag</label>
+                    </div>
+                </div>
             </div>
             <div class="col-md-4">
                 <label class="fw-bold mb-2">Theme/Tag</label>
@@ -184,7 +221,6 @@
 </div>
 
 <script>
-    // 1. Handles the instant image preview
     function previewMini(event, previewId, iconId) {
         var reader = new FileReader();
         reader.onload = function() {
@@ -197,13 +233,11 @@
         }
     }
 
-    // 2. Handles duplicating the color block
     let variationIndex = 1;
 
     function addNewVariation() {
         const wrapper = document.getElementById('variations-wrapper');
 
-        // Added a "Remove" button in the top right corner of the new block!
         const newBlock = `
             <div class="variation-card p-4 mb-4">
                 <div class="row mb-3 align-items-center">
@@ -250,12 +284,9 @@
         variationIndex++;
     }
 
-    // 3. Handles removing a block and repairing the sequence for C#
     function removeVariation(buttonElement) {
-        // Delete the HTML block from the screen
         buttonElement.closest('.variation-card').remove();
 
-        // Grab all remaining blocks and re-number their "name" attributes so C# doesn't crash
         const remainingCards = document.querySelectorAll('.variation-card');
 
         remainingCards.forEach((card, index) => {
@@ -263,14 +294,12 @@
             inputs.forEach(input => {
                 const currentName = input.getAttribute('name');
                 if (currentName) {
-                    // Replaces the old index number with the new correct sequence (0, 1, 2...)
                     const newName = currentName.replace(/Variations\[\d+\]/, `Variations[${index}]`);
                     input.setAttribute('name', newName);
                 }
             });
         });
 
-        // Reset the master counter so the next one added is numbered correctly
         variationIndex = remainingCards.length;
     }
 </script>
