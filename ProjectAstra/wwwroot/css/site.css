@@ -20,6 +20,9 @@ html {
     min-height: 100%;
     overflow-x: hidden;
 }
+.footer-muted {
+    padding: 3rem 0;
+}
 
 #cartOverlay,
 #profileOverlay,
