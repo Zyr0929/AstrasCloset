@@ -32,5 +32,7 @@ namespace ProjectAstra.Models
         public string? TelegramUsername { get; set; }
         [Required]
         public string PasswordHash { get; set; } = string.Empty;
+        public string? ResetToken { get; set; }
+        public DateTime? ResetTokenExpiry { get; set; }
     }
 }

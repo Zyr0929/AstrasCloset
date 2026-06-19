@@ -48,8 +48,10 @@ namespace ProjectAstra.Pages
 
             if (setting != null)
             {
+                // -- AUTOMATION 1: CLOSING PRE-ORDERS --
                 bool wasPreorder = setting.CurrentPhase == "Preorder";
                 bool isClosingPreorders = CurrentPhase != "Preorder";
+                bool cartsWiped = false;
 
                 if (wasPreorder && isClosingPreorders)
                 {
@@ -72,17 +74,45 @@ namespace ProjectAstra.Pages
                                 });
                             }
                         }
-
                         _context.CartItems.RemoveRange(allCartItems);
+                        cartsWiped = true;
                     }
                 }
 
+                // -- AUTOMATION 2: ENTERING CLAIMING PHASE --
+                bool isEnteringClaiming = CurrentPhase == "Claiming" && setting.CurrentPhase != "Claiming";
+                bool ordersTransitioned = false;
+
+                if (isEnteringClaiming)
+                {
+                    // Fetch every order that is currently SETTLED and ready for pickup
+                    var settledOrders = await _context.Orders
+                        .Where(o => o.PaymentStatus == "SETTLED")
+                        .ToListAsync();
+
+                    if (settledOrders.Any())
+                    {
+                        foreach (var order in settledOrders)
+                        {
+                            order.PaymentStatus = "TO CLAIM";
+                        }
+                        ordersTransitioned = true;
+                    }
+                }
+
+                // Save phase settings
                 setting.CurrentPhase = CurrentPhase;
                 setting.PreorderDeadline = PreorderDeadline;
 
                 await _context.SaveChangesAsync();
 
-                StatusMessage = "Store phase updated! All abandoned carts were automatically converted to wishlists.";
+                // Dynamic Status Messaging
+                if (cartsWiped)
+                    StatusMessage = "Store phase updated! Pre-orders closed and abandoned carts converted to wishlists.";
+                else if (ordersTransitioned)
+                    StatusMessage = "Claiming Phase active! All SETTLED orders have automatically been moved to TO CLAIM.";
+                else
+                    StatusMessage = "Store settings updated successfully.";
             }
 
             return RedirectToPage();

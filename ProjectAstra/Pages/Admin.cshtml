@@ -5,116 +5,237 @@
     Layout = "_AdminLayout";
 }
 
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
+
 <div class="container-fluid px-4 py-5" style="font-family: 'Inter', sans-serif;">
 
-    <div class="mb-5">
-        <h2 style="font-weight: 800; color: #121212;">Good Morning, Admin</h2>
-        <p style="color: #666;">Here's the summary of your account</p>
+    <div class="mb-4 d-flex justify-content-between align-items-end">
+        <div>
+            <h2 style="font-weight: 800; color: #121212;">Good Morning, Admin</h2>
+            <p style="color: #666; margin: 0;">Here's the summary of your account</p>
+        </div>
+        <span class="badge bg-dark px-3 py-2 fs-6 tracking-wider shadow-sm">
+            LIVE PHASE: @Model.CurrentStorePhase.ToUpper()
+        </span>
     </div>
 
-    <div class="row g-4 mb-4">
-        <div class="col-md-4">
-            <div class="summary-card p-4 rounded" style="border: 1px solid #eee;">
-                <div class="card-title fw-bold text-muted text-uppercase small mb-2">Total Pre-Orders</div>
-                <div class="card-value display-6 fw-bold text-dark mb-1">@Model.TotalPreOrders</div>
-                <div class="card-subtitle small text-muted">All-time orders</div>
+    <ul class="nav nav-pills mb-4 gap-2" id="dashboardTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active fw-bold px-4 rounded-pill" id="phase1-tab" data-bs-toggle="pill" data-bs-target="#phase1" type="button" role="tab" style="color: #121212; background-color: #f8f9fa; border: 1px solid #ccc;">Phase 1: Pre-Orders</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link fw-bold px-4 rounded-pill" id="phase2-tab" data-bs-toggle="pill" data-bs-target="#phase2" type="button" role="tab" style="color: #121212; background-color: #f8f9fa; border: 1px solid #ccc;">Phase 2: Validation & Prep</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link fw-bold px-4 rounded-pill" id="phase3-tab" data-bs-toggle="pill" data-bs-target="#phase3" type="button" role="tab" style="color: #121212; background-color: #f8f9fa; border: 1px solid #ccc;">Phase 3: Claiming</button>
+        </li>
+    </ul>
+
+    <div class="tab-content mb-5" id="dashboardTabsContent">
+
+        <div class="tab-pane fade show active" id="phase1" role="tabpanel">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="summary-card p-4 rounded bg-white shadow-sm" style="border: 1px solid #eee;">
+                        <div class="card-title fw-bold text-dark mb-1">Total Pre-Orders</div>
+                        <div class="card-value display-5 fw-bold text-dark mb-1">@Model.TotalPreOrders</div>
+                        <div class="card-subtitle small text-muted">All-time orders</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-card p-4 rounded bg-white shadow-sm" style="border: 1px solid #eee;">
+                        <div class="card-title fw-bold text-dark mb-1">Total Revenue Estimated</div>
+                        <div class="card-value display-5 fw-bold text-dark mb-1">₱@Model.TotalRevenue.ToString("N2")</div>
+                        <div class="card-subtitle small text-muted">From settled payments</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-card p-4 rounded shadow-sm" style="background-color: #f8f9fa; border: 1px solid #eee;">
+                        <div class="card-title fw-bold text-dark mb-1">Pending Approval</div>
+                        <div class="card-value display-5 fw-bold text-dark mb-1">@Model.PendingApproval</div>
+                        <div class="card-subtitle small text-muted">Awaiting Xendit settlement</div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="summary-card p-4 rounded" style="border: 1px solid #eee;">
-                <div class="card-title fw-bold text-muted text-uppercase small mb-2">Total Revenue Estimated</div>
-                <div class="card-value display-6 fw-bold text-dark mb-1">₱@Model.TotalRevenue.ToString("F2")</div>
-                <div class="card-subtitle small text-muted">From verified orders</div>
+
+        <div class="tab-pane fade" id="phase2" role="tabpanel">
+            <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                    <div class="summary-card p-4 rounded shadow-sm" style="background-color: #fff3cd; border: 1px solid #ffe69c;">
+                        <div class="card-title fw-bold mb-1" style="color: #856404;">Unpaid Orders</div>
+                        <div class="card-value display-5 fw-bold mb-1" style="color: #856404;">@Model.UnpaidOrders</div>
+                        <div class="card-subtitle small opacity-75">Waiting or needs cancellation</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-card p-4 rounded shadow-sm" style="background-color: #d1e7dd; border: 1px solid #badbcc;">
+                        <div class="card-title fw-bold mb-1" style="color: #0f5132;">Settled Orders</div>
+                        <div class="card-value display-5 fw-bold mb-1" style="color: #0f5132;">@Model.SettledOrders</div>
+                        <div class="card-subtitle small opacity-75">Ready for production</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-card p-4 rounded shadow-sm" style="background-color: #f8d7da; border: 1px solid #f5c2c7;">
+                        <div class="card-title fw-bold mb-1" style="color: #842029;">Canceled Orders</div>
+                        <div class="card-value display-5 fw-bold mb-1" style="color: #842029;">@Model.CanceledOrders</div>
+                        <div class="card-subtitle small opacity-75">Manually canceled</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0" style="border: 1px solid #eee !important;">
+                <div class="card-header bg-dark text-white fw-bold py-3 tracking-wider text-uppercase small">
+                    <i class="bi bi-box-seam me-2"></i> Production Totals (Valid Orders Only)
+                </div>
+                <div class="card-body p-0">
+                    <div class="row g-0">
+                        @foreach (var summary in Model.ProductSummaries)
+                        {
+                            <div class="col-md-6 col-lg-4 border-bottom border-end p-3 d-flex justify-content-between align-items-center bg-white hover-bg-light">
+                                <span class="fw-bold text-dark small">@summary.NameAndVariation</span>
+                                <span class="badge bg-primary rounded-pill fs-6">@summary.TotalQuantity</span>
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="summary-card bg-gray p-4 rounded" style="background-color: #f8f9fa; border: 1px solid #eee;">
-                <div class="card-title fw-bold text-muted text-uppercase small mb-2">Pending Approval</div>
-                <div class="card-value display-6 fw-bold text-dark mb-1">@Model.PendingApproval</div>
+
+        <div class="tab-pane fade" id="phase3" role="tabpanel">
+            <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                    <div class="summary-card p-4 rounded bg-white shadow-sm" style="border: 1px solid #eee;">
+                        <div class="card-title fw-bold text-dark mb-1">Orders To Claim</div>
+                        <div class="card-value display-5 fw-bold text-dark mb-1">@Model.OrdersToClaim</div>
+                        <div class="card-subtitle small text-muted">Pending pickup</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-card p-4 rounded bg-white shadow-sm" style="border: 1px solid #eee;">
+                        <div class="card-title fw-bold text-dark mb-1">Orders Claimed</div>
+                        <div class="card-value display-5 fw-bold text-dark mb-1">@Model.OrdersClaimed</div>
+                        <div class="card-subtitle small text-muted">Successfully picked up</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="summary-card p-4 rounded bg-white shadow-sm" style="border: 1px solid #eee;">
+                        <div class="card-title fw-bold text-dark mb-1">Total Revenue Estimated</div>
+                        <div class="card-value display-5 fw-bold text-dark mb-1">₱@Model.TotalRevenue.ToString("N2")</div>
+                        <div class="card-subtitle small text-muted">Total revenue this quarter</div>
+                    </div>
+                </div>
             </div>
         </div>
+
     </div>
 
-    <div class="row g-4 mb-5">
-        <div class="col-md-4">
-            <div class="summary-card p-4 rounded" style="background-color: #fff3cd; border: 1px solid #ffe69c;">
-                <div class="card-title fw-bold text-uppercase small mb-2" style="color: #856404;">Under Assessment</div>
-                <div class="card-value display-6 fw-bold mb-1" style="color: #856404;">@Model.UnderAssessment</div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="summary-card p-4 rounded" style="background-color: #d1e7dd; border: 1px solid #badbcc;">
-                <div class="card-title fw-bold text-uppercase small mb-2" style="color: #0f5132;">Verified Orders</div>
-                <div class="card-value display-6 fw-bold mb-1" style="color: #0f5132;">@Model.VerifiedOrders</div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="summary-card p-4 rounded" style="background-color: #f8d7da; border: 1px solid #f5c2c7;">
-                <div class="card-title fw-bold text-uppercase small mb-2" style="color: #842029;">Rejected Orders</div>
-                <div class="card-value display-6 fw-bold mb-1" style="color: #842029;">@Model.RejectedOrders</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="dashboard-table-container bg-white rounded shadow-sm border">
+    <div class="dashboard-table-container bg-white p-4 rounded shadow-sm" style="border: 1px solid #dee2e6;">
         <div class="table-responsive">
-            <table class="table dashboard-table table-hover border-bottom mb-0 align-middle">
-                <thead class="bg-light">
+            <table id="ordersTable" class="table dashboard-table table-hover border-bottom mb-0 align-middle w-100">
+                <thead style="background-color: #d8e2dc; color: #333;">
                     <tr>
-                        <th class="py-3 px-4 small text-muted fw-bold tracking-wider">ORDER ID</th>
-                        <th class="py-3 small text-muted fw-bold tracking-wider">CUSTOMER NAME</th>
-                        <th class="py-3 small text-muted fw-bold tracking-wider">YEAR & SECTION</th>
-                        <th class="py-3 small text-muted fw-bold tracking-wider">TOTAL ITEMS</th>
-                        <th class="py-3 small text-muted fw-bold tracking-wider">TOTAL PRICE</th>
-                        <th class="py-3 small text-muted fw-bold tracking-wider">PAYMENT STATUS</th>
-                        <th class="py-3 small text-muted fw-bold tracking-wider">DATE ORDERED</th>
-                        <th class="py-3 px-4 small text-muted fw-bold tracking-wider text-end">ACTIONS</th>
+                        <th class="py-3 px-3 small fw-bold tracking-wider text-uppercase">ORDER ID</th>
+                        <th class="py-3 small fw-bold tracking-wider text-uppercase">CUSTOMER</th>
+                        <th class="py-3 small fw-bold tracking-wider text-uppercase">YEAR/SEC</th>
+                        <th class="py-3 small fw-bold tracking-wider text-uppercase">ITEMS</th>
+                        <th class="py-3 small fw-bold tracking-wider text-uppercase">TOTAL</th>
+                        <th class="py-3 small fw-bold tracking-wider text-uppercase">STATUS</th>
+                        <th class="py-3 small fw-bold tracking-wider text-uppercase">DATE</th>
+                        <th class="py-3 px-3 small fw-bold tracking-wider text-uppercase text-center text-nowrap">ACTIONS</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model.RecentOrders.Any())
+                    @foreach (var order in Model.RecentOrders)
                     {
-                        @foreach (var order in Model.RecentOrders)
+                        string badgeBg = order.PaymentStatus switch
                         {
-                            string badgeBg = order.PaymentStatus switch
-                            {
-                                "TO PAY" => "rgba(214, 160, 25, 0.2)",
-                                "INCOMPLETE" => "rgba(217, 83, 79, 0.1)",
-                                "ASSESSING" => "rgba(13, 79, 78, 0.1)",
-                                "VERIFIED" => "rgba(25, 135, 84, 0.1)",
-                                "REJECTED" => "rgba(220, 53, 69, 0.1)",
-                                _ => "#eee"
-                            };
-                            string badgeColor = order.PaymentStatus switch
-                            {
-                                "TO PAY" => "#D6A019",
-                                "INCOMPLETE" => "#d9534f",
-                                "ASSESSING" => "#0D4F4E",
-                                "VERIFIED" => "#198754",
-                                "REJECTED" => "#dc3545",
-                                _ => "#333"
-                            };
+                            "TO PAY" => "rgba(214, 160, 25, 0.1)",
+                            "SETTLED" => "rgba(25, 135, 84, 0.1)",
+                            "CANCELED" => "rgba(220, 53, 69, 0.1)",
+                            "TO CLAIM" => "rgba(13, 202, 240, 0.1)",
+                            "CLAIMED" => "rgba(108, 117, 125, 0.1)",
+                            _ => "#f8f9fa"
+                        };
+                        string badgeColor = order.PaymentStatus switch
+                        {
+                            "TO PAY" => "#D6A019",
+                            "SETTLED" => "#198754",
+                            "CANCELED" => "#dc3545",
+                            "TO CLAIM" => "#0dcaf0",
+                            "CLAIMED" => "#6c757d",
+                            _ => "#333"
+                        };
 
-                            <tr>
-                                <td class="fw-bold px-4" style="color: #0D4F4E;">@order.OrderReference</td>
-                                <td class="fw-bold">@order.CustomerName</td>
-                                <td>@order.YearSection</td>
-                                <td>@order.TotalItems</td>
-                                <td class="fw-bold">₱@order.TotalPrice.ToString("F2")</td>
-                                <td>
-                                    <span class="badge rounded-pill" style="background-color: @badgeBg; color: @badgeColor; border: 1px solid @badgeColor;">
-                                        @order.PaymentStatus
-                                    </span>
-                                </td>
-                                <td style="font-weight: 600; color: #666;">@order.OrderDate.ToString("MMM dd, yyyy")</td>
-                                <td class="text-end px-4"><i class="bi bi-three-dots text-muted hover-dark" style="cursor: pointer; font-size: 1.2rem;"></i></td>
-                            </tr>
-                        }
-                    }
-                    else
-                    {
                         <tr>
-                            <td colspan="8" class="text-center py-5 text-muted fst-italic">No orders have been placed yet.</td>
+                            <td class="fw-bold px-3" style="color: #0D4F4E;">@order.OrderReference</td>
+                            <td class="fw-bold">@order.CustomerName</td>
+                            <td>@order.YearSection</td>
+                            <td>@order.TotalItems</td>
+                            <td class="fw-bold text-nowrap">₱@order.TotalPrice.ToString("N2")</td>
+                            <td>
+                                <span class="badge rounded-pill fw-bold tracking-wider" style="background-color: @badgeBg; color: @badgeColor; border: 1px solid @badgeColor;">
+                                    @order.PaymentStatus
+                                </span>
+                            </td>
+                            <td data-sort="@order.OrderDate.ToString("yyyyMMddHHmmss")" style="font-weight: 600; color: #666;">
+                                <div class="text-dark">@order.OrderDate.ToString("MMM dd, yyyy")</div>
+                                <div class="small text-muted" style="font-size: 0.75rem;">@order.OrderDate.ToString("HH:mm")</div>
+                            </td>
+                            <td class="text-center px-3">
+
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-light border dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Action
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="min-width: 200px;">
+                                        <li><h6 class="dropdown-header fw-bold text-dark">Options</h6></li>
+                                        <li><a class="dropdown-item py-2" href="/Admin/Orders"><i class="bi bi-eye text-muted me-2"></i> View Details</a></li>
+                                        <li><a class="dropdown-item py-2" href="mailto:@order.Username"><i class="bi bi-envelope text-muted me-2"></i> Email Customer</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+
+                                        @if (Model.CurrentStorePhase == "Validation")
+                                        {
+                                            @if (order.PaymentStatus == "TO PAY")
+                                            {
+                                                <li>
+                                                    <form method="post" asp-page-handler="UpdateOrderStatus">
+                                                        <input type="hidden" name="orderId" value="@order.Id" />
+                                                        <input type="hidden" name="newStatus" value="CANCELED" />
+                                                        <button type="submit" class="dropdown-item py-2 text-danger">
+                                                            <i class="bi bi-x-circle me-2"></i> Cancel Order
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                            }
+                                            else
+                                            {
+                                                <li><span class="dropdown-item py-2 disabled opacity-50"><i class="bi bi-lock me-2"></i> Paid (Cannot Cancel)</span></li>
+                                            }
+                                        }
+
+                                        @if (Model.CurrentStorePhase == "Claiming")
+                                        {
+                                            @if (order.PaymentStatus == "SETTLED" || order.PaymentStatus == "TO CLAIM")
+                                            {
+                                                <li>
+                                                    <form method="post" asp-page-handler="UpdateOrderStatus">
+                                                        <input type="hidden" name="orderId" value="@order.Id" />
+                                                        <input type="hidden" name="newStatus" value="CLAIMED" />
+                                                        <button type="submit" class="dropdown-item py-2 text-primary fw-bold">
+                                                            <i class="bi bi-box-seam me-2"></i> Mark as Claimed
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                            }
+                                            else if (order.PaymentStatus == "CLAIMED")
+                                            {
+                                                <li><span class="dropdown-item py-2 text-success disabled"><i class="bi bi-check-all me-2"></i> Already Claimed</span></li>
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -122,3 +243,44 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // 1. Initialize DataTables
+            $('#ordersTable').DataTable({
+                "pageLength": 10,
+                "ordering": true,
+                "info": true,
+                "lengthChange": true,
+                "order": [[ 6, "desc" ]], // Sort by the Date column (Index 6) by default
+                "language": {
+                    "search": "Search Orders:"
+                }
+            });
+
+            // 2. Tab Navigation styling hook
+            document.querySelectorAll('#dashboardTabs .nav-link').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('#dashboardTabs .nav-link').forEach(t => {
+                        t.style.backgroundColor = '#f8f9fa';
+                        t.style.color = '#121212';
+                    });
+                    this.style.backgroundColor = '#0D4F4E';
+                    this.style.color = 'white';
+                });
+            });
+
+            // Force initial active state styling on load
+            var activeTab = document.querySelector('#dashboardTabs .nav-link.active');
+            if (activeTab) {
+                activeTab.style.backgroundColor = '#0D4F4E';
+                activeTab.style.color = 'white';
+            }
+        });
+    </script>
+}
