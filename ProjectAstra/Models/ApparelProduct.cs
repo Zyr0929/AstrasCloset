@@ -63,12 +63,13 @@ namespace ProjectAstra.Models
         [Required] public string ReviewBodyText { get; set; } = string.Empty;
     }
 
+
     public class ApparelProduct : ProductBase
     {
         public List<string> Types { get; set; } = new();
         public List<ColorVariation> Variations { get; set; } = new();
         public List<string> AvailableSizes { get; set; } = new();
-        public List<CustomerReview> Reviews { get; set; } = new();
+        public List<ProductReview> Reviews { get; set; } = new();
         public int MaximumPurchaseLimit { get; set; }
 
         public ApparelProduct() { }
@@ -76,7 +77,8 @@ namespace ProjectAstra.Models
         public ApparelProduct(int id, string name, string category, decimal price, double rating, int reviewCount, string tag, string description, List<ColorVariation> variations, List<string> availableSizes, List<CustomerReview> reviews, int maxLimit = 10)
             : base(id, name, category, price, rating, reviewCount, tag, description)
         {
-            Variations = variations; AvailableSizes = availableSizes; Reviews = reviews; MaximumPurchaseLimit = maxLimit;
+            Variations = variations; AvailableSizes = availableSizes; Reviews = Reviews; MaximumPurchaseLimit = maxLimit;
         }
     }
+
 }

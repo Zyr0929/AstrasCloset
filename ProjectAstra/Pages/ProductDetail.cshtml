@@ -244,32 +244,33 @@
                     </div>
 
                     <div class="reviews-feed-stack d-flex flex-column gap-4 mt-4">
-                        @if (Model.Product.Reviews != null && Model.Product.Reviews.Any())
+                        @if (Model.Product.Reviews != null && Model.Product.Reviews.Any(r => r.IsApproved))
                         {
-                            @foreach (var review in Model.Product.Reviews)
+                            @foreach (var review in Model.Product.Reviews.Where(r => r.IsApproved).OrderByDescending(r => r.ReviewDate))
                             {
                                 <div class="row g-3 py-1 border-bottom pb-3">
                                     <div class="col-4 col-sm-3 d-flex flex-column align-items-start">
-                                        <div class="d-flex mb-2">
+                                        <div class="d-flex mb-2 text-warning">
                                             @for (int s = 1; s <= 5; s++)
                                             {
-                                                <i class="bi bi-star-fill @(s <= review.RatingScore ? "star-rating-gold" : "text-secondary opacity-25")" style="font-size: 0.75rem; margin-right: 2px;"></i>
+                                                <i class="bi @(s <= review.Rating ? "bi-star-fill" : "bi-star")" style="font-size: 0.75rem; margin-right: 2px;"></i>
                                             }
                                         </div>
-                                        <span class="fw-bold text-dark mb-2" style="font-size: 0.95rem;">@review.ReviewerName</span>
-                                        <span class="text-uppercase fw-bold border border-dark border-opacity-50 px-2 py-1 rounded-0" style="font-size: 0.6rem; color: #121212; background-color: rgba(0,0,0,0.03); letter-spacing: 0.3px;">Verified</span>
+                                        <span class="fw-bold text-dark mb-2" style="font-size: 0.95rem;">@review.ReviewerFirstName</span>
+                                        <span class="text-uppercase fw-bold border border-dark border-opacity-50 px-2 py-1 rounded-0" style="font-size: 0.6rem; color: #121212; background-color: rgba(0,0,0,0.03); letter-spacing: 0.3px;">Verified Buyer</span>
                                     </div>
                                     <div class="col-8 col-sm-9 ps-md-4">
-                                        @if (!string.IsNullOrEmpty(review.ReviewBodyText))
-                                        {
-                                            <p class="text-dark mb-2" style="font-size: 0.95rem; line-height: 1.5; font-weight: 400;">@review.ReviewBodyText</p>
-                                        }
-                                        <div class="text-muted small mt-1" style="font-size: 0.82rem;">
-                                            <span class="fw-bold text-dark">Variant:</span> @review.SelectedSize / @review.SelectedColor
+                                        <p class="text-dark mb-2" style="font-size: 0.95rem; line-height: 1.5; font-weight: 400;">@review.ReviewText</p>
+                                        <div class="text-muted small mt-1" style="font-size: 0.75rem;">
+                                            @review.ReviewDate.ToString("MMM dd, yyyy")
                                         </div>
                                     </div>
                                 </div>
                             }
+                        }
+                        else
+                        {
+                            <div class="text-muted fst-italic small">No reviews available for this product yet.</div>
                         }
                     </div>
                 </div>

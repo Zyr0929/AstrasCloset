@@ -18,5 +18,6 @@ namespace ProjectAstra.Models
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal UnitPrice { get; set; }
+        public bool IsReviewed { get; set; } = false;
     }
 }
