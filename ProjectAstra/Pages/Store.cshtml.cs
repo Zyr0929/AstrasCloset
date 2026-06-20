@@ -30,6 +30,7 @@ namespace ProjectAstra.Pages
         [BindProperty(SupportsGet = true)] public List<string> Prices { get; set; } = new();
         [BindProperty(SupportsGet = true)] public List<string> Themes { get; set; } = new();
         [BindProperty(SupportsGet = true)] public List<string> Materials { get; set; } = new();
+        [BindProperty(SupportsGet = true)] public string? Search { get; set; }
 
         public async Task OnGetAsync()
         {
@@ -48,6 +49,22 @@ namespace ProjectAstra.Pages
                 .Where(p => !p.IsArchived)
                 .AsQueryable();
             var products = await query.ToListAsync();
+
+            if (!string.IsNullOrWhiteSpace(Search))
+            {
+                var term = Search.Trim().ToLower();
+
+                products = products.Where(p =>
+                    (!string.IsNullOrEmpty(p.Name) &&
+                     p.Name.ToLower().Contains(term))
+
+                    || (!string.IsNullOrEmpty(p.Description) &&
+                        p.Description.ToLower().Contains(term))
+
+                    || (!string.IsNullOrEmpty(p.Tag) &&
+                        p.Tag.ToLower().Contains(term))
+                ).ToList();
+            }
 
             if (Types.Any())
             {
