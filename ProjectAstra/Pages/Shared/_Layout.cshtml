@@ -283,14 +283,39 @@
                         {
                             var variation = item.Product.Variations.FirstOrDefault(v => v.ColorName == item.SelectedColor) ?? item.Product.Variations.FirstOrDefault();
 
-                            <div class="d-flex align-items-center">
-                                <img src="@variation?.FrontImage" style="width: 75px; height: 75px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);" />
+                            <div class="d-flex align-items-center mb-4">
+                                <img src="@(string.IsNullOrEmpty(variation?.FrontImage) ? "https://via.placeholder.com/75.png?text=Img" : variation.FrontImage)"
+                                     style="width: 75px; height: 75px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);"
+                                     onerror="this.onerror=null;this.src='https://via.placeholder.com/75.png?text=Img';" />
+
                                 <div class="ms-3 text-white w-100">
                                     <div class="fw-bold mb-1" style="font-size: 0.95rem;">@item.Product.Name</div>
-                                    <div class="text-white-50 small mb-1">Color: @item.SelectedColor | Size: @item.SelectedSize</div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-warning fw-bold">₱@item.UnitPrice.ToString("F2")</span>
-                                        <span class="text-white-50 small">Qty: @item.Quantity</span>
+                                    <div class="text-white-50 small mb-2">Color: @item.SelectedColor | Size: @item.SelectedSize</div>
+
+                                    <div class="d-flex justify-content-between align-items-center mt-1">
+
+                                        <form method="post" action="/UpdateCart?handler=UpdateQuantity" class="d-flex align-items-center m-0 p-0 shadow-sm" style="background: rgba(255,255,255,0.1); border-radius: 6px;">
+                                            <input type="hidden" name="cartItemId" value="@item.Id" />
+                                            <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+
+                                            <button type="submit" name="action" value="decrease" class="btn btn-sm text-white px-2 py-0 border-0 fw-bold fs-5">-</button>
+                                            <span class="text-warning fw-bold px-2" style="font-size: 0.9rem;">@item.Quantity</span>
+                                            <button type="submit" name="action" value="increase" class="btn btn-sm text-white px-2 py-0 border-0 fw-bold fs-5">+</button>
+                                        </form>
+
+                                        <div class="d-flex align-items-center gap-3">
+                                            <span class="text-white fw-bold">₱@((item.UnitPrice * item.Quantity).ToString("F2"))</span>
+
+                                            <form method="post" action="/UpdateCart?handler=RemoveItem" class="m-0 p-0">
+                                                <input type="hidden" name="cartItemId" value="@item.Id" />
+                                                <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+
+                                                <button type="submit" class="btn btn-sm p-0 border-0 text-danger opacity-75" title="Remove Item" onmouseover="this.classList.remove('opacity-75')" onmouseout="this.classList.add('opacity-75')">
+                                                    <i class="bi bi-trash3-fill fs-5"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>

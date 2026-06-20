@@ -1,0 +1,47 @@
+﻿@page "{itemId:int}"
+@model ProjectAstra.Pages.WriteReviewModel
+@{
+    ViewData["Title"] = "Write a Review";
+}
+
+<div class="container py-5" style="max-width: 600px; font-family: 'Inter', sans-serif;">
+    <h2 class="fw-bold mb-4">Rate Your Item</h2>
+
+    <div class="card shadow-sm border-0 p-4">
+
+        <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
+            <div>
+                <h5 class="fw-bold m-0 text-dark">@Model.TargetItem.Product.Name</h5>
+                <div class="text-muted small mt-1">@Model.TargetItem.SelectedColor / @Model.TargetItem.SelectedSize</div>
+            </div>
+        </div>
+
+        <form method="post">
+            <input type="hidden" asp-for="OrderItemId" />
+
+            <div class="mb-4">
+                <label class="fw-bold mb-2">Overall Rating</label>
+                <select asp-for="NewReview.Rating" class="form-select form-select-lg border-warning" required>
+                    <option value="5">⭐⭐⭐⭐⭐ (5/5) - Excellent!</option>
+                    <option value="4">⭐⭐⭐⭐ (4/5) - Very Good</option>
+                    <option value="3">⭐⭐⭐ (3/5) - Average</option>
+                    <option value="2">⭐⭐ (2/5) - Below Average</option>
+                    <option value="1">⭐ (1/5) - Poor</option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="fw-bold mb-2">Your Review</label>
+                <textarea asp-for="NewReview.ReviewText" class="form-control" rows="4" maxlength="500" placeholder="What do you think about the product?" required></textarea>
+                <div class="form-text small text-muted text-end">Max 500 characters</div>
+            </div>
+
+            <button type="submit" class="btn w-100 py-3 fw-bold text-white text-uppercase tracking-wider" style="background-color: #0D4F4E;">
+                Submit Review
+            </button>
+            <div class="text-center mt-3">
+                <a href="/MyOrders" class="text-muted small text-decoration-none">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
